@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import SignInForm from './SignInForm';
 
 const SignUpForm = () => {
+  const [showSignInForm, setShowSignInForm] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const history = useHistory();
+
+  const handleSignInClick = () => {
+    setShowSignInForm(true);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,6 +29,8 @@ const SignUpForm = () => {
 
   return (
     <div>
+            {!showSignInForm && (
+        <>
       <h2>Sign Up</h2>
       <form onSubmit={handleSubmit}>
         <div>
@@ -57,8 +64,14 @@ const SignUpForm = () => {
         <button type="submit">Sign Up</button>
       </form>
       <p>
-        Already have an account? <Link to="/signin">Sign In</Link>
+        Already have an account?{' '}
+        <Link to="#" onClick={handleSignInClick}>
+          Sign In
+        </Link>
       </p>
+      </>
+      )}
+      {showSignInForm && <SignInForm />}
     </div>
   );
 };
