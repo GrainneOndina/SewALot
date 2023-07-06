@@ -8,7 +8,7 @@ import SignUpForm from './pages/auth/SignUpForm';
 
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const handleSignIn = () => {
     // Handle sign-in logic, e.g., making an API call
