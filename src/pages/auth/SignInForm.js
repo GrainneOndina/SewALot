@@ -1,19 +1,35 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SignUpForm from './SignUpForm';
+import axios from 'axios';
 
 const SignInForm = () => {
   const [showSignUpForm, setShowSignUpForm] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleSignUpClick = () => {
     setShowSignUpForm(true);
   };
 
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
-    // Handle sign-in logic, e.g., making an API call
+
+    try {
+      // Perform sign-in logic, e.g., make an API call
+      const response = await axios.post('/api/signin', {
+        username,
+        password,
+      });
+
+      // Handle successful sign-in
+      console.log(response.data); // You can handle the response data accordingly
+
+    } catch (error) {
+      // Handle sign-in error
+      setError('Sign-in failed. Please check your credentials.'); // Set an appropriate error message
+    }
   };
 
   return (
@@ -40,6 +56,7 @@ const SignInForm = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            {error && <p>{error}</p>}
             <button type="submit">Sign In</button>
           </form>
           <p>

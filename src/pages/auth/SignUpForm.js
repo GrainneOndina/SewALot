@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import SignInForm from './SignInForm';
+import axios from 'axios';
 
 const SignUpForm = () => {
   const [showSignInForm, setShowSignInForm] = useState(false);
@@ -13,7 +14,7 @@ const SignUpForm = () => {
     setShowSignInForm(true);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -21,57 +22,68 @@ const SignUpForm = () => {
       return;
     }
 
-    // Handle sign-up logic, e.g., making an API call
+    try {
+      const response = await axios.post('/api/signup', {
+        username,
+        password,
+      });
 
-    // Redirect the user upon successful sign-up
-    history.push('/navbar');
+      // Handle the response and any further actions
+      console.log('Sign up successful:', response.data);
+      // Redirect the user or perform any other necessary actions
+    } catch (error) {
+      // Handle any errors from the API request
+      console.error('Sign up failed:', error);
+      setError('Sign up failed. Please try again.'); // Display a generic error message
+    }
   };
 
   return (
     <div>
-            {!showSignInForm && (
+      {!showSignInForm ? (
         <>
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </div>
-        {error && <p>{error}</p>}
-        <button type="submit">Sign Up</button>
-      </form>
-      <p>
-        Already have an account?{' '}
-        <Link to="#" onClick={handleSignInClick}>
-          Sign In
-        </Link>
-      </p>
-      </>
+          <h2>Sign Up</h2>
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </div>
+            {error && <p>{error}</p>}
+            <button type="submit">Sign Up</button>
+          </form>
+          <p>
+            Already have an account?{' '}
+            <Link to="#" onClick={handleSignInClick}>
+              Sign In
+            </Link>
+          </p>
+        </>
+      ) : (
+        <SignInForm />
       )}
-      {showSignInForm && <SignInForm />}
     </div>
   );
 };
