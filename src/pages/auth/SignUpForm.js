@@ -1,90 +1,136 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import SignInForm from './SignInForm';
-import axios from 'axios';
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+
+import styles from "../../styles/SignInUpForm.module.css";
+import btnStyles from "../../styles/Button.module.css";
+import appStyles from "../../App.module.css";
+
+import {
+  Form,
+  Button,
+  Image,
+  Col,
+  Row,
+  Container,
+  Alert,
+} from "react-bootstrap";
+import axios from "axios";
+import { useRedirect } from "../../hooks/useRedirect";
 
 const SignUpForm = () => {
-  const [showSignInForm, setShowSignInForm] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
+  useRedirect("loggedIn");
+  const [signUpData, setSignUpData] = useState({
+    username: "",
+    password1: "",
+    password2: "",
+  });
+  const { username, password1, password2 } = signUpData;
 
-  const handleSignInClick = () => {
-    setShowSignInForm(true);
+  const [errors, setErrors] = useState({});
+
+  const history = useHistory();
+
+  const handleChange = (event) => {
+    setSignUpData({
+      ...signUpData,
+      [event.target.name]: event.target.value,
+    });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
-      const response = await axios.post('/api/signup', {
-        username,
-        password,
-      });
-
-      // Handle the response and any further actions
-      console.log('Sign up successful:', response.data);
-      // Redirect the user or perform any other necessary actions
-    } catch (error) {
-      // Handle any errors from the API request
-      console.error('Sign up failed:', error);
-      setError('Sign up failed. Please try again.'); // Display a generic error message
+      await axios.post("/dj-rest-auth/registration/", signUpData);
+      history.push("/signin");
+    } catch (err) {
+      setErrors(err.response?.data);
     }
   };
 
   return (
-    <div>
-      {!showSignInForm ? (
-        <>
-          <h2>Sign Up</h2>
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="username">Username</label>
-              <input
+    <Row className={styles.Row}>
+      <Col className="my-auto py-2 p-md-2" md={6}>
+        <Container className={`${appStyles.Content} p-4 `}>
+          <h1 className={styles.Header}>sign up</h1>
+
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="username">
+              <Form.Label className="d-none">username</Form.Label>
+              <Form.Control
+                className={styles.Input}
                 type="text"
-                id="username"
+                placeholder="Username"
+                name="username"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={handleChange}
               />
-            </div>
-            <div>
-              <label htmlFor="password">Password</label>
-              <input
+            </Form.Group>
+            {errors.username?.map((message, idx) => (
+              <Alert variant="warning" key={idx}>
+                {message}
+              </Alert>
+            ))}
+
+            <Form.Group controlId="password1">
+              <Form.Label className="d-none">Password</Form.Label>
+              <Form.Control
+                className={styles.Input}
                 type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                name="password1"
+                value={password1}
+                onChange={handleChange}
               />
-            </div>
-            <div>
-              <label htmlFor="confirmPassword">Confirm Password</label>
-              <input
+            </Form.Group>
+            {errors.password1?.map((message, idx) => (
+              <Alert key={idx} variant="warning">
+                {message}
+              </Alert>
+            ))}
+
+            <Form.Group controlId="password2">
+              <Form.Label className="d-none">Confirm password</Form.Label>
+              <Form.Control
+                className={styles.Input}
                 type="password"
-                id="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm password"
+                name="password2"
+                value={password2}
+                onChange={handleChange}
               />
-            </div>
-            {error && <p>{error}</p>}
-            <button type="submit">Sign Up</button>
-          </form>
-          <p>
-            Already have an account?{' '}
-            <Link to="#" onClick={handleSignInClick}>
-              Sign In
-            </Link>
-          </p>
-        </>
-      ) : (
-        <SignInForm />
-      )}
-    </div>
+            </Form.Group>
+            {errors.password2?.map((message, idx) => (
+              <Alert key={idx} variant="warning">
+                {message}
+              </Alert>
+            ))}
+
+            <Button
+              className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`}
+              type="submit"
+            >
+              Sign up
+            </Button>
+            {errors.non_field_errors?.map((message, idx) => (
+              <Alert key={idx} variant="warning" className="mt-3">
+                {message}
+              </Alert>
+            ))}
+          </Form>
+        </Container>
+
+        <Container className={`mt-3 ${appStyles.Content}`}>
+          <Link className={styles.Link} to="/signin">
+            Already have an account? <span>Sign in</span>
+          </Link>
+        </Container>
+      </Col>
+      <Col
+        md={6}
+        className={`my-auto d-none d-md-block p-2 ${styles.SignUpCol}`}
+      >
+      </Col>
+    </Row>
   );
 };
 

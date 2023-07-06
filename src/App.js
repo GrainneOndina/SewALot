@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { Link, useHistory } from "react-router-dom";
 import './App.css';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import NavigationBar from './components/Navbar';
 import SignInForm from './pages/auth/SignInForm';
 import SignUpForm from './pages/auth/SignUpForm';
+
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(true);
