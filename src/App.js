@@ -1,45 +1,42 @@
-import React, { useState } from 'react';
-import { Link, useHistory } from "react-router-dom";
-import './App.css';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import NavigationBar from './components/Navbar';
-import SignInForm from './pages/auth/SignInForm';
-import SignUpForm from './pages/auth/SignUpForm';
+import styles from "./App.module.css";
+import NavBar from "./components/NavBar";
+import Container from "react-bootstrap/Container";
+import { Route, Switch } from "react-router-dom";
+import "./api/axiosDefaults";
+import SignUpForm from "./pages/auth/SignUpForm";
+import SignInForm from "./pages/auth/SignInForm";
 
+
+import { useCurrentUser } from "./contexts/CurrentUserContext";
+
+import ProfilePage from "./";
+
+import NotFound from "./components/NotFound";
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  const handleSignIn = () => {
-    // Handle sign-in logic, e.g., making an API call
-    setLoggedIn(true);
-  };
-
-  const handleSignOut = () => {
-    // Handle sign-out logic, e.g., making an API call
-    setLoggedIn(false);
-  };
+  const currentUser = useCurrentUser();
+  const profile_id = currentUser?.profile_id || "";
 
   return (
-    <Router>
-      <div className="App">
-        <NavigationBar loggedIn={loggedIn} onSignOut={handleSignOut} />
-        <h1>Sewlot</h1>
-        {loggedIn ? (
-          <div>
-            <p>Welcome, you are signed in!</p>
-            {/* Display other content for logged-in users */}
-          </div>
-        ) : (
-          <div>
-            <SignInForm onSignIn={handleSignIn} />
-          </div>
-        )}
+    <div className={styles.App}>
+      <NavBar />
+      <Container className={styles.Main}>
         <Switch>
-          <Route path="/signup" component={SignUpForm} />
+          
+      
+          <Route exact path="/signin" render={() => <SignInForm />} />
+          <Route exact path="/signup" render={() => <SignUpForm />} />
+
+         
+          <Route exact path="/profiles/:id" render={() => <ProfilePage />} />
+
+
+
+
+          <Route render={() => <NotFound />} />
         </Switch>
-      </div>
-    </Router>
+      </Container>
+    </div>
   );
 }
 
