@@ -9,7 +9,7 @@ import SignInForm from "./pages/auth/SignInForm";
 
 import { useCurrentUser } from "./contexts/CurrentUserContext";
 
-import ProfilePage from "./";
+import ProfilePage from "./pages/profiles/ProfilePage";
 
 import NotFound from "./components/NotFound";
 

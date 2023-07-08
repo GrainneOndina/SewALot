@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "https://sewlot-07aa7e3364ec.herokuapp.com/";
+axios.defaults.baseURL = "https://sew-api-6d5f4cb2934c.herokuapp.com";
 axios.defaults.headers.post["Content-Type"] = "multipart/form-data";
 axios.defaults.withCredentials = true;
 
