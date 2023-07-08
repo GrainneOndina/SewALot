@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import logo from "../assets/logo.png";
 import styles from "../styles/NavBar.module.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory, Redirect } from "react-router-dom";
 import {
   useCurrentUser,
   useSetCurrentUser,
@@ -17,6 +17,7 @@ import { removeTokenTimestamp } from "../utils/utils";
 const NavBar = () => {
   const currentUser = useCurrentUser();
   const setCurrentUser = useSetCurrentUser();
+  const history = useHistory();
 
   const { expanded, setExpanded, ref } = useClickOutsideToggle();
 
@@ -25,10 +26,16 @@ const NavBar = () => {
       await axios.post("dj-rest-auth/logout/");
       setCurrentUser(null);
       removeTokenTimestamp();
+      history.push("/signin"); // Redirect to SignInForm
     } catch (err) {
       console.log(err);
     }
   };
+
+  // Check if user is not signed in and redirect to SignInForm
+  if (!currentUser) {
+    return <Redirect to="/signin" />;
+  }
 
   const addPostIcon = (
     <NavLink

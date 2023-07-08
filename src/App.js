@@ -6,7 +6,6 @@ import "./api/axiosDefaults";
 import SignUpForm from "./pages/auth/SignUpForm";
 import SignInForm from "./pages/auth/SignInForm";
 
-
 import { useCurrentUser } from "./contexts/CurrentUserContext";
 
 import ProfilePage from "./pages/profiles/ProfilePage";

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
@@ -17,8 +17,8 @@ const SignUpForm = () => {
   const { username, password1, password2 } = signUpData;
 
   const [errors, setErrors] = useState({});
-
   const history = useHistory();
+  const location = useLocation();
 
   const handleChange = (event) => {
     setSignUpData({
@@ -31,7 +31,15 @@ const SignUpForm = () => {
     event.preventDefault();
     try {
       await axios.post("/dj-rest-auth/registration/", signUpData);
-      history.push("/signin");
+      const signInResponse = await axios.post("/dj-rest-auth/login/", {
+        username: signUpData.username,
+        password: signUpData.password1,
+      });
+      // Handle successful sign up and sign in here
+      console.log("User signed up and signed in:", signInResponse.data);
+
+      const { from } = location.state || { from: { pathname: "/" } };
+      history.replace(from); // Redirect to the same place as the sign-in form
     } catch (err) {
       console.log(err.response?.data);
       setErrors(err.response?.data);
@@ -115,11 +123,6 @@ const SignUpForm = () => {
             Already have an account? <span>Sign in</span>
           </Link>
         </Container>
-      </Col>
-      <Col
-        md={6}
-        className={`my-auto d-none d-md-block p-2 ${styles.SignUpCol}`}
-      >
       </Col>
     </Row>
   );
