@@ -28,6 +28,7 @@
     "serve": "^11.3.2"
   },
   "scripts": {
+    "heroku-prebuild": "npm install -g serve",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
