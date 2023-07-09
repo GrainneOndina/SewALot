@@ -9,7 +9,6 @@ import {
   useCurrentUser,
   useSetCurrentUser,
 } from "../contexts/CurrentUserContext";
-import Avatar from "./Avatar";
 import axios from "axios";
 import useClickOutsideToggle from "../hooks/useClickOutsideToggle";
 import { removeTokenTimestamp } from "../utils/utils";
@@ -66,10 +65,14 @@ const NavBar = () => {
         <i className="fas fa-sign-out-alt"></i>Sign out
       </NavLink>
       <NavLink
-        className={styles.NavLink}
+        className={`${styles.NavLink} ${styles.AvatarLink}`}
         to={`/profiles/${currentUser?.profile_id}`}
       >
-        <Avatar src={currentUser?.profile_image} text="Profile" height={40} />
+        <img
+          className={styles.AvatarImage}
+          src={currentUser?.profile_image}
+          alt="Profile"
+        />
       </NavLink>
     </>
   );
@@ -102,7 +105,7 @@ const NavBar = () => {
       <Container>
         <NavLink to="/">
           <Navbar.Brand>
-            <img src={logo} alt="logo" height="45" />
+            <img src={logo} alt="logo" className={styles.Logo} />
           </Navbar.Brand>
         </NavLink>
         {currentUser && addPostIcon}

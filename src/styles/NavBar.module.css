@@ -1,6 +1,12 @@
 .NavBar {
     background-color: #ffffff;
     border: 1px solid #dadadf;
+    border-bottom: 2px dotted #000;
+  }
+  
+ body {
+    padding-top: 70px;
+    color: rgb(89, 238, 238);
   }
   
   .NavLink {
@@ -10,3 +16,33 @@
   .Active i {
     color: #2142b2;
   }
+  
+  .DoubleDottedLine {
+    border-bottom: 2px dotted #000;
+  }
+  
+  .Logo {
+    height: 45px;
+  }
+  .ProfileLink {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+  }
+  
+  .ProfileLink:hover {
+    text-decoration: none;
+  }
+
+  .AvatarLink {
+    display: flex;
+    align-items: center;
+  }
+  
+  .AvatarImage {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+  

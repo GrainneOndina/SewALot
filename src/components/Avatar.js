@@ -1,15 +1,19 @@
 import React from "react";
-import { Spinner } from "react-bootstrap";
-import styles from "../styles/Asset.module.css";
+import styles from "../styles/Avatar.module.css";
 
-const Asset = ({ spinner, src, message }) => {
+const Avatar = ({ src, height = 45, text }) => {
   return (
-    <div className={`${styles.Asset} p-4`}>
-      {spinner && <Spinner animation="border" />}
-      {src && <img src={src} alt={message} />}
-      {message && <p className="mt-4">{message}</p>}
-    </div>
+    <span>
+      <img
+        className={styles.Avatar}
+        src={src}
+        height={height}
+        width={height}
+        alt="avatar"
+      />
+      {text}
+    </span>
   );
 };
 
-export default Asset;
+export default Avatar;

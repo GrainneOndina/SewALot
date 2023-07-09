@@ -1,0 +1,54 @@
+.Profile {
+    display: flex;
+    align-items: center;
+  }
+
+body {
+    color: rgb(89, 238, 238);
+    background-color: rgb(1, 15, 17);
+}
+
+.Profile.MobileProfile {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+.Profile .AvatarLink {
+    margin-right: 10px;
+}
+
+.Profile .Info {
+    display: flex;
+    align-items: center;
+}
+
+.Profile .Info .OwnerLink {
+    margin-right: 10px;
+}
+.Profile {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.Profile.MobileProfile {
+    flex-direction: column;
+    align-items: center;
+}
+
+.Profile .AvatarLink {
+    margin-right: 10px;
+}
+
+.Profile .Info {
+    display: flex;
+    align-items: center;
+}
+
+.Profile .Info .OwnerLink {
+    margin-right: 10px;
+}
+
+.Profile .Info .Buttons {
+    margin-left: auto;
+}

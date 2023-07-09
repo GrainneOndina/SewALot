@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "../../styles/Profile.module.css";
-import btnStyles from "../../styles/Button.module.css";
+import styles from "../styles/Profile.module.css";
+import btnStyles from "../styles/Button.module.css";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { Link } from "react-router-dom";
 import Avatar from "../../components/Avatar";
@@ -17,36 +17,33 @@ const Profile = (props) => {
   const { handleFollow } = useSetProfileData();
 
   return (
-    <div
-      className={`my-3 d-flex align-items-center ${mobile && "flex-column"}`}
-    >
-      <div>
-        <Link className="align-self-center" to={`/profiles/${id}`}>
-          <Avatar src={image} height={imageSize} />
+    <div className={`${styles.Profile} ${mobile ? styles.MobileProfile : ""}`}>
+      <Link className={styles.AvatarLink} to={`/profiles/${id}`}>
+        <Avatar src={image} height={imageSize} />
+      </Link>
+      <div className={styles.Info}>
+        <Link className={styles.OwnerLink} to={`/profiles/${id}`}>
+          <strong>{owner}</strong>
         </Link>
-      </div>
-      <div className={`mx-2 ${styles.WordBreak}`}>
-        <strong>{owner}</strong>
-      </div>
-      <div className={`text-right ${!mobile && "ml-auto"}`}>
-        {!mobile &&
-          currentUser &&
-          !is_owner &&
-          (following_id ? (
-            <Button
-              className={`${btnStyles.Button} ${btnStyles.BlackOutline}`}
-              onClick={() => {}}
-            >
-              unfollow
-            </Button>
-          ) : (
-            <Button
-              className={`${btnStyles.Button} ${btnStyles.Black}`}
-              onClick={() => handleFollow(profile)}
-            >
-              follow
-            </Button>
-          ))}
+        {!mobile && currentUser && !is_owner && (
+          <div className={styles.Buttons}>
+            {following_id ? (
+              <Button
+                className={`${btnStyles.Button} ${btnStyles.BlackOutline}`}
+                onClick={() => {}}
+              >
+                unfollow
+              </Button>
+            ) : (
+              <Button
+                className={`${btnStyles.Button} ${btnStyles.Black}`}
+                onClick={() => handleFollow(profile)}
+              >
+                follow
+              </Button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
