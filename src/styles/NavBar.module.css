@@ -1,12 +1,12 @@
 .NavBar {
     background-color: #ffffff;
-    border: 1px solid #dadadf;
+    border: 1px solid #f08fcb;
     border-bottom: 2px dotted #000;
   }
   
  body {
     padding-top: 70px;
-    color: rgb(89, 238, 238);
+    color: rgb(238, 89, 226);
   }
   
   .NavLink {
@@ -14,7 +14,7 @@
   }
   
   .Active i {
-    color: #2142b2;
+    color: #b22128;
   }
   
   .DoubleDottedLine {
