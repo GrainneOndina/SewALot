@@ -148,12 +148,7 @@ function PostEditForm() {
                 </Form.Label>
               </div>
 
-              <Form.File
-                id="image-upload"
-                accept="image/*"
-                onChange={handleChangeImage}
-                ref={imageInput}
-              />
+
             </Form.Group>
             {errors?.image?.map((message, idx) => (
               <Alert variant="warning" key={idx}>
