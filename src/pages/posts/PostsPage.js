@@ -20,6 +20,7 @@ function PostsPage({ message, filter = "" }) {
   const { pathname } = useLocation();
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
+  const [url, setUrl] = useState("");
   const currentUser = useCurrentUser();
   const [query, setQuery] = useState("");
 
@@ -54,11 +55,13 @@ function PostsPage({ message, filter = "" }) {
     const formData = new FormData();
     formData.append("content", content);
     formData.append("image", image);
+    formData.append("url", url);
 
     try {
       await axiosReq.post("/posts/", formData);
       setContent("");
       setImage(null);
+      setUrl("");
     } catch (error) {
       console.log(error);
     }
@@ -74,6 +77,14 @@ function PostsPage({ message, filter = "" }) {
             value={content}
             onChange={(event) => setContent(event.target.value)}
             placeholder="Add post"
+          />
+        </Form.Group>
+        <Form.Group controlId="postUrl"> {/* Add URL input field */}
+          <Form.Control
+            type="text"
+            value={url}
+            onChange={(event) => setUrl(event.target.value)}
+            placeholder="Add URL"
           />
         </Form.Group>
         <div className={styles.UploadContainer}>
@@ -95,7 +106,7 @@ function PostsPage({ message, filter = "" }) {
           {posts.results.length ? (
             <InfiniteScroll
               children={posts.results.map((post) => (
-                <Post key={post.id} {...post} setPosts={setPosts} />
+                <Post key={post.id} {...post} setPosts={setPosts} url={post.url} />
               ))}
               dataLength={posts.results.length}
               loader={<Asset spinner />}

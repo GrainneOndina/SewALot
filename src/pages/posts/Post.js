@@ -16,9 +16,9 @@ const Post = (props) => {
     comments_count,
     likes_count,
     like_id,
-    title,
     content,
     image,
+    url,
     updated_at,
     postPage,
     setPosts,
@@ -37,7 +37,7 @@ const Post = (props) => {
       await axiosRes.delete(`/posts/${id}/`);
       history.goBack();
     } catch (err) {
-     // console.log(err);
+      // console.log(err);
     }
   };
 
@@ -53,7 +53,7 @@ const Post = (props) => {
         }),
       }));
     } catch (err) {
-     // console.log(err);
+      // console.log(err);
     }
   };
 
@@ -69,7 +69,7 @@ const Post = (props) => {
         }),
       }));
     } catch (err) {
-     // console.log(err);
+      // console.log(err);
     }
   };
 
@@ -93,11 +93,15 @@ const Post = (props) => {
         </div>
       </Card.Body>
       <Link to={`/posts/${id}`}>
-        <Card.Img src={image} alt={title} />
+        <Card.Img src={image} alt="" />
       </Link>
       <Card.Body>
-        {title && <Card.Title className="text-center">{title}</Card.Title>}
         {content && <Card.Text>{content}</Card.Text>}
+        {url && ( // Display the URL if it exists
+          <Card.Link href={url} target="_blank">
+            {url}
+          </Card.Link>
+        )}
         <div className={styles.PostBar}>
           {is_owner ? (
             <OverlayTrigger
