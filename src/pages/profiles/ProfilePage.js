@@ -59,39 +59,28 @@ function ProfilePage() {
 
   const mainProfile = (
     <>
-          {profile?.is_owner && <ProfileEditDropdown id={profile?.id} />}
-
+    {profile?.is_owner && (
+      <ProfileEditDropdown id={profile?.id} className="dropdown-menu-right" />
+    )}
+  
       <Row noGutters className="px-3 text-center">
-        <Col lg={3} className="text-lg-left">
-          {/*
-          <Image
-            className={styles.ProfileImage}
-            roundedCircle
-            src={profile?.image}
-          />
-  */}
+        <Col>
+          <Container className="d-flex align-items-center justify-content-center">
+            <Image
+              className={styles.ProfileImage}
+              roundedCircle
+              src={profile?.image}
+              style={{ width: "150px" }} 
+            />
+          </Container>
         </Col>
-        <Col lg={6}>
+        <Col>
           <h3 className="m-2">{profile?.owner}</h3>
-          <Row className="justify-content-center no-gutters">
-            <Col xs={3} className="my-2">
-              <div>{profile?.posts_count}</div>
-              <div>posts</div>
-            </Col>
-            <Col xs={3} className="my-2">
-              <div>{profile?.followers_count}</div>
-              <div>followers</div>
-            </Col>
-            <Col xs={3} className="my-2">
-              <div>{profile?.following_count}</div>
-              <div>following</div>
-            </Col>
-          </Row>
+          {profile?.content && <Col className="p-3">{profile.content}</Col>}
         </Col>
-        <Col lg={3} className="text-lg-right">
-          {currentUser &&
-            !is_owner &&
-            (profile?.following_id ? (
+        {currentUser && !is_owner && (
+          <Col>
+            {profile?.following_id ? (
               <Button
                 className={`${btnStyles.Button} ${btnStyles.BlackOutline}`}
                 onClick={() => handleUnfollow(profile)}
@@ -105,9 +94,9 @@ function ProfilePage() {
               >
                 follow
               </Button>
-            ))}
-        </Col>
-        {profile?.content && <Col className="p-3">{profile.content}</Col>}
+            )}
+          </Col>
+        )}
       </Row>
     </>
   );
@@ -119,9 +108,12 @@ function ProfilePage() {
       <hr />
       {profilePosts.results.length ? (
         <InfiniteScroll
-          children={profilePosts.results.map((post) => (
-            <Post key={post.id} {...post} setPosts={setProfilePosts} />
-          ))}
+          children={profilePosts.results
+            .filter((post) => post.owner === profile?.owner) // Filter posts by owner
+            .map((post) => (
+              <Post key={post.id} {...post} setPosts={setProfilePosts} />
+            ))
+          }
           dataLength={profilePosts.results.length}
           loader={<Asset spinner />}
           hasMore={!!profilePosts.next}
@@ -135,6 +127,7 @@ function ProfilePage() {
       )}
     </>
   );
+  
 
   return (
     <Container fluid className={appStyles.MainContainer}>

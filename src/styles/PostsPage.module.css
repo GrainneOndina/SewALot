@@ -6,4 +6,6 @@
   .PostButton {
     margin-left: 1rem;
   }
-  
+  .MaxWidth {
+    max-width: 50px;
+  }
