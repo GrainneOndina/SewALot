@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
@@ -18,8 +19,10 @@ function PostsPage({ message, filter = "" }) {
   const [posts, setPosts] = useState({ results: [] });
   const [hasLoaded, setHasLoaded] = useState(false);
   const { pathname } = useLocation();
-  const [query, setQuery] = useState("");
+  const [content, setContent] = useState("");
+  const [image, setImage] = useState(null);
   const currentUser = useCurrentUser();
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -28,7 +31,7 @@ function PostsPage({ message, filter = "" }) {
         setPosts(data);
         setHasLoaded(true);
       } catch (err) {
-        // console.log(err);
+        console.log(err);
       }
     };
 
@@ -40,23 +43,53 @@ function PostsPage({ message, filter = "" }) {
     return () => {
       clearTimeout(timer);
     };
-  }, [filter, query, pathname, currentUser]);
+  }, [filter, pathname, currentUser, query]);
+
+  const handleImageChange = (event) => {
+    setImage(event.target.files[0]);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append("content", content);
+    formData.append("image", image);
+
+    try {
+      await axiosReq.post("/posts/", formData);
+      setContent("");
+      setImage(null);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Row className="h-100">
       <Col className="py-2 p-0 p-lg-2" lg={8}>
-        <i className={`fas fa-search ${styles.SearchIcon}`} />
-        <Form
-          className={styles.SearchBar}
-          onSubmit={(event) => event.preventDefault()}
-        >
-          <Form.Control
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            type="text"
-            className="mr-sm-2"
-            placeholder="Search posts"
-          />
+        <Form className={styles.Form} onSubmit={handleSubmit}>
+          <Form.Group controlId="postContent">
+            <Form.Control
+              as="textarea"
+              rows={3}
+              value={content}
+              onChange={(event) => setContent(event.target.value)}
+              placeholder="Add post"
+            />
+          </Form.Group>
+          <div className={styles.UploadContainer}>
+            <Form.Group>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+              <Button variant="primary" type="submit" className={styles.PostButton}>
+                Post
+              </Button>
+            </Form.Group>
+          </div>
         </Form>
 
         {hasLoaded ? (

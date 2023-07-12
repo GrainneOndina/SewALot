@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import useClickOutsideToggle from "../hooks/useClickOutsideToggle";
 import { removeTokenTimestamp } from "../utils/utils";
+import Form from "react-bootstrap/Form";
 
 const NavBar = () => {
   const currentUser = useCurrentUser();
@@ -36,15 +37,6 @@ const NavBar = () => {
     return <Redirect to="/signin" />;
   }
 
-  const addPostIcon = (
-    <NavLink
-      className={styles.NavLink}
-      activeClassName={styles.Active}
-      to="/posts/create"
-    >
-      <i className="far fa-plus-square"></i>Add post
-    </NavLink>
-  );
   const loggedInIcons = (
     <>
       <NavLink
@@ -108,7 +100,6 @@ const NavBar = () => {
             <img src={logo} alt="logo" className={styles.Logo} />
           </Navbar.Brand>
         </NavLink>
-        {currentUser && addPostIcon}
         <Navbar.Toggle
           ref={ref}
           onClick={() => setExpanded(!expanded)}
@@ -124,7 +115,6 @@ const NavBar = () => {
             >
               <i className="fas fa-home"></i>Home
             </NavLink>
-
             {currentUser ? loggedInIcons : loggedOutIcons}
           </Nav>
         </Navbar.Collapse>
