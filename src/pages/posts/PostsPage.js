@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
 import Post from "./Post";
 import Asset from "../../components/Asset";
@@ -66,57 +65,55 @@ function PostsPage({ message, filter = "" }) {
   };
 
   return (
-    <Row className="h-100">
-      <Col className="py-2 p-0 p-lg-2" lg={8}>
-        <Form className={styles.Form} onSubmit={handleSubmit}>
-          <Form.Group controlId="postContent">
+    <div className="d-flex flex-column align-items-center">
+      <Form className={styles.Form} onSubmit={handleSubmit}>
+        <Form.Group controlId="postContent">
+          <Form.Control
+            as="textarea"
+            rows={3}
+            value={content}
+            onChange={(event) => setContent(event.target.value)}
+            placeholder="Add post"
+          />
+        </Form.Group>
+        <div className={styles.UploadContainer}>
+          <Form.Group>
             <Form.Control
-              as="textarea"
-              rows={3}
-              value={content}
-              onChange={(event) => setContent(event.target.value)}
-              placeholder="Add post"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
             />
+            <Button variant="primary" type="submit" className={styles.PostButton}>
+              Post
+            </Button>
           </Form.Group>
-          <div className={styles.UploadContainer}>
-            <Form.Group>
-              <Form.Control
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
-              <Button variant="primary" type="submit" className={styles.PostButton}>
-                Post
-              </Button>
-            </Form.Group>
-          </div>
-        </Form>
+        </div>
+      </Form>
 
-        {hasLoaded ? (
-          <>
-            {posts.results.length ? (
-              <InfiniteScroll
-                children={posts.results.map((post) => (
-                  <Post key={post.id} {...post} setPosts={setPosts} />
-                ))}
-                dataLength={posts.results.length}
-                loader={<Asset spinner />}
-                hasMore={!!posts.next}
-                next={() => fetchMoreData(posts, setPosts)}
-              />
-            ) : (
-              <Container className={appStyles.Content}>
-                <Asset src={NoResults} message={message} />
-              </Container>
-            )}
-          </>
-        ) : (
-          <Container className={appStyles.Content}>
-            <Asset spinner />
-          </Container>
-        )}
-      </Col>
-    </Row>
+      {hasLoaded ? (
+        <>
+          {posts.results.length ? (
+            <InfiniteScroll
+              children={posts.results.map((post) => (
+                <Post key={post.id} {...post} setPosts={setPosts} />
+              ))}
+              dataLength={posts.results.length}
+              loader={<Asset spinner />}
+              hasMore={!!posts.next}
+              next={() => fetchMoreData(posts, setPosts)}
+            />
+          ) : (
+            <div className={appStyles.Content}>
+              <Asset src={NoResults} message={message} />
+            </div>
+          )}
+        </>
+      ) : (
+        <div className={appStyles.Content}>
+          <Asset spinner />
+        </div>
+      )}
+    </div>
   );
 }
 
