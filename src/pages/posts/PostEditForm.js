@@ -16,9 +16,10 @@ function PostEditForm() {
   const [errors, setErrors] = useState({});
   const [postData, setPostData] = useState({
     content: "",
-    image: "",
+    url: "",
+    image: null,
   });
-  const { content, image } = postData;
+  const { content, url, image } = postData;
 
   const imageInput = useRef(null);
   const history = useHistory();
@@ -28,9 +29,9 @@ function PostEditForm() {
     const handleMount = async () => {
       try {
         const { data } = await axiosReq.get(`/posts/${id}/`);
-        const { content, image, is_owner } = data;
+        const { content, url, image, is_owner } = data;
 
-        is_owner ? setPostData({ content, image }) : history.push("/");
+        is_owner ? setPostData({ content, url, image }) : history.push("/");
       } catch (err) {
         // console.log(err);
       }
@@ -48,10 +49,9 @@ function PostEditForm() {
 
   const handleChangeImage = (event) => {
     if (event.target.files.length) {
-      URL.revokeObjectURL(image);
       setPostData({
         ...postData,
-        image: URL.createObjectURL(event.target.files[0]),
+        image: event.target.files[0],
       });
     }
   };
@@ -60,6 +60,7 @@ function PostEditForm() {
     event.preventDefault();
     const formData = new FormData();
     formData.append("content", content);
+    formData.append("url", url); 
 
     if (imageInput?.current?.files[0]) {
       formData.append("image", imageInput.current.files[0]);
@@ -94,6 +95,22 @@ function PostEditForm() {
         </Alert>
       ))}
 
+      <Form.Group>
+        <Form.Label>URL</Form.Label>
+        <Form.Control
+          type="text"
+          name="url"
+          value={url}
+          onChange={handleChange}
+          placeholder="Add URL"
+        />
+      </Form.Group>
+      {errors?.url?.map((message, idx) => (
+        <Alert variant="warning" key={idx}>
+          {message}
+        </Alert>
+      ))}
+
       <Button
         className={`${btnStyles.Button} ${btnStyles.Blue}`}
         onClick={() => history.goBack()}
@@ -115,7 +132,7 @@ function PostEditForm() {
           >
             <Form.Group className="text-center">
               <figure>
-                <Image className={appStyles.Image} src={image} rounded />
+                <Image className={appStyles.Image} src={URL.createObjectURL(image)} rounded />
               </figure>
               <div>
                 <Form.Label

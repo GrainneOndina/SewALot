@@ -13,12 +13,13 @@ const Post = (props) => {
     owner,
     profile_id,
     profile_image,
+    updated_at,
+    content,
+    url,
+    image,
     comments_count,
     likes_count,
     like_id,
-    content,
-    image,
-    updated_at,
     postPage,
     setPosts,
   } = props;
@@ -96,6 +97,9 @@ const Post = (props) => {
       </Link>
       <Card.Body>
         <Card.Text>{content}</Card.Text>
+        {url && (
+          <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
+        )}
         <div className={styles.PostBar}>
           {is_owner ? (
             <OverlayTrigger

@@ -18,6 +18,7 @@ function PostsPage({ message, filter = "" }) {
   const [hasLoaded, setHasLoaded] = useState(false);
   const { pathname } = useLocation();
   const [content, setContent] = useState("");
+  const [url, setUrl] = useState("");
   const [image, setImage] = useState(null);
   const currentUser = useCurrentUser();
   const [query, setQuery] = useState("");
@@ -52,16 +53,37 @@ function PostsPage({ message, filter = "" }) {
 
     const formData = new FormData();
     formData.append("content", content);
-    formData.append("image", image);
-
-    try {
-      await axiosReq.post("/posts/", formData);
-      setContent("");
-      setImage(null);
-    } catch (error) {
-      console.log(error);
+    if (url) {
+      formData.append("url", url);
     }
-  };
+  
+    if (image) {
+      formData.append("image", image);
+    }
+
+    // Exclude URL and image fields if both are empty
+    if (!url && !image) {
+      formData.delete("url");
+      formData.delete("image");
+  }
+
+  try {
+    const response = await axiosReq.post("/posts/", formData);
+    const newPost = response.data; // Assuming the response contains the newly created post object
+
+    setContent("");
+    setUrl("");
+    setImage(null);
+
+    // Update the posts state to include the new post
+    setPosts((prevPosts) => ({
+      ...prevPosts,
+      results: [newPost, ...prevPosts.results],
+    }));
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   return (
     <Container className="d-flex flex-column align-items-center">
@@ -73,6 +95,14 @@ function PostsPage({ message, filter = "" }) {
             value={content}
             onChange={(event) => setContent(event.target.value)}
             placeholder="Add post"
+          />
+        </Form.Group>
+        <Form.Group controlId="postUrl"> // Add URL
+          <Form.Control
+            type="text"
+            value={url}
+            onChange={(event) => setUrl(event.target.value)}
+            placeholder="Add URL"
           />
         </Form.Group>
         <div className={styles.UploadContainer}>
@@ -117,4 +147,3 @@ function PostsPage({ message, filter = "" }) {
 }
 
 export default PostsPage;
-

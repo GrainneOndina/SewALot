@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
@@ -29,6 +30,7 @@ function ProfilePage() {
 
   const currentUser = useCurrentUser();
   const { id } = useParams();
+  const history = useHistory();
 
   const { setProfileData, handleFollow, handleUnfollow } = useSetProfileData();
   const { pageProfile } = useProfileData();
@@ -59,10 +61,14 @@ function ProfilePage() {
 
   const mainProfile = (
     <>
-    {profile?.is_owner && (
-      <ProfileEditDropdown id={profile?.id} className="dropdown-menu-right" />
-    )}
-  
+      {profile?.is_owner && (
+        <ProfileEditDropdown
+          id={profile?.id}
+          className="dropdown-menu-right"
+          handleEdit={() => history.push(`/profiles/${id}/edit`)}
+        />
+      )}
+
       <Row noGutters className="px-3 text-center">
         <Col>
           <Container className="d-flex align-items-center justify-content-center">
@@ -70,7 +76,7 @@ function ProfilePage() {
               className={styles.ProfileImage}
               roundedCircle
               src={profile?.image}
-              style={{ width: "150px" }} 
+              style={{ width: "150px" }}
             />
           </Container>
         </Col>
@@ -112,8 +118,7 @@ function ProfilePage() {
             .filter((post) => post.owner === profile?.owner) // Filter posts by owner
             .map((post) => (
               <Post key={post.id} {...post} setPosts={setProfilePosts} />
-            ))
-          }
+            ))}
           dataLength={profilePosts.results.length}
           loader={<Asset spinner />}
           hasMore={!!profilePosts.next}
@@ -127,7 +132,6 @@ function ProfilePage() {
       )}
     </>
   );
-  
 
   return (
     <Container fluid className={appStyles.MainContainer}>
