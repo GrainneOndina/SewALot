@@ -91,15 +91,15 @@ const Post = (props) => {
             )}
           </div>
         </div>
+        <Card.Text>{content}</Card.Text>
+        {url && (
+          <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
+        )}
       </Card.Body>
       <Link to={`/posts/${id}`}>
         <Card.Img src={image} alt="" />
       </Link>
       <Card.Body>
-        <Card.Text>{content}</Card.Text>
-        {url && (
-          <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
-        )}
         <div className={styles.PostBar}>
           {is_owner ? (
             <OverlayTrigger
