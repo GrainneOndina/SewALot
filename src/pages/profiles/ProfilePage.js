@@ -5,11 +5,9 @@ import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
 import Asset from "../../components/Asset";
 import Image from "react-bootstrap/Image";
-
 import styles from "../../styles/ProfilePage.module.css";
 import appStyles from "../../App.module.css";
 import btnStyles from "../../styles/Button.module.css";
-
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { useParams } from "react-router";
 import { axiosReq } from "../../api/axiosDefaults";
@@ -53,7 +51,7 @@ function ProfilePage() {
         setProfilePosts(profilePosts);
         setHasLoaded(true);
       } catch (err) {
-        // console.log(err);
+        console.log(err);
       }
     };
     fetchData();
@@ -69,7 +67,7 @@ function ProfilePage() {
         />
       )}
 
-      <Row noGutters className="px-3 text-center">
+      <Row className="px-3 text-center">
         <Col>
           <Container className="d-flex align-items-center justify-content-center">
             <Image
@@ -81,7 +79,7 @@ function ProfilePage() {
           </Container>
         </Col>
         <Col>
-          <h3 className="m-2">{profile?.owner}</h3>
+          <h3 className="m-2">{currentUser?.username}</h3>
           {profile?.content && <Col className="p-3">{profile.content}</Col>}
         </Col>
         {currentUser && !is_owner && (
@@ -110,7 +108,7 @@ function ProfilePage() {
   const mainProfilePosts = (
     <>
       <hr />
-      <p className="text-center">{profile?.owner}'s posts</p>
+      <p className="text-center">{currentUser?.username}'s posts</p>
       <hr />
       {profilePosts.results.length ? (
         <InfiniteScroll
@@ -127,7 +125,7 @@ function ProfilePage() {
       ) : (
         <Asset
           src={NoResults}
-          message={`No results found, ${profile?.owner} hasn't posted yet.`}
+          message={`No results found, ${currentUser?.username} hasn't posted yet.`}
         />
       )}
     </>
