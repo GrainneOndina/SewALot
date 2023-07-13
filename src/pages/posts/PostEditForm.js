@@ -1,15 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
 import Alert from "react-bootstrap/Alert";
 import Image from "react-bootstrap/Image";
 import styles from "../../styles/PostCreateEditForm.module.css";
 import appStyles from "../../App.module.css";
 import btnStyles from "../../styles/Button.module.css";
-import { useHistory, useParams } from "react-router";
 import { axiosReq } from "../../api/axiosDefaults";
 
 function PostEditForm() {
@@ -33,7 +30,7 @@ function PostEditForm() {
 
         is_owner ? setPostData({ content, url, image }) : history.push("/");
       } catch (err) {
-        // console.log(err);
+        console.log(err);
       }
     };
 
@@ -60,108 +57,105 @@ function PostEditForm() {
     event.preventDefault();
     const formData = new FormData();
     formData.append("content", content);
-    formData.append("url", url); 
+    if (url) {
+      formData.append("url", url);
+    }
 
     if (imageInput?.current?.files[0]) {
       formData.append("image", imageInput.current.files[0]);
+    }
+
+    // Exclude URL and image fields if both are empty
+    if (!url && !image) {
+      formData.delete("url");
+      formData.delete("image");
     }
 
     try {
       await axiosReq.put(`/posts/${id}/`, formData);
       history.push(`/posts/${id}`);
     } catch (err) {
-      // console.log(err);
+      console.log(err);
       if (err.response?.status !== 401) {
         setErrors(err.response?.data);
       }
     }
   };
 
-  const textFields = (
-    <div className="text-center">
-      <Form.Group>
-        <Form.Label>Content</Form.Label>
-        <Form.Control
-          as="textarea"
-          rows={6}
-          name="content"
-          value={content}
-          onChange={handleChange}
-        />
-      </Form.Group>
-      {errors?.content?.map((message, idx) => (
-        <Alert variant="warning" key={idx}>
-          {message}
-        </Alert>
-      ))}
-
-      <Form.Group>
-        <Form.Label>URL</Form.Label>
-        <Form.Control
-          type="text"
-          name="url"
-          value={url}
-          onChange={handleChange}
-          placeholder="Add URL"
-        />
-      </Form.Group>
-      {errors?.url?.map((message, idx) => (
-        <Alert variant="warning" key={idx}>
-          {message}
-        </Alert>
-      ))}
-
-      <Button
-        className={`${btnStyles.Button} ${btnStyles.Blue}`}
-        onClick={() => history.goBack()}
-      >
-        cancel
-      </Button>
-      <Button className={`${btnStyles.Button} ${btnStyles.Blue}`} type="submit">
-        save
-      </Button>
-    </div>
-  );
-
   return (
     <Form onSubmit={handleSubmit}>
-      <Row>
-        <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
-          <Container
-            className={`${appStyles.Content} ${styles.Container} d-flex flex-column justify-content-center`}
-          >
-            <Form.Group className="text-center">
-              <figure>
-                <Image className={appStyles.Image} src={URL.createObjectURL(image)} rounded />
-              </figure>
-              <div>
-                <Form.Label
-                  className={`${btnStyles.Button} ${btnStyles.Blue} btn`}
-                  htmlFor="image-upload"
-                >
-                  Change the image
-                </Form.Label>
-              </div>
-              <Form.Control
-                type="file"
-                accept="image/*"
-                onChange={handleChangeImage}
-                ref={imageInput}
-              />
-            </Form.Group>
-            {errors?.image?.map((message, idx) => (
-              <Alert variant="warning" key={idx}>
-                {message}
-              </Alert>
-            ))}
+      <div className={appStyles.Content}>
+        <div className={styles.Container}>
+          <Form.Group>
+            <Form.Label>Content</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={6}
+              name="content"
+              value={content}
+              onChange={handleChange}
+            />
+          </Form.Group>
+          {errors?.content?.map((message, idx) => (
+            <Alert variant="warning" key={idx}>
+              {message}
+            </Alert>
+          ))}
 
-            <div className="d-md-none">{textFields}</div>
-          </Container>
-        </Col>
-        <Col md={5} lg={4} className="d-none d-md-block p-0 p-md-2">
-          <Container className={appStyles.Content}>{textFields}</Container>
-        </Col>
-      </Row>
+          <Form.Group>
+            <Form.Label>URL</Form.Label>
+            <Form.Control
+              type="text"
+              name="url"
+              value={url || ""}
+              onChange={handleChange}
+              placeholder="Add URL"
+            />
+          </Form.Group>
+          {errors?.url?.map((message, idx) => (
+            <Alert variant="warning" key={idx}>
+              {message}
+            </Alert>
+          ))}
+
+          <Form.Group className="text-center">
+            <figure>
+              {image && (
+                <Image
+                  className={appStyles.Image}
+                  src={image ? URL.createObjectURL(image) : ""}
+                  rounded
+                />
+              )}
+            </figure>
+            <Form.Control
+              type="file"
+              accept="image/*"
+              onChange={handleChangeImage}
+              ref={imageInput}
+            />
+          </Form.Group>
+          {errors?.image?.map((message, idx) => (
+            <Alert variant="warning" key={idx}>
+              {message}
+            </Alert>
+          ))}
+        </div>
+        <div className="text-center">
+          <Button
+            className={`${btnStyles.Button} ${btnStyles.Blue}`}
+            onClick={() => history.goBack()}
+          >
+            Cancel
+          </Button>
+          <Button
+            className={`${btnStyles.Button} ${btnStyles.Blue}`}
+            type="submit"
+          >
+            Save
+          </Button>
+        </div>
+      </div>
     </Form>
   );
 }
