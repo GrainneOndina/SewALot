@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
 import Post from "./Post";
 import Asset from "../../components/Asset";
 import appStyles from "../../App.module.css";
@@ -13,6 +11,7 @@ import NoResults from "../../assets/no-results.png";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { fetchMoreData } from "../../utils/utils";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
+import { Container } from "react-bootstrap";
 
 function PostsPage({ message, filter = "" }) {
   const [posts, setPosts] = useState({ results: [] });
@@ -65,7 +64,7 @@ function PostsPage({ message, filter = "" }) {
   };
 
   return (
-    <div className="d-flex flex-column align-items-center">
+    <Container className="d-flex flex-column align-items-center">
       <Form className={styles.Form} onSubmit={handleSubmit}>
         <Form.Group controlId="postContent">
           <Form.Control
@@ -113,8 +112,9 @@ function PostsPage({ message, filter = "" }) {
           <Asset spinner />
         </div>
       )}
-    </div>
+    </Container>
   );
 }
 
 export default PostsPage;
+

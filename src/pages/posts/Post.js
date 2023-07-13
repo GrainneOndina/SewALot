@@ -16,7 +16,6 @@ const Post = (props) => {
     comments_count,
     likes_count,
     like_id,
-    title,
     content,
     image,
     updated_at,
@@ -37,7 +36,7 @@ const Post = (props) => {
       await axiosRes.delete(`/posts/${id}/`);
       history.goBack();
     } catch (err) {
-     // console.log(err);
+      // console.log(err);
     }
   };
 
@@ -53,7 +52,7 @@ const Post = (props) => {
         }),
       }));
     } catch (err) {
-     // console.log(err);
+      // console.log(err);
     }
   };
 
@@ -69,12 +68,12 @@ const Post = (props) => {
         }),
       }));
     } catch (err) {
-     // console.log(err);
+      // console.log(err);
     }
   };
 
   return (
-    <Card className={styles.Post}>
+    <Card className={`${styles.Post} mx-auto`}>
       <Card.Body>
         <div className={`d-flex align-items-center justify-content-between ${styles.Media}`}>
           <Link to={`/profiles/${profile_id}`}>
@@ -93,11 +92,10 @@ const Post = (props) => {
         </div>
       </Card.Body>
       <Link to={`/posts/${id}`}>
-        <Card.Img src={image} alt={title} />
+        <Card.Img src={image} alt="" />
       </Link>
       <Card.Body>
-        {title && <Card.Title className="text-center">{title}</Card.Title>}
-        {content && <Card.Text>{content}</Card.Text>}
+        <Card.Text>{content}</Card.Text>
         <div className={styles.PostBar}>
           {is_owner ? (
             <OverlayTrigger
