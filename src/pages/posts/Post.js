@@ -1,11 +1,12 @@
 import React from "react";
 import styles from "../../styles/Post.module.css";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
-import { Card, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Card, OverlayTrigger, Tooltip, Button } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import Avatar from "../../components/Avatar";
 import { axiosRes } from "../../api/axiosDefaults";
 import { MoreDropdown } from "../../components/MoreDropdown";
+
 
 const Post = (props) => {
   const {
@@ -13,13 +14,13 @@ const Post = (props) => {
     owner,
     profile_id,
     profile_image,
-    updated_at,
     content,
     url,
     image,
     comments_count,
     likes_count,
     like_id,
+    updated_at,
     postPage,
     setPosts,
   } = props;
@@ -53,7 +54,7 @@ const Post = (props) => {
         }),
       }));
     } catch (err) {
-      // console.log(err);
+     // console.log(err);
     }
   };
 
@@ -69,35 +70,51 @@ const Post = (props) => {
         }),
       }));
     } catch (err) {
-      // console.log(err);
+     // console.log(err);
     }
   };
 
+  const handleClickContent = () => {
+    history.push(`/posts/${id}`);
+  };
+
+  const handleClickUrl = (event) => {
+    event.stopPropagation();
+  };
+
   return (
-    <Card className={`${styles.Post} mx-auto`}>
-      <Card.Body>
-        <div className={`d-flex align-items-center justify-content-between ${styles.Media}`}>
-          <Link to={`/profiles/${profile_id}`}>
-            <Avatar src={profile_image} height={55} />
-            {owner}
-          </Link>
-          <div className="d-flex align-items-center">
-            <span>{updated_at}</span>
-            {is_owner && postPage && (
-              <MoreDropdown
-                handleEdit={handleEdit}
-                handleDelete={handleDelete}
-              />
-            )}
-          </div>
-        </div>
-        <Card.Text>{content}</Card.Text>
-        {url && (
-          <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
-        )}
-      </Card.Body>
+    <Card className={styles.Post}>
+<Card.Body>
+  <div className={styles.UserInfo}>
+    <Link to={`/profiles/${profile_id}`}>
+      <Avatar src={profile_image} height={55} />
+      <span>{owner}</span>
+      <br />
+      <span className={styles.Date}>{updated_at}</span>
+    </Link>
+    {!is_owner && (
+            <Button variant="primary" className={`float-right ${styles.FollowButton}`}>
+              Follow
+            </Button>
+          )}
+
+  </div>
+  {content && (
+    <p className={styles.Content} onClick={handleClickContent}>
+      {content}
+    </p>
+  )}
+</Card.Body>
+
       <Link to={`/posts/${id}`}>
         <Card.Img src={image} alt="" />
+        {url && (
+          <div className={styles.URLOverlay}>
+            <a href={url} target="_blank" onClick={handleClickUrl}>
+              {url}
+            </a>
+          </div>
+        )}
       </Link>
       <Card.Body>
         <div className={styles.PostBar}>

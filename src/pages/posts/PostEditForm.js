@@ -16,6 +16,7 @@ function PostEditForm() {
     url: "",
     image: null,
   });
+  const [imageUrl, setImageUrl] = useState("");
   const { content, url, image } = postData;
 
   const imageInput = useRef(null);
@@ -46,10 +47,12 @@ function PostEditForm() {
 
   const handleChangeImage = (event) => {
     if (event.target.files.length) {
+      const selectedImage = event.target.files[0];
       setPostData({
         ...postData,
-        image: event.target.files[0],
+        image: selectedImage,
       });
+      setImageUrl(URL.createObjectURL(selectedImage));
     }
   };
 
@@ -123,7 +126,7 @@ function PostEditForm() {
               {image && (
                 <Image
                   className={appStyles.Image}
-                  src={image ? URL.createObjectURL(image) : ""}
+                  src={imageUrl}
                   rounded
                 />
               )}
