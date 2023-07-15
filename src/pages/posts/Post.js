@@ -104,19 +104,19 @@ const Post = (props) => {
       {content}
     </p>
   )}
+<Card.Body>
+  <Link to={`/posts/${id}`}>
+    <Card.Img src={image} alt="" />
+  </Link>
+  {url && (
+    <div className={styles.URLOverlay}>
+      <a href={url} target="_blank" onClick={handleClickUrl}>
+        {url}
+      </a>
+    </div>
+  )}
 </Card.Body>
 
-      <Link to={`/posts/${id}`}>
-        <Card.Img src={image} alt="" />
-        {url && (
-          <div className={styles.URLOverlay}>
-            <a href={url} target="_blank" onClick={handleClickUrl}>
-              {url}
-            </a>
-          </div>
-        )}
-      </Link>
-      <Card.Body>
         <div className={styles.PostBar}>
           {is_owner ? (
             <OverlayTrigger

@@ -6,9 +6,12 @@ import appStyles from "../../App.module.css";
 import { Form, Button, Alert, Col, Container, Row } from "react-bootstrap";
 import axios from "axios";
 import { useRedirect } from "../../hooks/useRedirect";
+import { useSetCurrentUser } from "../../contexts/CurrentUserContext";
+import { setTokenTimestamp } from "../../utils/utils";
 
 const SignUpForm = () => {
   useRedirect("loggedIn");
+  const setCurrentUser = useSetCurrentUser(); // Add this line to get the setCurrentUser function
   const [signUpData, setSignUpData] = useState({
     username: "",
     password1: "",
@@ -35,8 +38,8 @@ const SignUpForm = () => {
         username: signUpData.username,
         password: signUpData.password1,
       });
-      // Handle successful sign up and sign in here
-      console.log("User signed up and signed in:", signInResponse.data);
+      setCurrentUser(signInResponse.data.user); // Set the current user using the setCurrentUser function
+      setTokenTimestamp(signInResponse.data);
 
       const { from } = location.state || { from: { pathname: "/" } };
       history.replace(from); // Redirect to the same place as the sign-in form
@@ -63,11 +66,12 @@ const SignUpForm = () => {
               onChange={handleChange}
             />
           </Form.Group>
-          {errors.username && errors.username.map((message, idx) => (
-            <Alert variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
+          {errors.username &&
+            errors.username.map((message, idx) => (
+              <Alert variant="warning" key={idx}>
+                {message}
+              </Alert>
+            ))}
 
           <Form.Group controlId="password1">
             <Form.Label className="d-none">Password</Form.Label>
@@ -80,11 +84,12 @@ const SignUpForm = () => {
               onChange={handleChange}
             />
           </Form.Group>
-          {errors.password1 && errors.password1.map((message, idx) => (
-            <Alert key={idx} variant="warning">
-              {message}
-            </Alert>
-          ))}
+          {errors.password1 &&
+            errors.password1.map((message, idx) => (
+              <Alert key={idx} variant="warning">
+                {message}
+              </Alert>
+            ))}
 
           <Form.Group controlId="password2">
             <Form.Label className="d-none">Confirm password</Form.Label>
@@ -97,11 +102,12 @@ const SignUpForm = () => {
               onChange={handleChange}
             />
           </Form.Group>
-          {errors.password2 && errors.password2.map((message, idx) => (
-            <Alert key={idx} variant="warning">
-              {message}
-            </Alert>
-          ))}
+          {errors.password2 &&
+            errors.password2.map((message, idx) => (
+              <Alert key={idx} variant="warning">
+                {message}
+              </Alert>
+            ))}
 
           <Button
             className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright} d-flex justify-content-center`}
@@ -109,11 +115,12 @@ const SignUpForm = () => {
           >
             Sign up
           </Button>
-          {errors.non_field_errors && errors.non_field_errors.map((message, idx) => (
-            <Alert key={idx} variant="warning" className="mt-3">
-              {message}
-            </Alert>
-          ))}
+          {errors.non_field_errors &&
+            errors.non_field_errors.map((message, idx) => (
+              <Alert key={idx} variant="warning" className="mt-3">
+                {message}
+              </Alert>
+            ))}
         </Form>
       </Container>
 

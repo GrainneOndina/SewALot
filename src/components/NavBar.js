@@ -89,6 +89,7 @@ const NavBar = () => {
 
   return (
     <Navbar
+      key={currentUser ? currentUser.id : "guest"}
       expanded={expanded}
       className={styles.NavBar}
       expand="md"
