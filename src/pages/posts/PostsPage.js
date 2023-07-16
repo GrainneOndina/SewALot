@@ -87,7 +87,7 @@ function PostsPage({ message, filter = "" }) {
 
   return (
     <Container className="d-flex flex-column align-items-center">
-    <div class="col-lg-8" >
+    <div className="col-lg-8">
       <Form className={styles.Form} onSubmit={handleSubmit}>
         <Form.Group controlId="postContent">
           <Form.Control
