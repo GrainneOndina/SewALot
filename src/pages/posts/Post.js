@@ -7,7 +7,6 @@ import Avatar from "../../components/Avatar";
 import { axiosRes } from "../../api/axiosDefaults";
 import { MoreDropdown } from "../../components/MoreDropdown";
 
-
 const Post = (props) => {
   const {
     id,
@@ -54,7 +53,7 @@ const Post = (props) => {
         }),
       }));
     } catch (err) {
-     // console.log(err);
+      // console.log(err);
     }
   };
 
@@ -70,7 +69,7 @@ const Post = (props) => {
         }),
       }));
     } catch (err) {
-     // console.log(err);
+      // console.log(err);
     }
   };
 
@@ -84,70 +83,70 @@ const Post = (props) => {
 
   return (
     <Card className={styles.Post}>
-<Card.Body>
-  <div className={styles.UserInfo}>
-    <Link to={`/profiles/${profile_id}`}>
-      <Avatar src={profile_image} height={55} />
-      <span>{owner}</span>
-      <br />
-      <span className={styles.Date}>{updated_at}</span>
-    </Link>
-    {!is_owner && (
+      <Card.Body>
+        <div className={styles.UserInfo}>
+          <Link to={`/profiles/${profile_id}`}>
+            <Avatar src={profile_image} height={55} />
+            <span>{owner}</span>
+            <br />
+            <span className={styles.Date}>{updated_at}</span>
+          </Link>
+          {is_owner && postPage ? (
+            <MoreDropdown handleEdit={handleEdit} handleDelete={handleDelete} />
+          ) : !is_owner ? (
             <Button variant="primary" className={`float-right ${styles.FollowButton}`}>
               Follow
             </Button>
-          )}
-
-  </div>
-  {content && (
-    <p className={styles.Content} onClick={handleClickContent}>
-      {content}
-    </p>
-  )}
-<Card.Body>
-  <Link to={`/posts/${id}`}>
-    <Card.Img src={image} alt="" />
-  </Link>
-  {url && (
-    <div className={styles.URLOverlay}>
-      <a href={url} target="_blank" onClick={handleClickUrl}>
-        {url}
-      </a>
-    </div>
-  )}
-</Card.Body>
-
-        <div className={styles.PostBar}>
-          {is_owner ? (
-            <OverlayTrigger
-              placement="top"
-              overlay={<Tooltip>You can't like your own post!</Tooltip>}
-            >
-              <i className="far fa-heart" />
-            </OverlayTrigger>
-          ) : like_id ? (
-            <span onClick={handleUnlike}>
-              <i className={`fas fa-heart ${styles.Heart}`} />
-            </span>
-          ) : currentUser ? (
-            <span onClick={handleLike}>
-              <i className={`far fa-heart ${styles.HeartOutline}`} />
-            </span>
-          ) : (
-            <OverlayTrigger
-              placement="top"
-              overlay={<Tooltip>Log in to like posts!</Tooltip>}
-            >
-              <i className="far fa-heart" />
-            </OverlayTrigger>
-          )}
-          {likes_count}
-          <Link to={`/posts/${id}`}>
-            <i className="far fa-comments" />
-          </Link>
-          {comments_count}
+          ) : null}
         </div>
+        {content && (
+          <p className={styles.Content} onClick={handleClickContent}>
+            {content}
+          </p>
+        )}
       </Card.Body>
+
+      <Link to={`/posts/${id}`}>
+        <Card.Img src={image} alt="" />
+      </Link>
+      {url && (
+        <div className={styles.URLOverlay}>
+          <a href={url} target="_blank" onClick={handleClickUrl}>
+            {url}
+          </a>
+        </div>
+      )}
+
+      <div className={styles.PostBar}>
+        {is_owner ? (
+          <OverlayTrigger
+            placement="top"
+            overlay={<Tooltip>You can't like your own post!</Tooltip>}
+          >
+            <i className="far fa-heart" />
+          </OverlayTrigger>
+        ) : like_id ? (
+          <span onClick={handleUnlike}>
+            <i className={`fas fa-heart ${styles.Heart}`} />
+          </span>
+        ) : currentUser ? (
+          <span onClick={handleLike}>
+            <i className={`far fa-heart ${styles.HeartOutline}`} />
+          </span>
+        ) : (
+          <OverlayTrigger
+            placement="top"
+            overlay={<Tooltip>Log in to like posts!</Tooltip>}
+          >
+            <i className="far fa-heart" />
+          </OverlayTrigger>
+        )}
+        {likes_count}
+        <Link to={`/posts/${id}`}>
+          <i className="far fa-comments" />
+        </Link>
+        {comments_count}
+      </div>
     </Card>
   );
 };
