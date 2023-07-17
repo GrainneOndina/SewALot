@@ -94,9 +94,7 @@ const Post = (props) => {
           {is_owner && postPage ? (
             <MoreDropdown handleEdit={handleEdit} handleDelete={handleDelete} />
           ) : !is_owner ? (
-            <Button variant="primary" className={`float-right ${styles.FollowButton}`}>
-              Follow
-            </Button>
+            null
           ) : null}
         </div>
         {content && (
