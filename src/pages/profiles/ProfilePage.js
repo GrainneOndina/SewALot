@@ -39,21 +39,23 @@ function ProfilePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [{ data: pageProfile }, { data: profilePosts }] =
-          await Promise.all([
-            axiosReq.get(`/profiles/${id}/`),
-            axiosReq.get(`/posts/?owner__profile=${id}`),
-          ]);
+        const [pageProfileResponse, profilePostsResponse] = await Promise.all([
+          axiosReq.get(`/profiles/${id}/`),
+          axiosReq.get(`/posts/?owner__profile=${id}`),
+        ]);
+        const pageProfileData = pageProfileResponse.data;
+        const profilePostsData = profilePostsResponse.data;
         setProfileData((prevState) => ({
           ...prevState,
-          pageProfile: { results: [pageProfile] },
+          pageProfile: { results: [pageProfileData] },
         }));
-        setProfilePosts(profilePosts);
+        setProfilePosts(profilePostsData);
         setHasLoaded(true);
       } catch (err) {
         console.log(err);
       }
     };
+    
     fetchData();
   }, [id, setProfileData]);
 
@@ -79,7 +81,7 @@ function ProfilePage() {
           </Container>
         </Col>
         <Col>
-          <h3 className="m-2">{currentUser?.username}</h3>
+        <h3 className="m-2">{profile?.owner}</h3>
           {profile?.content && <Col className="p-3">{profile.content}</Col>}
         </Col>
         {currentUser && !is_owner && (
@@ -108,7 +110,7 @@ function ProfilePage() {
   const mainProfilePosts = (
     <>
       <hr />
-      <p className="text-center">{currentUser?.username}'s posts</p>
+      <p className="text-center">{profile?.owner}'s posts</p>
       <hr />
       {profilePosts.results.length ? (
         <InfiniteScroll
