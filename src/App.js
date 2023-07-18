@@ -25,7 +25,7 @@ function App() {
   const [filter, setFilter] = useState('')
   const [query, setQuery] = useState('')
   const [pathname, setPathname] = useState('')
-  const [hasLoaded, setHasLoaded]= useState('')
+  const [hasLoaded, setHasLoaded] = useState('')
 
 
   useEffect(() => {
