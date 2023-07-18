@@ -14,9 +14,9 @@ import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { Container } from "react-bootstrap";
 import FollowedProfiles from "./FollowedProfiles";
 
-function PostsPage({ message, filter = "" }) {
-  const [posts, setPosts] = useState({ results: [] });
-  const [hasLoaded, setHasLoaded] = useState(false);
+function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) {
+  
+
   const { pathname } = useLocation();
   const [content, setContent] = useState("");
   const [url, setUrl] = useState("");
@@ -24,28 +24,7 @@ function PostsPage({ message, filter = "" }) {
   const [query, setQuery] = useState("");
   const currentUser = useCurrentUser();
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const { data } = await axiosReq.get(
-          `/posts/?${filter}search=${query}`
-        );
-        setPosts(data);
-        setHasLoaded(true);
-      } catch (err) {
-        console.log(err);
-      }
-    };
 
-    setHasLoaded(false);
-    const timer = setTimeout(() => {
-      fetchPosts();
-    }, 1000);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [filter, query, pathname, currentUser]);
 
   const handleImageChange = (event) => {
     setImage(event.target.files[0]);
@@ -129,14 +108,14 @@ function PostsPage({ message, filter = "" }) {
 
             {hasLoaded ? (
               <>
-                {posts.results.length ? (
+                {currentposts.length ? (
                   <InfiniteScroll
-                    children={posts.results.map((post) => (
+                    children={currentposts.map((post) => (
                       <Post key={post.id} {...post} setPosts={setPosts} />
                     ))}
-                    dataLength={posts.results.length}
+                    dataLength={currentposts.length}
                     loader={<Asset spinner />}
-                    hasMore={!!posts.next}
+                    hasMore={!!currentposts.next}
                     next={() => fetchMoreData(posts, setPosts)}
                   />
                 ) : (
@@ -150,8 +129,6 @@ function PostsPage({ message, filter = "" }) {
                 <Asset spinner />
               </div>
             )}
-          
-      
       </div>
     </Container>
   );

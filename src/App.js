@@ -15,21 +15,57 @@ import UsernameForm from "./pages/profiles/UsernameForm";
 import UserPasswordForm from "./pages/profiles/UserPasswordForm";
 import ProfileEditForm from "./pages/profiles/ProfileEditForm";
 import NotFound from "./components/NotFound";
+import { useState, useEffect } from 'react'
+import { axiosReq } from "./api/axiosDefaults";
 
 function App() {
   const currentUser = useCurrentUser();
   const profile_id = currentUser?.profile_id || "";
+  const [posts, setPosts] = useState({ results: [] });
+  const [filter, setFilter] = useState('')
+  const [query, setQuery] = useState('')
+  const [pathname, setPathname] = useState('')
+  const [hasLoaded, setHasLoaded]= useState('')
+
+
+  useEffect(() => {
+
+    const fetchPosts = async () => {
+      try {
+        const { data } = await axiosReq.get(
+          `/posts/?${filter}search=${query}`
+        );
+        setPosts(data);
+        setHasLoaded(true);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    setHasLoaded(false);
+    const timer = setTimeout(() => {
+      fetchPosts();
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
 
   return (
     <div className={styles.App}>
       <NavBar />
       <Container className={styles.Main}>
         <Switch>
-        <Route
+          <Route
             exact
             path="/"
             render={() => (
-              <PostsPage message="No results found. Adjust the search keyword." />
+              <PostsPage message="No results found. Adjust the search keyword." 
+              currentposts={[...posts.results]}
+              hasLoaded={hasLoaded}
+              setPosts={setPosts}/>
             )}
           />
           <Route
@@ -38,7 +74,9 @@ function App() {
             render={() => (
               <PostsPage
                 message="No results found. Adjust the search keyword or follow a user."
-                filter={`owner__followed__owner__profile=${profile_id}&`}
+                currentposts={posts.results.filter((post) => post.owner.followed_id !== null)}
+                hasLoaded={hasLoaded}
+                setPosts={setPosts}
               />
             )}
           />
@@ -48,11 +86,13 @@ function App() {
             render={() => (
               <PostsPage
                 message="No results found. Adjust the search keyword or like a post."
-                filter={`likes__owner__profile=${profile_id}&ordering=-likes__created_at&`}
+                currentposts={posts.results.filter((post) => post.like_id !== null)}
+                hasLoaded={hasLoaded}
+                setPosts={setPosts}
               />
             )}
           />
-      
+
           <Route exact path="/signin" render={() => <SignInForm />} />
           <Route exact path="/signup" render={() => <SignUpForm />} />
           <Route exact path="/posts/create" render={() => <PostCreateForm />} />

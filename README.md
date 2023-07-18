@@ -155,7 +155,7 @@ Following mobiles has been tested:
 |----------------|-------------------------------|-----------------------------|
 |**Home page**                |Please choose c or p:         |Pass |
 |- Clicking Sewlot logo |Open Home page.         |X |
-|- Clicking Home                  |All posts are displayde   |Pass |
+|- Clicking Home                  |All posts are rendered  |Pass |
 
 
 
