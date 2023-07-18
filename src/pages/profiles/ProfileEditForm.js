@@ -16,8 +16,9 @@ const ProfileEditForm = () => {
   const [profileData, setProfileData] = useState({
     name: currentUser?.username || "",
     description: "",
+    image: "",
   });
-  const { name, description } = profileData;
+  const { content, image } = profileData;
 
   const [errors, setErrors] = useState({});
 
@@ -28,7 +29,7 @@ const ProfileEditForm = () => {
         const { description } = data;
         setProfileData((prevState) => ({
           ...prevState,
-          description: description || "",
+          content: description || "", // Update 'description' to 'content'
         }));
       } catch (err) {
         console.log(err);
@@ -46,17 +47,29 @@ const ProfileEditForm = () => {
     });
   };
 
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setProfileData({
+      ...profileData,
+      image: file,
+    });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append("name", name);
     formData.append("description", description);
+    formData.append("image", image);
 
     try {
-      const { data } = await axiosReq.put(`/profiles/${id}/`, formData);
+      const { data } = await axiosReq.put(`/profiles/${id}/`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Set the content type to handle file upload
+        },
+      });
       setCurrentUser((currentUser) => ({
         ...currentUser,
-        username: data.name, // Update the username with the new value
+      
         profile_image: data.image,
       }));
       history.goBack();
@@ -69,24 +82,25 @@ const ProfileEditForm = () => {
   return (
     <Container className={appStyles.Content}>
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="name">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            type="text"
-            name="name"
-            value={name}
-            onChange={handleChange}
-          />
-        </Form.Group>
-
+  
         <Form.Group controlId="description">
           <Form.Label>Description</Form.Label>
           <Form.Control
             as="textarea"
-            name="description"
+            name="content" // Update 'description' to 'content'
             rows={7}
-            value={description}
+            value={content} // Update 'description' to 'content'
             onChange={handleChange}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="image">
+          <Form.Label>Profile Image</Form.Label>
+          <Form.Control
+            type="file"
+            accept="image/*"
+            ref={imageFile}
+            onChange={handleImageChange}
           />
         </Form.Group>
 
