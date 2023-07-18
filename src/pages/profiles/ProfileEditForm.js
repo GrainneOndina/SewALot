@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { Form, Button, Alert, Container } from "react-bootstrap";
 import { axiosReq } from "../../api/axiosDefaults";
@@ -13,40 +13,87 @@ const ProfileEditForm = () => {
   const history = useHistory();
   const imageFile = useRef();
 
-  const [profileImage, setProfileImage] = useState(currentUser?.profile_image || "");
-  const [error, setError] = useState(null);
+  const [profileData, setProfileData] = useState({
+    name: currentUser?.username || "",
+    description: "",
+    image: "",
+  });
+  const { content, image } = profileData;
+
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const { data } = await axiosReq.get(`/profiles/${id}/`);
+        const { description } = data;
+        setProfileData((prevState) => ({
+          ...prevState,
+          content: description || "", // Update 'description' to 'content'
+        }));
+      } catch (err) {
+        console.log(err);
+        history.push("/");
+      }
+    };
+
+    fetchProfileData();
+  }, [id, history]);
+
+  const handleChange = (event) => {
+    setProfileData({
+      ...profileData,
+      [event.target.name]: event.target.value,
+    });
+  };
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
-    setProfileImage(file);
+    setProfileData({
+      ...profileData,
+      image: file,
+    });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const formData = new FormData();
-    formData.append("image", profileImage);
+    formData.append("description", description);
+    formData.append("image", image);
 
     try {
       const { data } = await axiosReq.put(`/profiles/${id}/`, formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-data", // Set the content type to handle file upload
         },
       });
       setCurrentUser((currentUser) => ({
         ...currentUser,
+      
         profile_image: data.image,
       }));
       history.goBack();
     } catch (err) {
       console.log(err);
-      setError(err.response?.data);
+      setErrors(err.response?.data);
     }
   };
 
   return (
     <Container className={appStyles.Content}>
       <Form onSubmit={handleSubmit}>
+  
+        <Form.Group controlId="description">
+          <Form.Label>Description</Form.Label>
+          <Form.Control
+            as="textarea"
+            name="content" // Update 'description' to 'content'
+            rows={7}
+            value={content} // Update 'description' to 'content'
+            onChange={handleChange}
+          />
+        </Form.Group>
+
         <Form.Group controlId="image">
           <Form.Label>Profile Image</Form.Label>
           <Form.Control
@@ -57,11 +104,11 @@ const ProfileEditForm = () => {
           />
         </Form.Group>
 
-        {error && (
-          <Alert variant="warning">
-            An error occurred while updating the profile image. Please try again.
+        {errors?.description?.map((message, idx) => (
+          <Alert variant="warning" key={idx}>
+            {message}
           </Alert>
-        )}
+        ))}
 
         <Button
           className={`${btnStyles.Button} ${btnStyles.Blue}`}

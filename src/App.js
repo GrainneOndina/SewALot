@@ -74,7 +74,7 @@ function App() {
             render={() => (
               <PostsPage
                 message="No results found. Adjust the search keyword or follow a user."
-                currentposts={posts.results.filter((post) => post.owner.followed_id !== null)}
+                currentposts={posts.results.filter((post) => post.owner.following_id !== null)}
                 hasLoaded={hasLoaded}
                 setPosts={setPosts}
               />
