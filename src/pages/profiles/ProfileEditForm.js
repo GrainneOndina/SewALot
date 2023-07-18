@@ -14,11 +14,10 @@ const ProfileEditForm = () => {
   const imageFile = useRef();
 
   const [profileData, setProfileData] = useState({
-    name: currentUser?.username || "",
     description: "",
     image: "",
   });
-  const { content, image } = profileData;
+  const { description, image } = profileData;
 
   const [errors, setErrors] = useState({});
 
@@ -29,7 +28,7 @@ const ProfileEditForm = () => {
         const { description } = data;
         setProfileData((prevState) => ({
           ...prevState,
-          content: description || "", // Update 'description' to 'content'
+          description: description || "",
         }));
       } catch (err) {
         console.log(err);
@@ -64,12 +63,11 @@ const ProfileEditForm = () => {
     try {
       const { data } = await axiosReq.put(`/profiles/${id}/`, formData, {
         headers: {
-          "Content-Type": "multipart/form-data", // Set the content type to handle file upload
+          "Content-Type": "multipart/form-data",
         },
       });
       setCurrentUser((currentUser) => ({
         ...currentUser,
-      
         profile_image: data.image,
       }));
       history.goBack();
@@ -82,14 +80,13 @@ const ProfileEditForm = () => {
   return (
     <Container className={appStyles.Content}>
       <Form onSubmit={handleSubmit}>
-  
         <Form.Group controlId="description">
           <Form.Label>Description</Form.Label>
           <Form.Control
             as="textarea"
-            name="content" // Update 'description' to 'content'
+            name="description"
             rows={7}
-            value={content} // Update 'description' to 'content'
+            value={description}
             onChange={handleChange}
           />
         </Form.Group>
