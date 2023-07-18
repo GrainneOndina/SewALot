@@ -23,7 +23,7 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
   const [image, setImage] = useState(null);
   const [query, setQuery] = useState("");
   const currentUser = useCurrentUser();
-
+  const [errorMessage, setErrorMessage] = useState(""); // Add errorMessage state
 
 
   const handleImageChange = (event) => {
@@ -32,6 +32,13 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (content.trim() === "") {
+      // Display an error message
+      console.log("Can't post without text");
+      setErrorMessage("Can't post without text");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("content", content);
@@ -56,6 +63,7 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
       setContent("");
       setUrl("");
       setImage(null);
+      setErrorMessage("");
 
       // Update the posts state to include the new post
       setPosts((prevPosts) => ({
@@ -71,6 +79,8 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
     <Container className="d-flex flex-column align-items-center">
       <div className="col-lg-8">
             <Form className={styles.Form} onSubmit={handleSubmit}>
+            {errorMessage && <div className={styles.ErrorMessage}>{errorMessage}</div>}
+
               <Form.Group controlId="postContent">
                 <Form.Control
                   as="textarea"
