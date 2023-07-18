@@ -24,6 +24,7 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
   const [query, setQuery] = useState("");
   const currentUser = useCurrentUser();
   const [errorMessage, setErrorMessage] = useState(""); // Add errorMessage state
+  const [currentposts, setCurrentPosts] = useState([]);
 
 
   const handleImageChange = (event) => {
