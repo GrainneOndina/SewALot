@@ -39,17 +39,17 @@ function ProfilePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [pageProfileResponse, profilePostsResponse] = await Promise.all([
-          axiosReq.get(`/profiles/${id}/`),
-          axiosReq.get(`/posts/?owner__profile=${id}`),
+        const [{ data: pageProfile }, { data: profilePosts }] =	
+        await Promise.all([	
+          axiosReq.get(`/profiles/${id}/`),	
+          axiosReq.get(`/posts/?owner__profile=${id}`),	
         ]);
-        const pageProfileData = pageProfileResponse.data;
-        const profilePostsData = profilePostsResponse.data;
+
         setProfileData((prevState) => ({
           ...prevState,
-          pageProfile: { results: [pageProfileData] },
+          pageProfile: { results: [pageProfile] },
         }));
-        setProfilePosts(profilePostsData);
+        setProfilePosts(profilePosts);
         setHasLoaded(true);
       } catch (err) {
         console.log(err);
@@ -64,6 +64,7 @@ function ProfilePage() {
       {profile?.is_owner && (
         <ProfileEditDropdown
           id={profile?.id}
+          
           className="dropdown-menu-right"
           handleEdit={() => history.push(`/profiles/${id}/edit`)}
         />
@@ -127,7 +128,7 @@ function ProfilePage() {
       ) : (
         <Asset
           src={NoResults}
-          message={`No results found, ${currentUser?.username} hasn't posted yet.`}
+          message={`No results found,  ${profile?.owner} hasn't posted yet.`}
         />
       )}
     </>

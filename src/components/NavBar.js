@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import logo from "../assets/logo.png";
 import styles from "../styles/NavBar.module.css";
-import { NavLink, useHistory, Redirect } from "react-router-dom";
+import { NavLink, useHistory, Redirect, useLocation } from "react-router-dom";
 import {
   useCurrentUser,
   useSetCurrentUser,
@@ -18,8 +18,8 @@ const NavBar = () => {
   const currentUser = useCurrentUser();
   const setCurrentUser = useSetCurrentUser();
   const history = useHistory();
-
   const { expanded, setExpanded, ref } = useClickOutsideToggle();
+
 
   const handleSignOut = async () => {
     try {
@@ -42,10 +42,19 @@ const NavBar = () => {
       <NavLink
         className={styles.NavLink}
         activeClassName={styles.Active}
+        to="/"
+      >
+        <i className="fas fa-home"></i>Home
+      </NavLink>
+
+      <NavLink
+        className={styles.NavLink}
+        activeClassName={styles.Active}
         to="/feed"
       >
         <i className="fas fa-stream"></i>Feed
       </NavLink>
+
       <NavLink
         className={styles.NavLink}
         activeClassName={styles.Active}
@@ -68,6 +77,7 @@ const NavBar = () => {
       </NavLink>
     </>
   );
+
   const loggedOutIcons = (
     <>
       <NavLink
@@ -108,14 +118,6 @@ const NavBar = () => {
         />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto text-left">
-            <NavLink
-              exact
-              className={styles.NavLink}
-              activeClassName={styles.Active}
-              to="/"
-            >
-              <i className="fas fa-home"></i>Home
-            </NavLink>
             {currentUser ? loggedInIcons : loggedOutIcons}
           </Nav>
         </Navbar.Collapse>
