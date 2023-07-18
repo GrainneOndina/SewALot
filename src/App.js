@@ -58,14 +58,17 @@ function App() {
       <NavBar />
       <Container className={styles.Main}>
         <Switch>
-          <Route
+        <Route
             exact
             path="/"
             render={() => (
-              <PostsPage message="No results found. Adjust the search keyword." 
-              currentposts={[...posts.results]}
-              hasLoaded={hasLoaded}
-              setPosts={setPosts}/>
+              <PostsPage
+                message="No results found. Adjust the search keyword."
+                currentposts={[...posts.results]}
+                hasLoaded={hasLoaded}
+                setPosts={setPosts}
+                posts={posts}
+              />
             )}
           />
           <Route

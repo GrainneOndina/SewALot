@@ -24,7 +24,6 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
   const [query, setQuery] = useState("");
   const currentUser = useCurrentUser();
   const [errorMessage, setErrorMessage] = useState(""); // Add errorMessage state
-  const [currentposts, setCurrentPosts] = useState([]);
 
 
   const handleImageChange = (event) => {
@@ -127,7 +126,7 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
                     dataLength={currentposts.length}
                     loader={<Asset spinner />}
                     hasMore={!!currentposts.next}
-                    next={() => fetchMoreData(posts, setPosts)}
+                    next={() => fetchMoreData(currentposts, setPosts)}
                   />
                 ) : (
                   <div className={appStyles.Content}>
