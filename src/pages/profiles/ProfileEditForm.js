@@ -5,7 +5,7 @@ import { axiosReq } from "../../api/axiosDefaults";
 import { useCurrentUser, useSetCurrentUser } from "../../contexts/CurrentUserContext";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
-formData
+
 const ProfileEditForm = () => {
   const currentUser = useCurrentUser();
   const setCurrentUser = useSetCurrentUser();
@@ -16,9 +16,8 @@ const ProfileEditForm = () => {
   const [profileData, setProfileData] = useState({
     name: currentUser?.username || "",
     description: "",
-    image: "",
   });
-  const { content, image } = profileData;
+  const { name, description } = profileData;
 
   const [errors, setErrors] = useState({});
 
@@ -29,7 +28,7 @@ const ProfileEditForm = () => {
         const { description } = data;
         setProfileData((prevState) => ({
           ...prevState,
-          content: description || "", // Update 'description' to 'content'
+          description: description || "",
         }));
       } catch (err) {
         console.log(err);
@@ -47,29 +46,17 @@ const ProfileEditForm = () => {
     });
   };
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    setProfileData({
-      ...profileData,
-      image: file,
-    });
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
-    formData.append("description", content);
-    formData.append("image", image);
+    formData.append("name", name);
+    formData.append("description", description);
 
     try {
-      const { data } = await axiosReq.put(`/profiles/${id}/`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data", // Set the content type to handle file upload
-        },
-      });
+      const { data } = await axiosReq.put(`/profiles/${id}/`, formData);
       setCurrentUser((currentUser) => ({
         ...currentUser,
-      
+        username: data.name, // Update the username with the new value
         profile_image: data.image,
       }));
       history.goBack();
@@ -82,25 +69,24 @@ const ProfileEditForm = () => {
   return (
     <Container className={appStyles.Content}>
       <Form onSubmit={handleSubmit}>
-  
-        <Form.Group controlId="description">
-          <Form.Label>Description</Form.Label>
+        <Form.Group controlId="name">
+          <Form.Label>Name</Form.Label>
           <Form.Control
-            as="textarea"
-            name="content" // Update 'description' to 'content'
-            rows={7}
-            value={content} // Update 'description' to 'content'
+            type="text"
+            name="name"
+            value={name}
             onChange={handleChange}
           />
         </Form.Group>
 
-        <Form.Group controlId="image">
-          <Form.Label>Profile Image</Form.Label>
+        <Form.Group controlId="description">
+          <Form.Label>Description</Form.Label>
           <Form.Control
-            type="file"
-            accept="image/*"
-            ref={imageFile}
-            onChange={handleImageChange}
+            as="textarea"
+            name="description"
+            rows={7}
+            value={description}
+            onChange={handleChange}
           />
         </Form.Group>
 
