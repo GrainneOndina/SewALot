@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import Post from "./Post";
 import Asset from "../../components/Asset";
 import appStyles from "../../App.module.css";
+import btnStyles from "../../styles/Button.module.css";
 import styles from "../../styles/PostsPage.module.css";
 import { useLocation } from "react-router";
 import { axiosReq } from "../../api/axiosDefaults";
@@ -102,13 +103,15 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
                     accept="image/*"
                     onChange={handleImageChange}
                   />
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    className={styles.PostButton}
-                  >
-                    Post
+                  <div className="d-flex justify-content-center">
+                  <Button	
+                    variant="primary"	
+                    type="submit"	
+                    className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                  >	
+                    Post	
                   </Button>
+                  </div>
                 </Form.Group>
               </div>
             </Form>
