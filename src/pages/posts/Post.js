@@ -1,12 +1,15 @@
 import React from "react";
 import styles from "../../styles/Post.module.css";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
-import { Card, OverlayTrigger, Tooltip, Button } from "react-bootstrap";
+import { Card, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import Avatar from "../../components/Avatar";
 import { axiosRes } from "../../api/axiosDefaults";
 import { MoreDropdown } from "../../components/MoreDropdown";
 
+/**
+ * Component that represents a post.
+ */
 const Post = (props) => {
   const {
     id,
@@ -28,10 +31,16 @@ const Post = (props) => {
   const is_owner = currentUser?.username === owner;
   const history = useHistory();
 
+  /**
+   * Handles the edit action for the post.
+   */
   const handleEdit = () => {
     history.push(`/posts/${id}/edit`);
   };
 
+  /**
+   * Handles the delete action for the post.
+   */
   const handleDelete = async () => {
     try {
       await axiosRes.delete(`/posts/${id}/`);
@@ -41,6 +50,9 @@ const Post = (props) => {
     }
   };
 
+  /**
+   * Handles the like action for the post.
+   */
   const handleLike = async () => {
     try {
       const { data } = await axiosRes.post("/likes/", { post: id });
@@ -57,6 +69,9 @@ const Post = (props) => {
     }
   };
 
+  /**
+   * Handles the unlike action for the post.
+   */
   const handleUnlike = async () => {
     try {
       await axiosRes.delete(`/likes/${like_id}/`);
@@ -73,10 +88,16 @@ const Post = (props) => {
     }
   };
 
+  /**
+   * Handles the click event for the post content.
+   */
   const handleClickContent = () => {
     history.push(`/posts/${id}`);
   };
 
+  /**
+   * Handles the click event for the post URL.
+   */
   const handleClickUrl = (event) => {
     event.stopPropagation();
   };
@@ -93,9 +114,7 @@ const Post = (props) => {
           </Link>
           {is_owner && postPage ? (
             <MoreDropdown handleEdit={handleEdit} handleDelete={handleDelete} />
-          ) : !is_owner ? (
-            null
-          ) : null}
+          ) : !is_owner ? null : null}
         </div>
         {content && (
           <p className={styles.Content} onClick={handleClickContent}>
@@ -110,7 +129,7 @@ const Post = (props) => {
       {url && (
         <div className={styles.URLOverlay}>
           <a href={url} target="_blank" rel="noopener noreferrer" onClick={handleClickUrl}>
-          <p className={styles.LinkText}>Check this link out</p>
+            <p className={styles.LinkText}>Check this link out</p>
           </a>
         </div>
       )}

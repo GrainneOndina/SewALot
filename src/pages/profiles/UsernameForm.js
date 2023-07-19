@@ -7,13 +7,13 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { useHistory, useParams } from "react-router-dom";
 import { axiosRes } from "../../api/axiosDefaults";
-import {
-  useCurrentUser,
-  useSetCurrentUser,
-} from "../../contexts/CurrentUserContext";
+import { useCurrentUser, useSetCurrentUser } from "../../contexts/CurrentUserContext";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
 
+/**
+ * Component for the username change form.
+ */
 const UsernameForm = () => {
   const [username, setUsername] = useState("");
   const [errors, setErrors] = useState({});
@@ -30,6 +30,9 @@ const UsernameForm = () => {
     }
   }, [currentUser, history, id]);
 
+  /**
+   * Handles the form submission.
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -72,10 +75,7 @@ const UsernameForm = () => {
             >
               cancel
             </Button>
-            <Button
-              className={`${btnStyles.Button} ${btnStyles.Blue}`}
-              type="submit"
-            >
+            <Button className={`${btnStyles.Button} ${btnStyles.Blue}`} type="submit">
               save
             </Button>
           </Form>

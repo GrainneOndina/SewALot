@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
@@ -11,10 +11,7 @@ import btnStyles from "../../styles/Button.module.css";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { useParams } from "react-router";
 import { axiosReq } from "../../api/axiosDefaults";
-import {
-  useProfileData,
-  useSetProfileData,
-} from "../../contexts/ProfileDataContext";
+import { useProfileData, useSetProfileData } from "../../contexts/ProfileDataContext";
 import { Button } from "react-bootstrap";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Post from "../posts/Post";
@@ -22,6 +19,9 @@ import { fetchMoreData } from "../../utils/utils";
 import NoResults from "../../assets/no-results.png";
 import { ProfileEditDropdown } from "../../components/MoreDropdown";
 
+/**
+ * Component for displaying a user profile page.
+ */
 function ProfilePage() {
   const [hasLoaded, setHasLoaded] = useState(false);
   const [profilePosts, setProfilePosts] = useState({ results: [] });
@@ -36,15 +36,17 @@ function ProfilePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [{ data: pageProfile }, { data: profilePosts }] =	
-        await Promise.all([	
-          axiosReq.get(`/profiles/${id}/`),	
-          axiosReq.get(`/posts/?owner__profile=${id}`),	
+        const [
+          { data: pageProfile },
+          { data: profilePosts }
+        ] = await Promise.all([
+          axiosReq.get(`/profiles/${id}/`),
+          axiosReq.get(`/posts/?owner__profile=${id}`)
         ]);
 
         setProfileData((prevState) => ({
           ...prevState,
-          pageProfile: { results: [pageProfile] },
+          pageProfile: { results: [pageProfile] }
         }));
         setProfilePosts(profilePosts);
         setHasLoaded(true);
@@ -52,7 +54,7 @@ function ProfilePage() {
         console.log(err);
       }
     };
-    
+
     fetchData();
   }, [id, setProfileData]);
 
@@ -65,7 +67,7 @@ function ProfilePage() {
           handleEdit={() => history.push(`/profiles/${id}/edit`)}
         />
       )}
-  
+
       <Row className="px-3 text-center">
         <Col>
           <Container className="d-flex align-items-center justify-content-center">
@@ -103,7 +105,6 @@ function ProfilePage() {
       </Row>
     </>
   );
-  
 
   const mainProfilePosts = (
     <>
@@ -125,7 +126,7 @@ function ProfilePage() {
       ) : (
         <Asset
           src={NoResults}
-          message={`No results found,  ${profile?.owner} hasn't posted yet.`}
+          message={`No results found, ${profile?.owner} hasn't posted yet.`}
         />
       )}
     </>

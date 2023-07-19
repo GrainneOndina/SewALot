@@ -12,6 +12,9 @@ import { useSetCurrentUser } from "../../contexts/CurrentUserContext";
 import { useRedirect } from "../../hooks/useRedirect";
 import { setTokenTimestamp } from "../../utils/utils";
 
+/**
+ * Sign-in form component.
+ */
 function SignInForm() {
   const setCurrentUser = useSetCurrentUser();
   useRedirect("loggedIn");
@@ -25,6 +28,10 @@ function SignInForm() {
   const [errors, setErrors] = useState({});
 
   const history = useHistory();
+
+  /**
+   * Handles the form submission.
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -38,6 +45,9 @@ function SignInForm() {
     }
   };
 
+  /**
+   * Handles the input change.
+   */
   const handleChange = (event) => {
     setSignInData({
       ...signInData,

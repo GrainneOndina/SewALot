@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
-
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
-
 import { useHistory, useParams } from "react-router-dom";
 import { axiosRes } from "../../api/axiosDefaults";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
-
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
 
+/**
+ * Component for the user password change form.
+ */
 const UserPasswordForm = () => {
   const history = useHistory();
   const { id } = useParams();
@@ -27,6 +27,9 @@ const UserPasswordForm = () => {
 
   const [errors, setErrors] = useState({});
 
+  /**
+   * Handles the input change event.
+   */
   const handleChange = (event) => {
     setUserData({
       ...userData,
@@ -36,18 +39,21 @@ const UserPasswordForm = () => {
 
   useEffect(() => {
     if (currentUser?.profile_id?.toString() !== id) {
-      // redirect user if they are not the owner of this profile
+      // Redirect user if they are not the owner of this profile
       history.push("/");
     }
   }, [currentUser, history, id]);
 
+  /**
+   * Handles the form submission.
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       await axiosRes.post("/dj-rest-auth/password/change/", userData);
       history.goBack();
     } catch (err) {
-     // console.log(err);
+      // console.log(err);
       setErrors(err.response?.data);
     }
   };
@@ -93,10 +99,7 @@ const UserPasswordForm = () => {
             >
               cancel
             </Button>
-            <Button
-              type="submit"
-              className={`${btnStyles.Button} ${btnStyles.Blue}`}
-            >
+            <Button type="submit" className={`${btnStyles.Button} ${btnStyles.Blue}`}>
               save
             </Button>
           </Form>

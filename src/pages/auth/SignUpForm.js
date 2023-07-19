@@ -3,15 +3,18 @@ import { Link, useHistory, useLocation } from "react-router-dom";
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
-import { Form, Button, Alert, Col, Container, Row } from "react-bootstrap";
+import { Form, Button, Alert, Container } from "react-bootstrap";
 import axios from "axios";
 import { useRedirect } from "../../hooks/useRedirect";
 import { useSetCurrentUser } from "../../contexts/CurrentUserContext";
 import { setTokenTimestamp } from "../../utils/utils";
 
+/**
+ * Sign-up form component.
+ */
 const SignUpForm = () => {
   useRedirect("loggedIn");
-  const setCurrentUser = useSetCurrentUser(); 
+  const setCurrentUser = useSetCurrentUser();
   const [signUpData, setSignUpData] = useState({
     username: "",
     password1: "",
@@ -23,6 +26,9 @@ const SignUpForm = () => {
   const history = useHistory();
   const location = useLocation();
 
+  /**
+   * Handles the input change.
+   */
   const handleChange = (event) => {
     setSignUpData({
       ...signUpData,
@@ -30,6 +36,9 @@ const SignUpForm = () => {
     });
   };
 
+  /**
+   * Handles the form submission.
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {

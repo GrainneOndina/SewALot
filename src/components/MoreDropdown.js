@@ -3,8 +3,9 @@ import Dropdown from "react-bootstrap/Dropdown";
 import styles from "../styles/MoreDropdown.module.css";
 import { useHistory } from "react-router";
 
-// The forwardRef is important!!
-// Dropdown needs access to the DOM node in order to position the Menu
+/**
+ * Custom ThreeDots component that renders an ellipsis icon.
+ */
 const ThreeDots = React.forwardRef(({ onClick }, ref) => (
   <i
     className="fas fa-ellipsis-v"
@@ -16,15 +17,15 @@ const ThreeDots = React.forwardRef(({ onClick }, ref) => (
   />
 ));
 
+/**
+ * MoreDropdown component that renders a dropdown with edit and delete options.
+ */
 export const MoreDropdown = ({ handleEdit, handleDelete }) => {
   return (
     <Dropdown className="ml-auto" drop="left">
       <Dropdown.Toggle as={ThreeDots} />
 
-      <Dropdown.Menu
-        className="text-center"
-        popperConfig={{ strategy: "fixed" }}
-      >
+      <Dropdown.Menu className="text-center" popperConfig={{ strategy: "fixed" }}>
         <Dropdown.Item
           className={styles.DropdownItem}
           onClick={handleEdit}
@@ -44,6 +45,9 @@ export const MoreDropdown = ({ handleEdit, handleDelete }) => {
   );
 };
 
+/**
+ * ProfileEditDropdown component that renders a dropdown for profile editing options.
+ */
 export const ProfileEditDropdown = ({ id }) => {
   const history = useHistory();
   return (

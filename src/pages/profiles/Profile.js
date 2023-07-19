@@ -6,6 +6,9 @@ import { useSetProfileData } from "../../contexts/ProfileDataContext";
 import styles from "../styles/Profile.module.css";
 import btnStyles from "../styles/Button.module.css";
 
+/**
+ * Component for rendering a profile.
+ */
 const Profile = (props) => {
   const { profile, mobile } = props;
   const { id, following_id, owner } = profile;

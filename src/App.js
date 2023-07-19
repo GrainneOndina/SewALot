@@ -6,7 +6,6 @@ import "./api/axiosDefaults";
 import NavBar from "./components/NavBar";
 import SignUpForm from "./pages/auth/SignUpForm";
 import SignInForm from "./pages/auth/SignInForm";
-import PostCreateForm from "./pages/posts/PostCreateForm";
 import PostPage from "./pages/posts/PostPage";
 import PostsPage from "./pages/posts/PostsPage";
 import { useCurrentUser } from "./contexts/CurrentUserContext";
@@ -18,6 +17,9 @@ import ProfileEditForm from "./pages/profiles/ProfileEditForm";
 import NotFound from "./components/NotFound";
 import { axiosReq } from "./api/axiosDefaults";
 
+/**
+ * The main App component.
+ */
 function App() {
   const currentUser = useCurrentUser();
   const profile_id = currentUser?.profile_id || '';
@@ -48,7 +50,7 @@ function App() {
     return () => {
       clearTimeout(timer);
     };
-  }, [filter, query]);
+  }, [filter, query, currentUser, pathname]);
 
   return (
     <div className={styles.App}>
@@ -94,7 +96,6 @@ function App() {
           />
           <Route exact path="/signin" render={() => <SignInForm />} />
           <Route exact path="/signup" render={() => <SignUpForm />} />
-          <Route exact path="/posts/create" render={() => <PostCreateForm />} />
           <Route exact path="/posts/:id" render={() => <PostPage />} />
           <Route exact path="/posts/:id/edit" render={() => <PostEditForm />} />
           <Route exact path="/profiles/:id" render={() => <ProfilePage />} />

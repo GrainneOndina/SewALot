@@ -4,7 +4,7 @@ Welcome to Sewlot
 
 Upon visiting our social media platform 
 
-![Am I responsiv](src/assets/images/sewlot am i responsive.png)
+![Am I responsiv](src/assets/images/responsive.png)
 
 ## UX User experience
 ### Project Goals

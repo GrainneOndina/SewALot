@@ -3,14 +3,22 @@ import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { axiosRes } from "../../api/axiosDefaults";
 import Post from "./Post";
 
+/**
+ * Component that displays posts from followed profiles.
+ */
 const FollowedProfiles = () => {
   const currentUser = useCurrentUser();
   const [followedPosts, setFollowedPosts] = useState([]);
 
   useEffect(() => {
+    /**
+     * Fetches the posts from followed profiles.
+     */
     const fetchFollowedPosts = async () => {
       try {
-        const response = await axiosRes.get(`/profiles/${currentUser?.profile_id}/followed-posts/`);
+        const response = await axiosRes.get(
+          `/profiles/${currentUser?.profile_id}/followed-posts/`
+        );
         setFollowedPosts(response.data);
       } catch (error) {
         console.log(error);

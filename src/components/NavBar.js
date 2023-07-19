@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import logo from "../assets/logo.png";
 import styles from "../styles/NavBar.module.css";
-import { NavLink, useHistory, Redirect, useLocation } from "react-router-dom";
+import { NavLink, useHistory, Redirect } from "react-router-dom";
 import {
   useCurrentUser,
   useSetCurrentUser,
@@ -12,14 +12,20 @@ import {
 import axios from "axios";
 import useClickOutsideToggle from "../hooks/useClickOutsideToggle";
 import { removeTokenTimestamp } from "../utils/utils";
-import Form from "react-bootstrap/Form";
 
+/**
+ * NavBar component that renders the navigation bar.
+ */
 const NavBar = () => {
   const currentUser = useCurrentUser();
   const setCurrentUser = useSetCurrentUser();
   const history = useHistory();
   const { expanded, setExpanded, ref } = useClickOutsideToggle();
 
+  /**
+   * Handles the sign out process.
+   * Clears the user session and redirects to the sign-in page.
+   */
   const handleSignOut = async () => {
     try {
       await axios.post("dj-rest-auth/logout/");

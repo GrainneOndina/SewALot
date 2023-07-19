@@ -1,6 +1,9 @@
 import jwtDecode from "jwt-decode";
 import { axiosReq } from "../api/axiosDefaults";
 
+/**
+ * Fetches more data for a given resource using pagination.
+ */
 export const fetchMoreData = async (resource, setResource) => {
   try {
     const { data } = await axiosReq.get(resource.next);
@@ -13,54 +16,59 @@ export const fetchMoreData = async (resource, setResource) => {
           : [...acc, cur];
       }, prevResource.results),
     }));
-  } catch (err) {}
+  } catch (err) {
+    // Handle error
+  }
 };
 
+/**
+ * Helper function to handle following a profile.
+ */
 export const followHelper = (profile, clickedProfile, following_id) => {
   return profile.id === clickedProfile.id
-    ? // This is the profile I clicked on,
-      // update its followers count and set its following id
-      {
+    ? {
         ...profile,
         followers_count: profile.followers_count + 1,
         following_id,
       }
     : profile.is_owner
-    ? // This is the profile of the logged in user
-      // update its following count
-      { ...profile, following_count: profile.following_count + 1 }
-    : // this is not the profile the user clicked on or the profile
-      // the user owns, so just return it unchanged
-      profile;
+    ? { ...profile, following_count: profile.following_count + 1 }
+    : profile;
 };
 
+/**
+ * Helper function to handle unfollowing a profile.
+ */
 export const unfollowHelper = (profile, clickedProfile) => {
   return profile.id === clickedProfile.id
-    ? // This is the profile I clicked on,
-      // update its followers count and set its following id
-      {
+    ? {
         ...profile,
         followers_count: profile.followers_count - 1,
         following_id: null,
       }
     : profile.is_owner
-    ? // This is the profile of the logged in user
-      // update its following count
-      { ...profile, following_count: profile.following_count - 1 }
-    : // this is not the profile the user clicked on or the profile
-      // the user owns, so just return it unchanged
-      profile;
+    ? { ...profile, following_count: profile.following_count - 1 }
+    : profile;
 };
 
+/**
+ * Sets the token timestamp in the local storage.
+ */
 export const setTokenTimestamp = (data) => {
   const refreshTokenTimestamp = jwtDecode(data?.refresh_token).exp;
   localStorage.setItem("refreshTokenTimestamp", refreshTokenTimestamp);
 };
 
+/**
+ * Checks if the token should be refreshed.
+ */
 export const shouldRefreshToken = () => {
   return !!localStorage.getItem("refreshTokenTimestamp");
 };
 
+/**
+ * Removes the token timestamp from the local storage.
+ */
 export const removeTokenTimestamp = () => {
   localStorage.removeItem("refreshTokenTimestamp");
 };

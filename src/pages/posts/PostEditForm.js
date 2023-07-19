@@ -9,6 +9,9 @@ import appStyles from "../../App.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import { axiosReq } from "../../api/axiosDefaults";
 
+/**
+ * Component for editing a post.
+ */
 function PostEditForm() {
   const [errors, setErrors] = useState({});
   const [postData, setPostData] = useState({
@@ -38,6 +41,9 @@ function PostEditForm() {
     handleMount();
   }, [history, id]);
 
+  /**
+   * Handles the change event for input fields.
+   */
   const handleChange = (event) => {
     setPostData({
       ...postData,
@@ -45,6 +51,9 @@ function PostEditForm() {
     });
   };
 
+  /**
+   * Handles the change event for the image input field.
+   */
   const handleChangeImage = (event) => {
     if (event.target.files.length) {
       const selectedImage = event.target.files[0];
@@ -56,6 +65,9 @@ function PostEditForm() {
     }
   };
 
+  /**
+   * Handles the submit event for the form.
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();

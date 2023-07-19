@@ -5,6 +5,9 @@ import { axiosReq } from "../../api/axiosDefaults";
 import Post from "./Post";
 import appStyles from "../../App.module.css";
 
+/**
+ * Component for rendering a single post page.
+ */
 function PostPage() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
