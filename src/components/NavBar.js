@@ -33,7 +33,7 @@ const NavBar = () => {
       removeTokenTimestamp();
       history.push("/signin");
     } catch (err) {
-      console.log(err);
+      //console.log(err);
     }
   };
 
@@ -49,13 +49,6 @@ const NavBar = () => {
         to="/"
       >
         <i className="fas fa-home"></i>Home
-      </NavLink>
-      <NavLink
-        className={styles.NavLink}
-        activeClassName={styles.Active}
-        to="/feed"
-      >
-        <i className="fas fa-stream"></i>Feed
       </NavLink>
       <NavLink
         className={styles.NavLink}

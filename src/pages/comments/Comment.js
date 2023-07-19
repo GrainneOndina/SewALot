@@ -31,7 +31,7 @@ function Comment(props) {
         results: prevComments.results.filter((comment) => comment.id !== id),
       }));
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 
@@ -46,7 +46,7 @@ function Comment(props) {
       setEditedContent(data.content);
       setIsEditing(false);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 

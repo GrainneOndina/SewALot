@@ -35,7 +35,7 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
     event.preventDefault();
 
     if (content.trim() === "") {
-      console.log("Can't post without text");
+      // console.log("Can't post without text");
       setErrorMessage("Can't post without text");
       return;
     }
@@ -69,7 +69,7 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
         results: [newPost, ...prevPosts.results],
       }));
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

@@ -33,7 +33,7 @@ const ProfileEditForm = () => {
           description: description || "",
         }));
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         history.push("/");
       }
     };
@@ -78,7 +78,7 @@ const ProfileEditForm = () => {
       }));
       history.goBack();
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setErrors(err.response?.data);
     }
   };

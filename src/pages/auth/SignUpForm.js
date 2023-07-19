@@ -53,7 +53,7 @@ const SignUpForm = () => {
       const { from } = location.state || { from: { pathname: "/" } };
       history.replace(from);
     } catch (err) {
-      console.log(err.response?.data);
+      // console.log(err.response?.data);
       setErrors(err.response?.data);
     }
   };

@@ -108,7 +108,7 @@ This project includes two custom models, Post and Comment.
 
 
 ## Technologies
-- HTML
+- JSX
 - CSS
 - JavaScript
 
