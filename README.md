@@ -153,9 +153,54 @@ Following mobiles has been tested:
 ### Manual testing
 |Command input              |Expected response                     |Results |
 |----------------|-------------------------------|-----------------------------|
-|**Home page**                |Please choose c or p:         |Pass |
-|- Clicking Sewlot logo |Open Home page.         |X |
-|- Clicking Home                  |All posts are rendered  |Pass |
+|**Nav bar**                |         ||
+|- Clicking Sewlot logo	|Home- All posts are rendered   |Pass |
+|- Clicking Home		|Home- All posts are rendered 	|Pass |
+|- Clicking Feed |All posts belonging to followed users are rendered |x |
+|- Clicking Like icon on post    | Poste is liked, hart is reed      |Pass |
+|- Clicking Like icon on post when liked |Poste is unliked, hart is not reed |Pass |
+|- Clicking Liked link	|All users liked posts are rendered  |Pass |
+|- Clicking Sign out	|User is signed out |Pass |
+|- Clicking user avatar	|User is redirected to profile page |Pass |
+|- Open page in large window| Nav bar is viewed whit all links viewed |Pass|
+|- Open page in Mobile   |Nav bar is viewed as hamburger menu |Pass |
+|- Clicking hamburger menu   |Nav bar links are viewed |Pass |
+|  |         | |
+|- If user is not signed in |Nav bar is not viewed         |Pass |
+|- When user sign up|  NavBar and posts is viewed |Pass|
+|- When user sign in first time | NavBar is viewed |Pass|
+|- When user sign in first time | Post is viewed |X|
+|- When user sign in again | NavBar and posts is viewed |Pass|
+|-  |         | |
+|**Profile page**
+|Users own profile page  |       ||
+|- Users own profile | Users own info, posts and a dropdown-menu is viewed |Pass|
+|- clicking the dropdown-menu |Choises Edit profile, change username and change password is viewed   |Pass |
+|- Clicking Edit profile    |  Edit profile image is rendered |Pass |
+|- On Edit profile    |Uploding a new image changes the profile image   |Pass |
+|- Clicking Change username | Change username form is rendered  |Pass |
+|- On Change username   |Writing a new name changes the username   |Pass |
+|- Clicking Change password | Change password form is rendered |Pass |
+|- On Change password  |Writing a new password changes the password   |Pass |
+|- On Change password  |Writing a not appropriate password throes an error |Pass|
+| Another users profile page  |       ||
+|- Users profile | Users info, posts and a follow button is viewed  |Pass |
+|- Clicking Follow |The user is followed and the button changes to unfollow|Pass|
+|- Clicking Follow   |The users posts are viewed under feed  |x |
+|.|||
+|**Post:**	      |  | |
+|- Adding text in Add post feelde  and clicking Post|Adds the post to home |Pass|
+|- Also adding an image ore/and an url |  Also adds the image/url to post |Pass |
+|- Clicking Post whitout text in add post| Don't adds empty post |Pass|
+|- Clicking Post whitout text in add post| Tells user its not posible to add post with out content |Pass|
+|- Clicking a post, image or text |Post page is viewed |Pass |
+|- Users own Post page | Post and a dropdown-menu is viewed |Pass|
+|- Clicking the dropdown-menu |Choises Edit post or delete is viewed   |Pass |
+|- Clicking Edit profile    |  Edit post form is rendered |Pass |
+|- On Edit profile    |Change any content is updating the post   |Pass |
+|- Clicking Delete   |  Deletes the post |Pass |
+|- Clicking Delete   |Removes the deleted post from array without refrech |X |
+|- Another users own Post page | Post is viewed |Pass|
 
 
 
