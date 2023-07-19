@@ -66,6 +66,10 @@ const ProfileEditForm = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+      setProfileData((prevState) => ({
+        ...prevState,
+        description: data.description, // Set the description value in the ProfileDataContext
+      }));
       setCurrentUser((currentUser) => ({
         ...currentUser,
         profile_image: data.image,

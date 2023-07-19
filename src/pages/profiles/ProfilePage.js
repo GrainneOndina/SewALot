@@ -64,12 +64,11 @@ function ProfilePage() {
       {profile?.is_owner && (
         <ProfileEditDropdown
           id={profile?.id}
-          
           className="dropdown-menu-right"
           handleEdit={() => history.push(`/profiles/${id}/edit`)}
         />
       )}
-
+  
       <Row className="px-3 text-center">
         <Col>
           <Container className="d-flex align-items-center justify-content-center">
@@ -82,8 +81,8 @@ function ProfilePage() {
           </Container>
         </Col>
         <Col>
-        <h3 className="m-2">{profile?.owner}</h3>
-          {profile?.content && <Col className="p-3">{profile.content}</Col>}
+          <h3 className="m-2">{profile?.owner}</h3>
+          {profile?.description && <Col className="p-3">{profile.description}</Col>}
         </Col>
         {currentUser && !is_owner && (
           <Col>
@@ -107,6 +106,7 @@ function ProfilePage() {
       </Row>
     </>
   );
+  
 
   const mainProfilePosts = (
     <>
