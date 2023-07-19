@@ -3,7 +3,6 @@ import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { axiosRes } from "../../api/axiosDefaults";
 import Post from "./Post";
 
-
 const FollowedProfiles = () => {
   const currentUser = useCurrentUser();
   const [followedPosts, setFollowedPosts] = useState([]);

@@ -43,9 +43,7 @@ const Post = (props) => {
 
   const handleLike = async () => {
     try {
-    
-      const { data } = await axiosRes.post("/likes/", { post: id, });
-
+      const { data } = await axiosRes.post("/likes/", { post: id });
       setPosts((prevPosts) => ({
         ...prevPosts,
         results: prevPosts.results.map((post) => {
@@ -111,8 +109,8 @@ const Post = (props) => {
       </Link>
       {url && (
         <div className={styles.URLOverlay}>
-          <a href={url} target="_blank" onClick={handleClickUrl}>
-            {url}
+          <a href={url} target="_blank" rel="noopener noreferrer" onClick={handleClickUrl}>
+          <p className={styles.LinkText}>Check this link out</p>
           </a>
         </div>
       )}

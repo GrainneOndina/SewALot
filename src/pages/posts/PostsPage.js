@@ -23,7 +23,7 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
   const [image, setImage] = useState(null);
   const [query, setQuery] = useState("");
   const currentUser = useCurrentUser();
-  const [errorMessage, setErrorMessage] = useState(""); // Add errorMessage state
+  const [errorMessage, setErrorMessage] = useState("");
 
 
   const handleImageChange = (event) => {
@@ -34,7 +34,6 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
     event.preventDefault();
 
     if (content.trim() === "") {
-      // Display an error message
       console.log("Can't post without text");
       setErrorMessage("Can't post without text");
       return;
@@ -50,7 +49,6 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
       formData.append("image", image);
     }
 
-    // Exclude URL and image fields if both are empty
     if (!url && !image) {
       formData.delete("url");
       formData.delete("image");
@@ -58,14 +56,13 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
 
     try {
       const response = await axiosReq.post("/posts/", formData);
-      const newPost = response.data; // Assuming the response contains the newly created post object
+      const newPost = response.data;
 
       setContent("");
       setUrl("");
       setImage(null);
       setErrorMessage("");
 
-      // Update the posts state to include the new post
       setPosts((prevPosts) => ({
         ...prevPosts,
         results: [newPost, ...prevPosts.results],

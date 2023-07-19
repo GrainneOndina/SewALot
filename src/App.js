@@ -1,8 +1,9 @@
-import styles from "./App.module.css";
-import NavBar from "./components/NavBar";
-import Container from "react-bootstrap/Container";
+import React, { useState, useEffect } from 'react';
 import { Route, Switch } from "react-router-dom";
+import Container from "react-bootstrap/Container";
+import styles from "./App.module.css";
 import "./api/axiosDefaults";
+import NavBar from "./components/NavBar";
 import SignUpForm from "./pages/auth/SignUpForm";
 import SignInForm from "./pages/auth/SignInForm";
 import PostCreateForm from "./pages/posts/PostCreateForm";
@@ -15,21 +16,18 @@ import UsernameForm from "./pages/profiles/UsernameForm";
 import UserPasswordForm from "./pages/profiles/UserPasswordForm";
 import ProfileEditForm from "./pages/profiles/ProfileEditForm";
 import NotFound from "./components/NotFound";
-import { useState, useEffect } from 'react'
 import { axiosReq } from "./api/axiosDefaults";
 
 function App() {
   const currentUser = useCurrentUser();
-  const profile_id = currentUser?.profile_id || "";
+  const profile_id = currentUser?.profile_id || '';
   const [posts, setPosts] = useState({ results: [] });
-  const [filter, setFilter] = useState('')
-  const [query, setQuery] = useState('')
-  const [pathname, setPathname] = useState('')
-  const [hasLoaded, setHasLoaded] = useState('')
-
+  const [filter, setFilter] = useState('');
+  const [query, setQuery] = useState('');
+  const [pathname, setPathname] = useState('');
+  const [hasLoaded, setHasLoaded] = useState('');
 
   useEffect(() => {
-
     const fetchPosts = async () => {
       try {
         const { data } = await axiosReq.get(
@@ -52,13 +50,12 @@ function App() {
     };
   }, []);
 
-
   return (
     <div className={styles.App}>
       <NavBar />
       <Container className={styles.Main}>
         <Switch>
-        <Route
+          <Route
             exact
             path="/"
             render={() => (
@@ -95,7 +92,6 @@ function App() {
               />
             )}
           />
-
           <Route exact path="/signin" render={() => <SignInForm />} />
           <Route exact path="/signup" render={() => <SignUpForm />} />
           <Route exact path="/posts/create" render={() => <PostCreateForm />} />
@@ -117,7 +113,6 @@ function App() {
             path="/profiles/:id/edit"
             render={() => <ProfileEditForm />}
           />
-
           <Route render={() => <NotFound />} />
         </Switch>
       </Container>

@@ -1,18 +1,16 @@
 import React from "react";
-import styles from "../styles/Profile.module.css";
-import btnStyles from "../styles/Button.module.css";
-import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
+import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { useSetProfileData } from "../../contexts/ProfileDataContext";
+import styles from "../styles/Profile.module.css";
+import btnStyles from "../styles/Button.module.css";
 
 const Profile = (props) => {
   const { profile, mobile } = props;
   const { id, following_id, owner } = profile;
-
   const currentUser = useCurrentUser();
   const is_owner = currentUser?.username === owner;
-
   const { handleFollow } = useSetProfileData();
 
   return (

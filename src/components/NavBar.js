@@ -20,19 +20,17 @@ const NavBar = () => {
   const history = useHistory();
   const { expanded, setExpanded, ref } = useClickOutsideToggle();
 
-
   const handleSignOut = async () => {
     try {
       await axios.post("dj-rest-auth/logout/");
       setCurrentUser(null);
       removeTokenTimestamp();
-      history.push("/signin"); // Redirect to SignInForm
+      history.push("/signin");
     } catch (err) {
       console.log(err);
     }
   };
 
-  // Check if user is not signed in and redirect to SignInForm
   if (!currentUser) {
     return <Redirect to="/signin" />;
   }
@@ -46,7 +44,6 @@ const NavBar = () => {
       >
         <i className="fas fa-home"></i>Home
       </NavLink>
-
       <NavLink
         className={styles.NavLink}
         activeClassName={styles.Active}
@@ -54,7 +51,6 @@ const NavBar = () => {
       >
         <i className="fas fa-stream"></i>Feed
       </NavLink>
-
       <NavLink
         className={styles.NavLink}
         activeClassName={styles.Active}

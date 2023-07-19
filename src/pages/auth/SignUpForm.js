@@ -11,7 +11,7 @@ import { setTokenTimestamp } from "../../utils/utils";
 
 const SignUpForm = () => {
   useRedirect("loggedIn");
-  const setCurrentUser = useSetCurrentUser(); // Add this line to get the setCurrentUser function
+  const setCurrentUser = useSetCurrentUser(); 
   const [signUpData, setSignUpData] = useState({
     username: "",
     password1: "",
@@ -38,11 +38,11 @@ const SignUpForm = () => {
         username: signUpData.username,
         password: signUpData.password1,
       });
-      setCurrentUser(signInResponse.data.user); // Set the current user using the setCurrentUser function
+      setCurrentUser(signInResponse.data.user);
       setTokenTimestamp(signInResponse.data);
 
       const { from } = location.state || { from: { pathname: "/" } };
-      history.replace(from); // Redirect to the same place as the sign-in form
+      history.replace(from);
     } catch (err) {
       console.log(err.response?.data);
       setErrors(err.response?.data);

@@ -25,14 +25,11 @@ import { ProfileEditDropdown } from "../../components/MoreDropdown";
 function ProfilePage() {
   const [hasLoaded, setHasLoaded] = useState(false);
   const [profilePosts, setProfilePosts] = useState({ results: [] });
-
   const currentUser = useCurrentUser();
   const { id } = useParams();
   const history = useHistory();
-
   const { setProfileData, handleFollow, handleUnfollow } = useSetProfileData();
   const { pageProfile } = useProfileData();
-
   const [profile] = pageProfile.results;
   const is_owner = currentUser?.username === profile?.owner;
 
@@ -116,7 +113,7 @@ function ProfilePage() {
       {profilePosts.results.length ? (
         <InfiniteScroll
           children={profilePosts.results
-            .filter((post) => post.owner === profile?.owner) // Filter posts by owner
+            .filter((post) => post.owner === profile?.owner)
             .map((post) => (
               <Post key={post.id} {...post} setPosts={setProfilePosts} />
             ))}
