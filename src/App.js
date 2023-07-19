@@ -48,7 +48,7 @@ function App() {
     return () => {
       clearTimeout(timer);
     };
-  }, []);
+  }, [filter, query]);
 
   return (
     <div className={styles.App}>
