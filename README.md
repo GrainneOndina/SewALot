@@ -2,6 +2,8 @@
 #### [View the live project here](https://sewlot-07aa7e3364ec.herokuapp.com)
 Welcome to Sewlot this site is for people who want to share their sewing with others. Log in and be inspired by other people's projects and fart your own.
 
+#### [View the backend](https://github.com/LinnSilver/sew_api)
+
 ![Am I responsiv](src/assets/images/responsive.png)
 
 ## UX User experience and Design
@@ -9,6 +11,9 @@ Welcome to Sewlot this site is for people who want to share their sewing with ot
 In terms of design, the page is stripped down so as not to distract from the content. The colors are different on everything to give a playful and inspiring impression. Lines are dashed to resemble sewing machine stitches.
 
 The site is easily navigated from the navbar. there users find home, posts they liked, sinegen profile and sign out
+
+## The exelance whit Rect
+The reusability of components is a key concept in React and allows you to create modular and flexible code. By designing components that are reusable, I have saved time and effort by utilizing them across different parts of my React project.
 
 ### Planning
 GitHub Project and Issues were used for Agile project planning. User Stories with acceptance criteria were defined in GitHub Issues, and development progress was managed on a Kanban board.
@@ -197,6 +202,12 @@ Sony Xperia 5 III
 |- Clicking Delete   |  Deletes the post |Pass |
 |- Clicking Delete   |Removes the deleted post from array without refrech |X |
 |- Another users own Post page | Post is viewed |Pass|
+|**Sequerety:**	      |  | |
+|- Trying to sign up whit a already used Username |Error |Pass|
+|- Trying to sign up whit a password blank password |Error |Pass|
+|- Trying to sign up whit a password shoreter than 8 caracters |Error |Pass|
+|- Trying to sign in whit a password invalid pasword |Error |Pass|
+|- Trying to accses forms by url whith out singing in |Error |Pass|
 
 ### Note to testing:
 During the testing, two inexplicable errors with page reload came up.
