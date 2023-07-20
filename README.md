@@ -1,24 +1,19 @@
 # Sewlot
 #### [View the live project here](https://sewlot-07aa7e3364ec.herokuapp.com)
-Welcome to Sewlot
-
-Upon visiting our social media platform 
+Welcome to Sewlot this site is for people who want to share their sewing with others. Log in and be inspired by other people's projects and fart your own.
 
 ![Am I responsiv](src/assets/images/responsive.png)
 
-## UX User experience
-### Project Goals
+## UX User experience and Design
 
-To build a website
+In terms of design, the page is stripped down so as not to distract from the content. The colors are different on everything to give a playful and inspiring impression. Lines are dashed to resemble sewing machine stitches.
 
-### Strategy
-To ensure an efficient 
+The site is easily navigated from the navbar. there users find home, posts they liked, sinegen profile and sign out
 
 ### Planning
 GitHub Project and Issues were used for Agile project planning. User Stories with acceptance criteria were defined in GitHub Issues, and development progress was managed on a Kanban board.
+## ![Canvanbord](src/assets/images/canvanbord.jpg)
 
-### Epic
-As a Sewlot member, 
 
 ### User stories:
 -   **Non sign in user:** As a non sign in user I am directed to the sign in form to easy sign in or to click the link to the sign up form.
@@ -27,84 +22,80 @@ As a Sewlot member,
 -   **Account edit username:** As a logged in User I can edit my account so that I can change username. 
 -   **Account edit password:** As a logged in User I can edit my account so that I can change password.
 -   **Account log out:** As a logged in Site User I can log out to prevent other people to acsess my acount.
-- 
 -  **Post:** As a logged in User I can create a post.
 -  **Post:** As a logged in User I can edit a post I created.
 -  **Post:** As a logged in User I can delete a post I created.
 -  **View all posts:**  As a logged in User I can view all posts.
-
 -  **View post and  comments:** As a logged in User I can view an individual post so that I can read the comments to it.
-
 -   **Follow other user:** As a logged in User I can follow another user.
-
-
+-  **Account edit profile image:** As a logged in User I can edit my account so that I can change profile image. 
+-  **Like Post:** As a logged in User I can Like another users post.
+-  **Like** As a logged in click Like to view posts I have liked.
 
 ### User stories not done yet:
--  **Account edit profile image:** As a logged in User I can edit my account so that I can change profile image. 
 -  **View some posts:**  As a logged in User I can click on feed to view only posts of users I am following.
 -  **Comment on a post:** As a logged in User I can leave comments on a post so that I can be involved in the conversation
 -  **Delete a Comment:** As a logged in User I can edit or delete a comment I wrote on a post so that I can change my minde
--  **Like Post:** As a logged in User I can Like another users post.
 -  **Like Comment:** As a logged in User I can Like another users post.
 -  **Feed** As a logged in click feed to view posts only from Users I am following.
--  **Like** As a logged in click Like to view posts I have liked.
 -  **Search:** A lodge in user should be able to search for a word or words in all content on the page
-
-## Design
-Creating a creative atmosphere 
-
-The colors used are:
 
 
 ### Wireframes
-Wireframes were created using Balsamiq during the planning phase to visualize the website's layout on desktop and mobile devices.
-
-
+Wireframes were created using pen and paper during the planning phase to visualize the website's layout on desktop and mobile devices.
+## ![Home](src/assets/images/planing.jpg)
 
 
 ## Features
 
 ###  Home page
-On the home page, all users can find all posts whit the last created at the top.
-## ![Home](assets/)
+On the home page, the navbar is att the top and users can find all posts whit the last created at the top.
+## ![Home](src/assets/images/home.jpg)
 
 ### Navigation bar
-The top navigation is display only to a signed in user. I contains Sewlot logo, a home link, a feed link, a sign out link and a avatar of the user that leads to the signed in users profile page. When on a mobile the menu is viewed as a hamburger menu instead leaving only that and the logo in the menu.
-## ![Navigation bar](assets/images/)
+The top navigation is display only to a signed in user. I contains Sewlot logo that also redirect to home, a home link, a sign out link and a avatar of the user that when clicked leads to the current users profile page. When on a mobile the menu is viewed as a hamburger menu instead leaving only that and the logo in the menu.
+## ![Navigation bar](src/assets/images/navbar.jpg)
 
 ### Sign in
 The sign in page contain a form with username and password. It will validate that the information provided is correct. A correct sign in redirect the user to home page.
 Just under the login button, there is also a link to Sign Up if not already.
-## ![Log in](assets/images/)
+## ![Log in](src/assets/images/signin.jpg)
 
 ### Sign up
 The sign up page contains a form with username, password and a confirmation password field. There is also information about what a valid password is. They form will validate that's all information is filled in correctly.
-## ![Sign up](assets/images/)
+## ![Sign up](src/assets/images/signup.jpg)
 
-###  Display single post whit comments
-A logged-in user can view comments and write a comment. A logged-in user can also edit and delete comments written by them self. A user can also like the post and comments writen by other users.
-## ![Display book](assets/images/)
-
-###  Feed
-On the Feed page, the user can see posts created of peolpe the user is follownig.
-## ![Library](assets/images/)
+###  Display single post
+Each post contains user, user avatar, date it was created or updated. The content is text and the user can also add an image and/or an external link to the desired page. At the bottom of the post there is a like icon.
+## ![Display book](src/assets/images/posts.jpg)
 
 ###  Like
-On the Like page, the user can see posts the user liked.
-## ![Like](assets/images/)
+Like the heart, users can click to like a post. Next to the heart is shown how many likes the post has received. Below the heart in the navbar, posts that the user liked are displayed.
+## ![Like](src/assets/like.jpg)
 
-###  Favicon
-Favicon icon on the tab in the browser. Makes it easier for the user to find the page if there are many open tabs.
-## ![Favicon](assets/images/)
+###  Edit and delete post
+A user can update a record he himself created. by first clicking on the entry and then clicking on the small dotted menu, the options edit and share will appear.
+## ![Edit](src/assets/images/editpost.jpg)
+## ![Form](src/assets/images/editpostform.jpg)
+
+###  Profile page
+The profile page shows the user name, user picture, the user's description if there is one and the user's record.
+The user gets to their profile page by clicking on the avatar in the navbar, then a menu for edit is also displayed.
+By clicking on the user on an entry, that user's profile and a follow unfollow button are displayed, if it is not one's own profile.
+## ![profile](src/assets/images/profile.jpg)
+
+###  Edit profile
+A user can update their profile. By first clicking on the avatar in the navbar and then clicking on the small dotted menu, the options edit profile, edit username and edit password will appear.
+## ![Edit](src/assets/images/editprofile.jpg)
+## ![Form](src/assets/images/editprofileform.jpg)
 
 
 ###  Features to implement later
-Add Serch. Se not done userstorys.
+Comments on posts and comments
 
 ## Data Model
 
 This project includes two custom models, Post and Comment.
-## ![Data Model](assets/images/)
 
 
 ## Technologies
@@ -124,30 +115,35 @@ Frameworks, Libraries and Programs Used:
 
 ## Testing
 
--   HTML  **W3C tools**
-## ![HTML validation](assets/images/)
-
--   CSS  **W3C tools**
-## ![HTML validation](assets/images/)
-
 -   Lighthouse In DevTools
-## ![CSS validation](assets/images/)
-
--   JSHint
+## ![CSS validation](src/assets/images/lighthouse.png)
 
 
 ### Browser Compatibility
 
+The following browsers have been tested:
 
+Chrome Version 108.0.5359.125
+Mozilla Firefox Version 108.0.1
+Edge Version 108.0.1462.54
+Safari on macOS Version 16.1
+Tested on hardware:
 
-### Mobile responsiveness testing.
-
+Asus laptop 17 inch
+MacBook Pro 16 inch
+MacBook Pro 15 inch
+Desktop: 2560 wide monitor to MacBook
+Mobile responsiveness testing.
 Chrome Developer tools were used for more extensive testing.
 
-Following mobiles has been tested:
+### Following mobiles has been tested:
 
--   Huawei P20 pro
-
+iPhone 5 / SE
+iPhone 7
+iPhone Pro Max
+Samsung Galaxy a52s
+Huawei P20 pro
+Sony Xperia 5 III
 
 
 ### Manual testing
@@ -202,8 +198,10 @@ Following mobiles has been tested:
 |- Clicking Delete   |Removes the deleted post from array without refrech |X |
 |- Another users own Post page | Post is viewed |Pass|
 
-
-
+### Note to testing:
+During the testing, two inexplicable errors with page reload came up.
+- When a user logs in to an already existing account in a new browser or after clearing cookies: The user is logged in but it is only navbar that renders corectly. Sign in form remains instead of items being loaded. when the user clicks refresh or any of the links in the navbar, the corect page is displayed. There are no error messages or anything else that shows that something is wrong. When a user signs up or logs in again on the page, everything corect is loaded with navbar and records.
+- When a user clicks on delete a post, the post is deleted and the user is redirected to the homepage. But the records are not reloaded so it looks like the record is still there, it is only when the user clicks refresh or a link to something else that the page reloads and the deleted record is finally loaded. There are no error messages or anything else to suggest an error and all troubleshooting results in the bored page reloading when the record is deleted.
 
 
 ## Deployment

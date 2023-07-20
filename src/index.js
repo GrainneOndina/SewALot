@@ -12,7 +12,6 @@ import { ProfileDataProvider } from "./contexts/ProfileDataContext";
  * Renders the root component and sets up the necessary providers.
  */
 createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
     <BrowserRouter>
       <CurrentUserProvider>
         <ProfileDataProvider>
@@ -20,7 +19,6 @@ createRoot(document.getElementById('root')).render(
         </ProfileDataProvider>
       </CurrentUserProvider>
     </BrowserRouter>
-  </React.StrictMode>
 );
 
 // Measure and send web vitals to analytics
