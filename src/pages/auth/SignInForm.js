@@ -93,6 +93,8 @@ function SignInForm() {
               {message}
             </Alert>
           ))}
+          {/* Empty div for spacing */}
+          <div style={{ height: "3rem" }}></div>
           <Button
             className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`}
             type="submit"
@@ -106,11 +108,7 @@ function SignInForm() {
           ))}
         </Form>
       </Container>
-      <Container className={`${appStyles.Content} mt-3`}>
-        <Link className={styles.Link} to="/signup">
-          Don't have an account? <span>Sign up now!</span>
-        </Link>
-      </Container>
+      
     </div>
   );
 }
