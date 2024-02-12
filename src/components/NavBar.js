@@ -38,7 +38,7 @@ const NavBar = () => {
   };
 
   if (!currentUser) {
-    return <Redirect to="/signin" />;
+    return <Redirect to="/landing" />;
   }
 
   const loggedInIcons = (

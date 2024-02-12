@@ -16,6 +16,8 @@ import UserPasswordForm from "./pages/profiles/UserPasswordForm";
 import ProfileEditForm from "./pages/profiles/ProfileEditForm";
 import NotFound from "./components/NotFound";
 import { axiosReq } from "./api/axiosDefaults";
+import LandingPage from './pages/LandingPage';
+
 
 /**
  * The main App component.
@@ -51,6 +53,8 @@ function App() {
       clearTimeout(timer);
     };
   }, [filter, query, currentUser, pathname]);
+
+  console.log(currentUser);
 
   return (
     <div className={styles.App}>
@@ -94,6 +98,7 @@ function App() {
               />
             )}
           />
+          <Route exact path="/landing" render={() => <LandingPage />} />
           <Route exact path="/signin" render={() => <SignInForm />} />
           <Route exact path="/signup" render={() => <SignUpForm />} />
           <Route exact path="/posts/:id" render={() => <PostPage />} />

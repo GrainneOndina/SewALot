@@ -1,0 +1,22 @@
+.Row {
+    height: calc(100vh - 81px);
+  }
+  
+  .Header {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #543b70;
+  }
+
+  .catch {
+    text-align: center;
+  }
+  
+  .Container {
+    padding: 30px 10px;
+  }

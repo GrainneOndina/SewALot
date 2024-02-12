@@ -58,7 +58,7 @@ function SignInForm() {
   return (
     <div className="d-flex flex-column align-items-center">
       <Container className={`${appStyles.Content} p-4`}>
-        <h1 className={styles.Header}>sign in</h1>
+        <h2 className={styles.Header}>sign in</h2>
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="username">
             <Form.Label className="d-none">Username</Form.Label>
