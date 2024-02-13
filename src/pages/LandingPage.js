@@ -21,7 +21,7 @@ const LandingPage = () => {
   };
 
   return (
-    <div  class="container">
+    <div class="container">
      <div class="row justify-content-md-center">
       <h1 className={styles.Header}>Welcome to SewLot</h1>
       <p className={styles.catch}>
@@ -29,28 +29,17 @@ const LandingPage = () => {
       </p>
 
       {/* Render the SignInForm component */}
-      {showSignInForm ? (
-        <SignInForm />
-      ) : (
-        <SignUpForm />
-      )}
+      {showSignInForm ? <SignInForm /> : <SignUpForm />}
 
-      <div>
-        {/* Toggle between showing sign-up or sign-in message */}
+      <div onClick={toggleForm} className={styles.ToggleFormLink} style={{ cursor: "pointer", color: "blue" }}>
         {showSignInForm ? (
-          <p>
-            Don't have an account?{" "}
-            <span onClick={toggleForm} style={{ cursor: "pointer", color: "blue" }}>
-              Sign up now!
-            </span>
-          </p>
+          <div class="container, mt-3 text-center">
+            <p>Don't have an account? Sign up now!</p>
+          </div>
         ) : (
-          <p>
-            Already have an account?{" "}
-            <span onClick={toggleForm} style={{ cursor: "pointer", color: "blue" }}>
-              Sign in!
-            </span>
-          </p>
+          <div class="container, mt-3 text-center">
+            <p>Already have an account? Sign in!</p>
+          </div>
         )}
       </div>
 
