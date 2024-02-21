@@ -17,30 +17,44 @@ const Profile = (props) => {
   const { handleFollow } = useSetProfileData();
 
   return (
-    <div className={`${styles.Profile} ${mobile ? styles.MobileProfile : ""}`}>
-      <div className={styles.Info}>
-        <Link className={styles.OwnerLink} to={`/profiles/${id}`}>
-          <strong>{owner}</strong>
-        </Link>
-        {!mobile && currentUser && !is_owner && (
-          <div className={styles.Buttons}>
-            {following_id ? (
-              <Button
-                className={`${btnStyles.Button} ${btnStyles.BlackOutline}`}
-                onClick={() => {}}
-              >
-                unfollow
-              </Button>
-            ) : (
-              <Button
-                className={`${btnStyles.Button} ${btnStyles.Black}`}
-                onClick={() => handleFollow(profile)}
-              >
-                follow
-              </Button>
-            )}
+    <div class="container">
+      <div class="row">
+
+        <div class="col-sm">
+          <div className={`${styles.Profile} ${mobile ? styles.MobileProfile : ""}`}>
+            <div className={styles.Info}>
+            </div>
           </div>
-        )}
+        </div>
+
+        <div class="col-sm">
+          <Link className={styles.OwnerLink} to={`/profiles/${id}`}>
+            <strong>{owner}</strong>
+          </Link>
+        </div>
+                      
+        <div class="col-sm">          
+          {!mobile && currentUser && !is_owner && (
+              <div className={styles.Buttons}>
+                {following_id ? (
+                  <Button
+                    className={`${btnStyles.Button} ${btnStyles.BlackOutline}`}
+                    onClick={() => {}}
+                  >
+                    unfollow
+                  </Button>
+                ) : (
+                  <Button
+                    className={`${btnStyles.Button} ${btnStyles.Black}`}
+                    onClick={() => handleFollow(profile)}
+                  >
+                    follow
+                  </Button>
+                )}
+              </div>
+            )}
+        </div>
+
       </div>
     </div>
   );

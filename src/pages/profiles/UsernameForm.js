@@ -51,37 +51,39 @@ const UsernameForm = () => {
   };
 
   return (
-    <Row>
-      <Col className="py-2 mx-auto text-center" md={6}>
-        <Container className={appStyles.Content}>
-          <Form onSubmit={handleSubmit} className="my-2">
-            <Form.Group>
-              <Form.Label>Change username</Form.Label>
-              <Form.Control
-                placeholder="username"
-                type="text"
-                value={username}
-                onChange={(event) => setUsername(event.target.value)}
-              />
-            </Form.Group>
-            {errors?.username?.map((message, idx) => (
-              <Alert key={idx} variant="warning">
-                {message}
-              </Alert>
-            ))}
-            <Button
-              className={`${btnStyles.Button} ${btnStyles.Blue}`}
-              onClick={() => history.goBack()}
-            >
-              cancel
-            </Button>
-            <Button className={`${btnStyles.Button} ${btnStyles.Blue}`} type="submit">
-              save
-            </Button>
-          </Form>
-        </Container>
-      </Col>
-    </Row>
+    <div class="container">
+      <Row>
+        <Col className="py-2 mx-auto text-center" md={6}>
+          <Container className={appStyles.Content}>
+            <Form onSubmit={handleSubmit} className="my-2">
+              <Form.Group>
+                <Form.Label>Change username</Form.Label>
+                <Form.Control
+                  placeholder="username"
+                  type="text"
+                  value={username}
+                  onChange={(event) => setUsername(event.target.value)}
+                />
+              </Form.Group>
+              {errors?.username?.map((message, idx) => (
+                <Alert key={idx} variant="warning">
+                  {message}
+                </Alert>
+              ))}
+              <Button
+                className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                onClick={() => history.goBack()}
+              >
+                cancel
+              </Button>
+              <Button className={`${btnStyles.Button} ${btnStyles.Blue}`} type="submit">
+                save
+              </Button>
+            </Form>
+          </Container>
+        </Col>
+      </Row>
+    </div>
   );
 };
 

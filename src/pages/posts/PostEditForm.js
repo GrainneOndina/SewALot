@@ -98,80 +98,88 @@ function PostEditForm() {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <div className={appStyles.Content}>
-        <div className={styles.Container}>
-          <Form.Group>
-            <Form.Label>Content</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={6}
-              name="content"
-              value={content}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors?.content?.map((message, idx) => (
-            <Alert variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
+    <div class="container">
+      <div className="d-flex flex-column align-items-center">
+        <div className="col-lg-8">
+          
+          <Form onSubmit={handleSubmit}>
+            <div className={appStyles.Content}>
+              <div className={styles.Container}>
+                <Form.Group>
+                  <Form.Label>Content</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={6}
+                    name="content"
+                    value={content}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+                {errors?.content?.map((message, idx) => (
+                  <Alert variant="warning" key={idx}>
+                    {message}
+                  </Alert>
+                ))}
 
-          <Form.Group>
-            <Form.Label>URL</Form.Label>
-            <Form.Control
-              type="text"
-              name="url"
-              value={url || ""}
-              onChange={handleChange}
-              placeholder="Add URL"
-            />
-          </Form.Group>
-          {errors?.url?.map((message, idx) => (
-            <Alert variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
+                <Form.Group>
+                  <Form.Label>URL</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="url"
+                    value={url || ""}
+                    onChange={handleChange}
+                    placeholder="Add URL"
+                  />
+                </Form.Group>
+                {errors?.url?.map((message, idx) => (
+                  <Alert variant="warning" key={idx}>
+                    {message}
+                  </Alert>
+                ))}
 
-          <Form.Group className="text-center">
-            <figure>
-              {image && (
-                <Image
-                  className={appStyles.Image}
-                  src={imageUrl}
-                  rounded
-                />
-              )}
-            </figure>
-            <Form.Control
-              type="file"
-              accept="image/*"
-              onChange={handleChangeImage}
-              ref={imageInput}
-            />
-          </Form.Group>
-          {errors?.image?.map((message, idx) => (
-            <Alert variant="warning" key={idx}>
-              {message}
-            </Alert>
-          ))}
-        </div>
-        <div className="text-center">
-          <Button
-            className={`${btnStyles.Button} ${btnStyles.Blue}`}
-            onClick={() => history.goBack()}
-          >
-            Cancel
-          </Button>
-          <Button
-            className={`${btnStyles.Button} ${btnStyles.Blue}`}
-            type="submit"
-          >
-            Save
-          </Button>
+                <Form.Group className="text-center">
+                  <figure>
+                    {image && (
+                      <Image
+                        className={appStyles.Image}
+                        src={imageUrl}
+                        rounded
+                      />
+                    )}
+                  </figure>
+                  <Form.Control
+                    type="file"
+                    accept="image/*"
+                    onChange={handleChangeImage}
+                    ref={imageInput}
+                  />
+                </Form.Group>
+                {errors?.image?.map((message, idx) => (
+                  <Alert variant="warning" key={idx}>
+                    {message}
+                  </Alert>
+                ))}
+              </div>
+              <div className="text-center">
+                <Button
+                  className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                  onClick={() => history.goBack()}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                  type="submit"
+                >
+                  Save
+                </Button>
+              </div>
+            </div>
+          </Form>
+
         </div>
       </div>
-    </Form>
+    </div>
   );
 }
 

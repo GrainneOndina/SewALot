@@ -103,68 +103,70 @@ const Post = (props) => {
   };
 
   return (
-    <Card className={styles.Post}>
-      <Card.Body>
-        <div className={styles.UserInfo}>
-          <Link to={`/profiles/${profile_id}`}>
-            <Avatar src={profile_image} height={55} />
-            <span>{owner}</span>
-            <br />
-            <span className={styles.Date}>{updated_at}</span>
-          </Link>
-          {is_owner && postPage ? (
-            <MoreDropdown handleEdit={handleEdit} handleDelete={handleDelete} />
-          ) : !is_owner ? null : null}
-        </div>
-        {content && (
-          <p className={styles.Content} onClick={handleClickContent}>
-            {content}
-          </p>
-        )}
-      </Card.Body>
+    <div class="container">
+      <Card className={styles.Post}>
+        <Card.Body>
+          <div className={styles.UserInfo}>
+            <Link to={`/profiles/${profile_id}`}>
+              <Avatar src={profile_image} height={55} />
+              <span>{owner}</span>
+              <br />
+              <span className={styles.Date}>{updated_at}</span>
+            </Link>
+            {is_owner && postPage ? (
+              <MoreDropdown handleEdit={handleEdit} handleDelete={handleDelete} />
+            ) : !is_owner ? null : null}
+          </div>
+          {content && (
+            <p className={styles.Content} onClick={handleClickContent}>
+              {content}
+            </p>
+          )}
+        </Card.Body>
 
-      <Link to={`/posts/${id}`}>
-        <Card.Img src={image} alt="" />
-      </Link>
-      {url && (
-        <div className={styles.URLOverlay}>
-          <a href={url} target="_blank" rel="noopener noreferrer" onClick={handleClickUrl}>
-            <p className={styles.LinkText}>Check this link out</p>
-          </a>
-        </div>
-      )}
-
-      <div className={styles.PostBar}>
-        {is_owner ? (
-          <OverlayTrigger
-            placement="top"
-            overlay={<Tooltip>You can't like your own post!</Tooltip>}
-          >
-            <i className="far fa-heart" />
-          </OverlayTrigger>
-        ) : like_id ? (
-          <span onClick={handleUnlike}>
-            <i className={`fas fa-heart ${styles.Heart}`} />
-          </span>
-        ) : currentUser ? (
-          <span onClick={handleLike}>
-            <i className={`far fa-heart ${styles.HeartOutline}`} />
-          </span>
-        ) : (
-          <OverlayTrigger
-            placement="top"
-            overlay={<Tooltip>Log in to like posts!</Tooltip>}
-          >
-            <i className="far fa-heart" />
-          </OverlayTrigger>
-        )}
-        {likes_count}
         <Link to={`/posts/${id}`}>
-          <i className="far fa-comments" />
+          <Card.Img src={image} alt="" />
         </Link>
-        {comments_count}
-      </div>
-    </Card>
+        {url && (
+          <div className={styles.URLOverlay}>
+            <a href={url} target="_blank" rel="noopener noreferrer" onClick={handleClickUrl}>
+              <p className={styles.LinkText}>Check this link out</p>
+            </a>
+          </div>
+        )}
+
+        <div className={styles.PostBar}>
+          {is_owner ? (
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip>You can't like your own post!</Tooltip>}
+            >
+              <i className="far fa-heart" />
+            </OverlayTrigger>
+          ) : like_id ? (
+            <span onClick={handleUnlike}>
+              <i className={`fas fa-heart ${styles.Heart}`} />
+            </span>
+          ) : currentUser ? (
+            <span onClick={handleLike}>
+              <i className={`far fa-heart ${styles.HeartOutline}`} />
+            </span>
+          ) : (
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip>Log in to like posts!</Tooltip>}
+            >
+              <i className="far fa-heart" />
+            </OverlayTrigger>
+          )}
+          {likes_count}
+          <Link to={`/posts/${id}`}>
+            <i className="far fa-comments" />
+          </Link>
+          {comments_count}
+        </div>
+      </Card>
+    </div>
   );
 };
 

@@ -56,59 +56,61 @@ function SignInForm() {
   };
 
   return (
-    <div className="d-flex flex-column align-items-center">
-      <Container className={`${appStyles.Content} p-4`}>
-        <h2 className={styles.Header}>sign in</h2>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="username">
-            <Form.Label className="d-none">Username</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Username"
-              name="username"
-              className={styles.Input}
-              value={username}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors.username?.map((message, idx) => (
-            <Alert key={idx} variant="warning">
-              {message}
-            </Alert>
-          ))}
+    <div class="container">
+      <div className="d-flex flex-column align-items-center">
+        <div className={`${appStyles.Content} p-4`}>
+          <h2 className={styles.Header}>sign in</h2>
+          
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="username">
+              <Form.Label className="d-none">Username</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Username"
+                name="username"
+                className={styles.Input}
+                value={username}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            {errors.username?.map((message, idx) => (
+              <Alert key={idx} variant="warning">
+                {message}
+              </Alert>
+            ))}
 
-          <Form.Group controlId="password">
-            <Form.Label className="d-none">Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              name="password"
-              className={styles.Input}
-              value={password}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          {errors.password?.map((message, idx) => (
-            <Alert key={idx} variant="warning">
-              {message}
-            </Alert>
-          ))}
-          {/* Empty div for spacing */}
-          <div style={{ height: "3rem" }}></div>
-          <Button
-            className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`}
-            type="submit"
-          >
-            Sign in
-          </Button>
-          {errors.non_field_errors?.map((message, idx) => (
-            <Alert key={idx} variant="warning" className="mt-3">
-              {message}
-            </Alert>
-          ))}
-        </Form>
-      </Container>
-      
+            <Form.Group controlId="password">
+              <Form.Label className="d-none">Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                name="password"
+                className={styles.Input}
+                value={password}
+                onChange={handleChange}
+              />
+            </Form.Group>
+            {errors.password?.map((message, idx) => (
+              <Alert key={idx} variant="warning">
+                {message}
+              </Alert>
+            ))}
+            {/* Empty div for spacing */}
+            <div style={{ height: "3rem" }}></div>
+            <Button
+              className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`}
+              type="submit"
+            >
+              Sign in
+            </Button>
+            {errors.non_field_errors?.map((message, idx) => (
+              <Alert key={idx} variant="warning" className="mt-3">
+                {message}
+              </Alert>
+            ))}
+          </Form>
+        </div>
+      </div>
     </div>
   );
 }

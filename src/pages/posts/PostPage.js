@@ -26,13 +26,15 @@ function PostPage() {
   }, [id]);
 
   return (
-    <Container className={appStyles.Content}>
-      <Row className="justify-content-center">
-        <Col lg={8}>
-          {post ? <Post {...post} setPosts={setPost} postPage /> : null}
-        </Col>
-      </Row>
-    </Container>
+    <div class="container">
+      <div className={appStyles.Content}>
+        <Row className="justify-content-center">
+          <Col lg={8}>
+            {post ? <Post {...post} setPosts={setPost} postPage /> : null}
+          </Col>
+        </Row>
+      </div>
+    </div>
   );
 }
 

@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import useClickOutsideToggle from "../hooks/useClickOutsideToggle";
 import { removeTokenTimestamp } from "../utils/utils";
+import { Row } from "react-bootstrap";
 
 /**
  * NavBar component that renders the navigation bar.
@@ -93,31 +94,33 @@ const NavBar = () => {
   );
 
   return (
-    <Navbar
-      key={currentUser ? currentUser.id : "guest"}
-      expanded={expanded}
-      className={styles.NavBar}
-      expand="md"
-      fixed="top"
-    >
-      <Container>
-        <NavLink to="/">
-          <Navbar.Brand>
-            <img src={logo} alt="logo" className={styles.Logo} />
-          </Navbar.Brand>
-        </NavLink>
-        <Navbar.Toggle
-          ref={ref}
-          onClick={() => setExpanded(!expanded)}
-          aria-controls="basic-navbar-nav"
-        />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ml-auto text-left">
-            {currentUser ? loggedInIcons : loggedOutIcons}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+    <div class="container">
+      <Navbar
+        key={currentUser ? currentUser.id : "guest"}
+        expanded={expanded}
+        className={styles.NavBar}
+        expand="md"
+        fixed="top"
+      >
+        <div class="container">
+          <NavLink to="/">
+            <Navbar.Brand>
+              <img src={logo} alt="logo" className={styles.Logo} />
+            </Navbar.Brand>
+          </NavLink>
+          <Navbar.Toggle
+            ref={ref}
+            onClick={() => setExpanded(!expanded)}
+            aria-controls="basic-navbar-nav"
+          />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ml-auto text-left">
+              {currentUser ? loggedInIcons : loggedOutIcons}
+            </Nav>
+          </Navbar.Collapse>
+        </div>
+      </Navbar>
+    </div>
   );
 };
 

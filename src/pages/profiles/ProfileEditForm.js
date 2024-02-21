@@ -84,46 +84,52 @@ const ProfileEditForm = () => {
   };
 
   return (
-    <Container className={appStyles.Content}>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="description">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            as="textarea"
-            name="description"
-            rows={7}
-            value={description}
-            onChange={handleChange}
-          />
-        </Form.Group>
+    <div class="container">
+      <div className="d-flex flex-column align-items-center">
+        <div className="col-lg-8">
+          <div className={appStyles.Content}>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group controlId="description">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  name="description"
+                  rows={7}
+                  value={description}
+                  onChange={handleChange}
+                />
+              </Form.Group>
 
-        <Form.Group controlId="image">
-          <Form.Label>Profile Image</Form.Label>
-          <Form.Control
-            type="file"
-            accept="image/*"
-            ref={imageFile}
-            onChange={handleImageChange}
-          />
-        </Form.Group>
+              <Form.Group controlId="image">
+                <Form.Label>Profile Image</Form.Label>
+                <Form.Control
+                  type="file"
+                  accept="image/*"
+                  ref={imageFile}
+                  onChange={handleImageChange}
+                />
+              </Form.Group>
 
-        {errors?.description?.map((message, idx) => (
-          <Alert variant="warning" key={idx}>
-            {message}
-          </Alert>
-        ))}
+              {errors?.description?.map((message, idx) => (
+                <Alert variant="warning" key={idx}>
+                  {message}
+                </Alert>
+              ))}
 
-        <Button
-          className={`${btnStyles.Button} ${btnStyles.Blue}`}
-          onClick={() => history.goBack()}
-        >
-          Cancel
-        </Button>
-        <Button className={`${btnStyles.Button} ${btnStyles.Blue}`} type="submit">
-          Save
-        </Button>
-      </Form>
-    </Container>
+              <Button
+                className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                onClick={() => history.goBack()}
+              >
+                Cancel
+              </Button>
+              <Button className={`${btnStyles.Button} ${btnStyles.Blue}`} type="submit">
+                Save
+              </Button>
+            </Form>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

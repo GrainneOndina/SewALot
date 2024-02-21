@@ -22,32 +22,34 @@ const LandingPage = () => {
 
   return (
     <div class="container">
-     <div class="row justify-content-md-center">
-      <h1 className={styles.Header}>Welcome to SewLot</h1>
-      <p className={styles.catch}>
-        Your place to be inspired and share your sewing hobby. Discuss with others and find solutions together.
-      </p>
+      <div className="d-flex flex-column align-items-center">
+        <div className="col-lg-8">
+          <h1 className={styles.Header}>Welcome to SewLot</h1>
+          <p className={styles.catch}>
+            Your place to be inspired and share your sewing hobby. Discuss with others and find solutions together.
+          </p>
 
-      {/* Render the SignInForm component */}
-      {showSignInForm ? <SignInForm /> : <SignUpForm />}
+          {/* Render the SignInForm component */}
+          {showSignInForm ? <SignInForm /> : <SignUpForm />}
 
-      <div onClick={toggleForm} className={styles.ToggleFormLink} style={{ cursor: "pointer", color: "blue" }}>
-        {showSignInForm ? (
-          <div class="container, mt-3 text-center">
-            <p>Don't have an account? Sign up now!</p>
+          <div onClick={toggleForm} className={styles.ToggleFormLink} style={{ cursor: "pointer", color: "blue" }}>
+            {showSignInForm ? (
+              <div class="container, mt-3 text-center">
+                <p>Don't have an account? Sign up now!</p>
+              </div>
+            ) : (
+              <div class="container, mt-3 text-center">
+                <p>Already have an account? Sign in!</p>
+              </div>
+            )}
           </div>
-        ) : (
-          <div class="container, mt-3 text-center">
-            <p>Already have an account? Sign in!</p>
-          </div>
-        )}
-      </div>
 
-        <img
-          src="images/sewingmachin.jpg"
-          alt="Sewing Machine"
-          className="img-fluid"
-        />
+            <img
+              src="images/sewingmachin.jpg"
+              alt="Sewing Machine"
+              className="img-fluid"
+            />
+          </div>
       </div>
     </div>
   );

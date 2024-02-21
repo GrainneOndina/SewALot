@@ -133,14 +133,20 @@ function ProfilePage() {
   );
 
   return (
-    <Container fluid className={appStyles.MainContainer}>
-      {hasLoaded && (
-        <>
-          {mainProfile}
-          {mainProfilePosts}
-        </>
-      )}
-    </Container>
+    <div class="container">
+      <div className="d-flex flex-column align-items-center">
+        <div className="col-lg-8">
+          <div className={appStyles.MainContainer}>
+            {hasLoaded && (
+              <>
+                {mainProfile}
+                {mainProfilePosts}
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
