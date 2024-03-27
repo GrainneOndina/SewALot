@@ -47,10 +47,12 @@ const NavBar = () => {
       <NavLink
         className={styles.NavLink}
         activeClassName={styles.Active}
+        exact
         to="/"
       >
         <i className="fas fa-home"></i>Home
       </NavLink>
+
       <NavLink
         className={styles.NavLink}
         activeClassName={styles.Active}
@@ -58,11 +60,14 @@ const NavBar = () => {
       >
         <i className="fas fa-heart"></i>Liked
       </NavLink>
+      
       <NavLink className={styles.NavLink} to="/" onClick={handleSignOut}>
         <i className="fas fa-sign-out-alt"></i>Sign out
       </NavLink>
+      
       <NavLink
         className={`${styles.NavLink} ${styles.AvatarLink}`}
+        activeClassName={styles.activeAvatar}
         to={`/profiles/${currentUser?.profile_id}`}
       >
         <img
@@ -94,7 +99,7 @@ const NavBar = () => {
   );
 
   return (
-    <div class="container">
+    <div className="container">
       <Navbar
         key={currentUser ? currentUser.id : "guest"}
         expanded={expanded}
@@ -102,7 +107,7 @@ const NavBar = () => {
         expand="md"
         fixed="top"
       >
-        <div class="container">
+        <div className="container">
           <NavLink to="/">
             <Navbar.Brand>
               <img src={logo} alt="logo" className={styles.Logo} />
