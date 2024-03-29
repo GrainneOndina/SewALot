@@ -103,7 +103,7 @@ const Post = (props) => {
   };
 
   return (
-    <div class="container">
+    <div className="container">
       <Card className={styles.Post}>
         <Card.Body>
           <div className={styles.UserInfo}>

@@ -31,15 +31,21 @@ function PostEditForm() {
       try {
         const { data } = await axiosReq.get(`/posts/${id}/`);
         const { content, url, image, is_owner } = data;
-
-        is_owner ? setPostData({ content, url, image }) : history.push("/");
+  
+        if (is_owner) {
+          setPostData({ content, url, image });
+          setImageUrl(image); // Set imageUrl state with the image URL
+        } else {
+          history.push("/");
+        }
       } catch (err) {
         // console.log(err);
       }
     };
-
+  
     handleMount();
   }, [history, id]);
+  
 
   /**
    * Handles the change event for input fields.
@@ -51,19 +57,25 @@ function PostEditForm() {
     });
   };
 
-  /**
-   * Handles the change event for the image input field.
-   */
-  const handleChangeImage = (event) => {
-    if (event.target.files.length) {
-      const selectedImage = event.target.files[0];
+/**
+ * Handles the change event for the image input field.
+ */
+const handleChangeImage = (event) => {
+  if (event.target.files.length) {
+    const selectedImage = event.target.files[0];
+    // Check if the image size exceeds the limit (e.g., 2MB)
+    if (selectedImage.size > 2 * 1024 * 1024) {
+      // Show an alert message or take appropriate action to inform the user
+      alert('Image size exceeds the limit. Please select a smaller image.');
+    } else {
       setPostData({
         ...postData,
         image: selectedImage,
       });
       setImageUrl(URL.createObjectURL(selectedImage));
     }
-  };
+  }
+};
 
   /**
    * Handles the submit event for the form.
@@ -98,7 +110,7 @@ function PostEditForm() {
   };
 
   return (
-    <div class="container">
+    <div className="container">
       <div className="d-flex flex-column align-items-center">
         <div className="col-lg-8">
           
@@ -141,9 +153,10 @@ function PostEditForm() {
                   <figure>
                     {image && (
                       <Image
-                        className={appStyles.Image}
-                        src={imageUrl}
-                        rounded
+                      className={`${appStyles.Image} ${styles.PostImage}`}
+                      src={imageUrl}
+                      rounded
+                      fluid
                       />
                     )}
                   </figure>
