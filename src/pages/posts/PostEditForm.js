@@ -8,6 +8,7 @@ import styles from "../../styles/PostCreateEditForm.module.css";
 import appStyles from "../../App.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import { axiosReq } from "../../api/axiosDefaults";
+import validUrl from 'valid-url';
 
 /**
  * Component for editing a post.
@@ -82,22 +83,29 @@ const handleChangeImage = (event) => {
    */
   const handleSubmit = async (event) => {
     event.preventDefault();
+  
+    // Validate URL
+    if (url && !validUrl.isUri(url)) {
+      setErrors({ url: ['Please enter a valid URL.'] });
+      return;
+    }
+  
     const formData = new FormData();
     formData.append("content", content);
     if (url) {
       formData.append("url", url);
     }
-
+  
     if (imageInput?.current?.files[0]) {
       formData.append("image", imageInput.current.files[0]);
     }
-
+  
     // Exclude URL and image fields if both are empty
     if (!url && !image) {
       formData.delete("url");
       formData.delete("image");
     }
-
+  
     try {
       await axiosReq.put(`/posts/${id}/`, formData);
       history.push(`/posts/${id}`);
