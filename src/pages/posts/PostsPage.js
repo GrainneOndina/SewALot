@@ -42,8 +42,14 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
 
     const formData = new FormData();
     formData.append("content", content);
+
+    // Check if URL is provided and if it's a valid URL
     if (url) {
       formData.append("url", url);
+      if ((url)) {
+        setErrorMessage("Please enter a valid URL");
+        return;
+      }
     }
 
     if (image) {

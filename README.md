@@ -194,6 +194,8 @@ Sony Xperia 5 III
 |- Also adding an image ore/and an url |  Also adds the image/url to post |Pass |
 |- Clicking Post whitout text in add post| Don't adds empty post |Pass|
 |- Clicking Post whitout text in add post| Tells user its not posible to add post with out content |Pass|
+|- Clicking Post, with an invalid url in add post| Tells user: Please enter a valid URL |Pass|
+|- In post edit form. Clicking Save, with an invalid url in add post| Tells user: Please enter a valid URL |Pass|
 |- Clicking a post, image or text |Post page is viewed |Pass |
 |- Users own Post page | Post and a dropdown-menu is viewed |Pass|
 |- Clicking the dropdown-menu |Choises Edit post or delete is viewed   |Pass |
