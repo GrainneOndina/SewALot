@@ -53,6 +53,11 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
     }
 
     if (image) {
+      if (image.size > 2 * 1024 * 1024) {
+        setErrorMessage('Image size exceeds the limit. Please select a smaller image.');
+        return; // Stop further execution if image size exceeds the limit
+      }
+      
       formData.append("image", image);
     }
 
