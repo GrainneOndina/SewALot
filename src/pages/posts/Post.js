@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "../../styles/Post.module.css";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
-import { Card, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Card, OverlayTrigger, Tooltip, Row, Col } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import Avatar from "../../components/Avatar";
 import { axiosRes } from "../../api/axiosDefaults";
@@ -106,17 +106,23 @@ const Post = (props) => {
     <div className="container">
       <Card className={styles.Post}>
         <Card.Body>
-          <div className={styles.UserInfo}>
-            <Link to={`/profiles/${profile_id}`}>
-              <Avatar src={profile_image} height={55} />
-              <span>{owner}</span>
-              <br />
-              <span className={styles.Date}>{updated_at}</span>
-            </Link>
-            {is_owner && postPage ? (
-              <MoreDropdown handleEdit={handleEdit} handleDelete={handleDelete} />
-            ) : !is_owner ? null : null}
-          </div>
+          <Row className="align-items-center">
+            <Col xs="auto">
+              <Link to={`/profiles/${profile_id}`}>
+                <Avatar src={profile_image} height={55} />
+              </Link>
+            </Col>
+            <Col className={`text-left ${styles.Owner}`}>
+              <Link to={`/profiles/${profile_id}`} className={styles.OwnerDate}>
+                <span>{owner}</span>
+                <br />
+                <span className={styles.Date}>{updated_at}</span>
+              </Link>
+            </Col>
+            <Col xs="auto" className="ml-auto">
+              {is_owner && <MoreDropdown handleEdit={handleEdit} handleDelete={handleDelete} />}
+            </Col>
+          </Row>
           {content && (
             <p className={styles.Content} onClick={handleClickContent}>
               {content}
