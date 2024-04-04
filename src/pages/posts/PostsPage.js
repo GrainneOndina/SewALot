@@ -28,29 +28,38 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
     setImage(event.target.files[0]);
   };
 
-  /**
-   * Handles the submit event for the form.
-   */
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+/**
+ * Validates if the provided URL is valid.
+ * @param {string} urlString The URL to validate.
+ * @returns {boolean} True if the URL is valid, false otherwise.
+ */
+const isValidUrl = (urlString) => {
+  const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+  return urlRegex.test(urlString);
+};
 
-    if (content.trim() === "") {
-      // console.log("Can't post without text");
-      setErrorMessage("Can't post without text");
+/**
+ * Handles the submit event for the form.
+ */
+const handleSubmit = async (event) => {
+  event.preventDefault();
+
+  if (content.trim() === "") {
+    setErrorMessage("Can't post without text");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("content", content);
+
+  // Check if URL is provided and if it's a valid URL
+  if (url) {
+    if (!isValidUrl(url)) {
+      setErrorMessage("Please enter a valid URL");
       return;
     }
-
-    const formData = new FormData();
-    formData.append("content", content);
-
-    // Check if URL is provided and if it's a valid URL
-    if (url) {
-      formData.append("url", url);
-      if ((url)) {
-        setErrorMessage("Please enter a valid URL");
-        return;
-      }
-    }
+    formData.append("url", url);
+  }
 
     if (image) {
       if (image.size > 2 * 1024 * 1024) {
