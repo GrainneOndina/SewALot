@@ -20,22 +20,24 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
   const [url, setUrl] = useState("");
   const [image, setImage] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-
-  /**
-   * Handles the change event for the image input field.
-   */
-  const handleImageChange = (event) => {
-    setImage(event.target.files[0]);
-  };
+  const [imageURL, setImageURL] = useState(null);
 
 /**
- * Validates if the provided URL is valid.
- * @param {string} urlString The URL to validate.
- * @returns {boolean} True if the URL is valid, false otherwise.
+ * Handles the change event for the image input field.
  */
-const isValidUrl = (urlString) => {
-  const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
-  return urlRegex.test(urlString);
+const handleImageChange = (event) => {
+  const selectedImage = event.target.files[0];
+  if (selectedImage) {
+    if (selectedImage.size > 2 * 1024 * 1024) {
+      setErrorMessage('Image size exceeds the limit. Please select a smaller image.');
+      return;
+    }
+    setImage(selectedImage);
+
+    // Create a temporary URL for the selected image file
+    const imageURL = URL.createObjectURL(selectedImage);
+    setImageURL(imageURL);
+  }
 };
 
 /**
@@ -54,89 +56,109 @@ const handleSubmit = async (event) => {
 
   // Check if URL is provided and if it's a valid URL
   if (url) {
-    if (!isValidUrl(url)) {
+    const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+    if (!urlRegex.test(url)) {
       setErrorMessage("Please enter a valid URL");
       return;
     }
     formData.append("url", url);
   }
 
-    if (image) {
-      if (image.size > 2 * 1024 * 1024) {
-        setErrorMessage('Image size exceeds the limit. Please select a smaller image.');
-        return; // Stop further execution if image size exceeds the limit
-      }
-      
-      formData.append("image", image);
+  if (image) {
+    if (image.size > 2 * 1024 * 1024) {
+      setErrorMessage('Image size exceeds the limit. Please select a smaller image.');
+      return;
     }
+    
+    formData.append("image", image);
+  }
 
-    if (!url && !image) {
-      formData.delete("url");
-      formData.delete("image");
-    }
+  if (!url && !image) {
+    formData.delete("url");
+    formData.delete("image");
+  }
 
-    try {
-      const response = await axiosReq.post("/posts/", formData);
-      const newPost = response.data;
+  try {
+    const response = await axiosReq.post("/posts/", formData);
+    const newPost = response.data;
 
-      setContent("");
-      setUrl("");
-      setImage(null);
-      setErrorMessage("");
+    setContent("");
+    setUrl("");
+    setImage(null); // Reset image state to null after successful submission
+    setImageURL(""); // Reset imageURL state to empty string after successful submission
+    setErrorMessage("");
 
-      setPosts((prevPosts) => ({
-        ...prevPosts,
-        results: [newPost, ...prevPosts.results],
-      }));
-    } catch (error) {
-      // console.log(error);
-    }
-  };
+    setPosts((prevPosts) => ({
+      ...prevPosts,
+      results: [newPost, ...prevPosts.results],
+    }));
 
-  return (
-    <div class="container">
-      <div className="d-flex flex-column align-items-center">
-        <div className="col-lg-8">
-          <Form className={styles.Form} onSubmit={handleSubmit}>
-            {errorMessage && <div className={styles.ErrorMessage}>{errorMessage}</div>}
+    // Reset the form to clear the file input field
+    event.target.reset();
+  } catch (error) {
+    // Handle error
+  }
+};
 
-            <Form.Group controlId="postContent">
-              <Form.Control
-                as="textarea"
-                rows={3}
-                value={content}
-                onChange={(event) => setContent(event.target.value)}
-                placeholder="Add post"
+return (
+  <div class="container">
+    <div className="d-flex flex-column align-items-center">
+      <div className="col-lg-8">
+      <Form className={styles.Form} onSubmit={handleSubmit}>
+        {errorMessage && <div className={styles.ErrorMessage}>{errorMessage}</div>}
+
+        <Form.Group controlId="postContent">
+       
+          <Form.Control
+            as="textarea"
+            rows={3}
+            value={content}
+            onChange={(event) => setContent(event.target.value)}
+            placeholder="Add post"
+            aria-label="Add Content to Post."
+          />
+        </Form.Group>
+        <Form.Group controlId="postUrl">
+         
+          <Form.Control
+            type="text"
+            value={url}
+            onChange={(event) => setUrl(event.target.value)}
+            placeholder="Add URL"
+            aria-label="Add URL to Post."
+          />
+        </Form.Group>
+        <div className={styles.UploadContainer}>
+          <Form.Group>
+           
+            <Form.Control
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              placeholder="Add Image"
+              aria-label="Add Image to post."
+            />
+          </Form.Group>
+          {imageURL && (
+            <div className={styles.ImageContainer}>
+              <img
+                src={imageURL}
+                alt="Selected Image"
+                className={styles.Image}
               />
-            </Form.Group>
-            <Form.Group controlId="postUrl">
-              <Form.Control
-                type="text"
-                value={url}
-                onChange={(event) => setUrl(event.target.value)}
-                placeholder="Add URL"
-              />
-            </Form.Group>
-            <div className={styles.UploadContainer}>
-              <Form.Group>
-                <Form.Control
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                />
-                <div className="d-flex justify-content-center">
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    className={`${btnStyles.Button} ${btnStyles.Blue}`}
-                  >
-                    Post
-                  </Button>
-                </div>
-              </Form.Group>
             </div>
-          </Form>
-
+          )}
+          <div className="d-flex justify-content-center">
+            <Button
+              variant="primary"
+              type="submit"
+              className={`${btnStyles.Button} ${btnStyles.Blue}`}
+            >
+              Post
+            </Button>
+          </div>
+        </div>
+      </Form>
           {hasLoaded ? (
             <>
               {currentposts.length ? (
