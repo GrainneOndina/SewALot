@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import Container from "react-bootstrap/Container";
+import { Row, Col, Image, Button, Container } from "react-bootstrap";
 import Asset from "../../components/Asset";
-import Image from "react-bootstrap/Image";
 import styles from "../../styles/ProfilePage.module.css";
 import appStyles from "../../App.module.css";
 import btnStyles from "../../styles/Button.module.css";
@@ -12,7 +9,6 @@ import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { useParams } from "react-router";
 import { axiosReq } from "../../api/axiosDefaults";
 import { useProfileData, useSetProfileData } from "../../contexts/ProfileDataContext";
-import { Button } from "react-bootstrap";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Post from "../posts/Post";
 import { fetchMoreData } from "../../utils/utils";
@@ -60,48 +56,52 @@ function ProfilePage() {
 
   const mainProfile = (
     <>
-      {profile?.is_owner && (
-        <ProfileEditDropdown
-          id={profile?.id}
-          className="dropdown-menu-right"
-          handleEdit={() => history.push(`/profiles/${id}/edit`)}
-        />
-      )}
-
-      <Row className="px-3 text-center">
-        <Col>
+      {/* Dropdown Menu or Follow Button */}
+      <Row className="justify-content-end">
+        <Col md={3} xs={12} className="text-right">
+          {/* Profile Edit Dropdown */}
+          {profile?.is_owner && (
+            <ProfileEditDropdown
+              id={profile?.id}
+              handleEdit={() => history.push(`/profiles/${id}/edit`)}
+            />
+          )}
+  
+          {/* Follow/Unfollow Button */}
+          {currentUser && !is_owner && (
+            <Button
+              className={`${btnStyles.Button} ${btnStyles.BlackOutline} mt-3`}
+              onClick={() => (profile?.following_id ? handleUnfollow(profile) : handleFollow(profile))}
+            >
+              {profile?.following_id ? 'unfollow' : 'follow'}
+            </Button>
+          )}
+        </Col>
+      </Row>
+  
+      {/* Profile Details and Avatar */}
+      <Row className="px-3">
+        {/* Avatar Column (Left) */}
+        <Col md={3} xs={12} className="text-center mb-3">
           <Container className="d-flex align-items-center justify-content-center">
             <Image
-              className={styles.ProfileImage}
+              className={styles.ProfileImage} 
               roundedCircle
               src={profile?.image}
               style={{ width: "150px" }}
             />
           </Container>
         </Col>
-        <Col>
-          <h3 className="m-2">{profile?.owner}</h3>
-          {profile?.description && <Col className="p-3">{profile.description}</Col>}
+  
+        {/* Profile Details */}
+        <Col md={9} xs={12}>
+          <Row>
+            <Col>
+              <h3 className="m-2">{profile?.owner}</h3>
+              {profile?.description && <div className="p-3">{profile.description}</div>}
+            </Col>
+          </Row>
         </Col>
-        {currentUser && !is_owner && (
-          <Col>
-            {profile?.following_id ? (
-              <Button
-                className={`${btnStyles.Button} ${btnStyles.BlackOutline}`}
-                onClick={() => handleUnfollow(profile)}
-              >
-                unfollow
-              </Button>
-            ) : (
-              <Button
-                className={`${btnStyles.Button} ${btnStyles.Black}`}
-                onClick={() => handleFollow(profile)}
-              >
-                follow
-              </Button>
-            )}
-          </Col>
-        )}
       </Row>
     </>
   );
