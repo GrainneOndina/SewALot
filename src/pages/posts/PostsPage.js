@@ -3,6 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Post from "./Post";
 import Asset from "../../components/Asset";
+import Alert from "react-bootstrap/Alert";
 import appStyles from "../../App.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import styles from "../../styles/PostsPage.module.css";
@@ -23,13 +24,23 @@ function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) 
   const [imageURL, setImageURL] = useState(null);
 
 /**
+ * Handles the remove image event in the image input field.
+ */
+const handleRemoveImage = () => {
+  setImage(null); // Reset the image state
+  setImageURL(null); // Reset the image URL state
+  setUrl(""); // Reset the URL state
+};
+
+/**
  * Handles the change event for the image input field.
  */
 const handleImageChange = (event) => {
   const selectedImage = event.target.files[0];
   if (selectedImage) {
     if (selectedImage.size > 2 * 1024 * 1024) {
-      setErrorMessage('Image size exceeds the limit. Please select a smaller image.');
+      alert('Image size exceeds the limit. Please select a smaller image.');
+      setUrl(""); // Reset the URL state when image size exceeds the limit
       return;
     }
     setImage(selectedImage);
@@ -37,6 +48,7 @@ const handleImageChange = (event) => {
     // Create a temporary URL for the selected image file
     const imageURL = URL.createObjectURL(selectedImage);
     setImageURL(imageURL);
+
   }
 };
 
@@ -47,7 +59,7 @@ const handleSubmit = async (event) => {
   event.preventDefault();
 
   if (content.trim() === "") {
-    setErrorMessage("Can't post without text");
+    alert("Can't post without text");
     return;
   }
 
@@ -58,7 +70,7 @@ const handleSubmit = async (event) => {
   if (url) {
     const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
     if (!urlRegex.test(url)) {
-      setErrorMessage("Please enter a valid URL");
+      alert("Please enter a valid URL");
       return;
     }
     formData.append("url", url);
@@ -66,7 +78,7 @@ const handleSubmit = async (event) => {
 
   if (image) {
     if (image.size > 2 * 1024 * 1024) {
-      setErrorMessage('Image size exceeds the limit. Please select a smaller image.');
+      alert('Image size exceeds the limit. Please select a smaller image.');
       return;
     }
     
@@ -86,7 +98,6 @@ const handleSubmit = async (event) => {
     setUrl("");
     setImage(null); // Reset image state to null after successful submission
     setImageURL(""); // Reset imageURL state to empty string after successful submission
-    setErrorMessage("");
 
     setPosts((prevPosts) => ({
       ...prevPosts,
@@ -141,6 +152,7 @@ return (
           </Form.Group>
           {imageURL && (
             <div className={styles.ImageContainer}>
+              <button onClick={handleRemoveImage}>Remove Image</button>
               <img
                 src={imageURL}
                 alt="Selected Image"
