@@ -37,7 +37,6 @@ const Post = (props) => {
    */
   const handleEdit = () => {
     history.push(`/posts/${id}/edit`);
-    
   };
 
   /**

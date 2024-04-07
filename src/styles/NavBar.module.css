@@ -23,17 +23,6 @@
     position: relative;
   }
   
-  .activeAvatar::before {
-    content: '';
-    position: absolute;
-    top: 0.5;
-    left: 0.1;
-    width: 75%;
-    height: 75%;
-    background-color: rgba(255, 0, 0, 0.3);
-    border-radius: 50%;
-  }
-  
   .DoubleDottedLine {
     border-bottom: 2px dotted #5e1212;
   }
