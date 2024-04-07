@@ -78,44 +78,55 @@ const handleChangeImage = (event) => {
   }
 };
 
-  /**
-   * Handles the submit event for the form.
-   */
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-  
-    // Validate URL
-    if (url && !validUrl.isUri(url)) {
-      setErrors({ url: ['Please enter a valid URL.'] });
-      return;
+ /**
+ * Handles the submit event for the form.
+ */
+const handleSubmit = async (event) => {
+  event.preventDefault();
+
+  // Validate URL
+  if (url && !validUrl.isUri(url)) {
+    setErrors({ url: ['Please enter a valid URL.'] });
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("content", content);
+  if (url) {
+    formData.append("url", url);
+  }
+
+  if (imageInput?.current?.files[0]) {
+    formData.append("image", imageInput.current.files[0]);
+  }
+
+  // Exclude URL and image fields if both are empty
+  if (!url && !image) {
+    formData.delete("url");
+    formData.delete("image");
+  }
+
+  try {
+    await axiosReq.put(`/posts/${id}/`, formData);
+    
+    // Fetch the updated post data after successful edit
+    console.log('Fetching updated post data...');
+    const { data } = await axiosReq.get(`/posts/${id}/`);
+    console.log('Updated post data:', data);
+    const { content, url, image } = data;
+    setPostData({ content, url, image });
+    setImageUrl(image); // Update imageUrl state with the updated image URL
+
+    //history.push(`/posts/${id}`);
+    window.location.reload(true);
+  } catch (err) {
+    // console.log(err);
+    if (err.response?.status !== 401) {
+      setErrors(err.response?.data);
     }
-  
-    const formData = new FormData();
-    formData.append("content", content);
-    if (url) {
-      formData.append("url", url);
-    }
-  
-    if (imageInput?.current?.files[0]) {
-      formData.append("image", imageInput.current.files[0]);
-    }
-  
-    // Exclude URL and image fields if both are empty
-    if (!url && !image) {
-      formData.delete("url");
-      formData.delete("image");
-    }
-  
-    try {
-      await axiosReq.put(`/posts/${id}/`, formData);
-      history.push(`/posts/${id}`);
-    } catch (err) {
-      // console.log(err);
-      if (err.response?.status !== 401) {
-        setErrors(err.response?.data);
-      }
-    }
-  };
+  }
+};
+
 
   return (
     <div className="container">

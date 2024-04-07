@@ -6,6 +6,7 @@ import { Link, useHistory } from "react-router-dom";
 import Avatar from "../../components/Avatar";
 import { axiosRes } from "../../api/axiosDefaults";
 import { MoreDropdown } from "../../components/MoreDropdown";
+import { useEffect } from 'react';
 
 /**
  * Component that represents a post.
@@ -36,6 +37,7 @@ const Post = (props) => {
    */
   const handleEdit = () => {
     history.push(`/posts/${id}/edit`);
+    
   };
 
   /**
@@ -44,7 +46,8 @@ const Post = (props) => {
   const handleDelete = async () => {
     try {
       await axiosRes.delete(`/posts/${id}/`);
-      history.goBack();
+      history.push('/');
+      window.location.reload(true);
     } catch (err) {
       // console.log(err);
     }
