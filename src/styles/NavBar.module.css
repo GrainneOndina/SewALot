@@ -12,15 +12,11 @@
   .NavLink {
     padding: 5px;
     text-decoration: none;
-    color: rgba(44, 2, 2, 0.5);
+    color: rgba(53, 2, 77, 0.5);
   }
   
   .Active i {
     color: #b22134;
-  }
-  
-  .activeAvatar {
-    position: relative;
   }
   
   .DoubleDottedLine {
@@ -29,6 +25,8 @@
   
   .Logo {
     height: 45px;
+    margin-left: 15px;
+    margin-right: 15px;
   }
   .ProfileLink {
     display: flex;
@@ -44,11 +42,19 @@
     display: flex;
     align-items: center;
   }
+
+  .activeAvatar {
+    position: relative;
+  }
   
   .AvatarImage {
     height: 30px;
     width: 30px;
     border-radius: 50%;
     margin-right: 5px;
+  }
+  
+  #basic-navbar-nav {
+   padding-right: px;
   }
   
