@@ -67,3 +67,11 @@
   background-color: #2ed9ff;
   color: #21b25d;
 }
+
+.rightAligned {
+  margin-left: auto;
+  display: flex;
+  align-items: right;
+  border-bottom: 1px dotted black;
+  padding-bottom: 5px;
+}

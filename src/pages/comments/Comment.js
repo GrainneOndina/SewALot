@@ -5,6 +5,8 @@ import { axiosRes } from "../../api/axiosDefaults";
 import CommentCreateForm from './CommentCreateForm';
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import Avatar from "../../components/Avatar";
+import Button from 'react-bootstrap/Button';
+import btnStyles from "../../styles/Button.module.css";
 
 function Comment({ postId, profile_image, profile_id }) {
     const [comments, setComments] = useState([]);
@@ -53,8 +55,21 @@ function Comment({ postId, profile_image, profile_id }) {
                     </Link>
                     <div className="ml-2">
                         <p>{comment.content}</p>
-                        <button onClick={() => setEditingComment(comment)}>Edit</button>
-                        <button onClick={() => handleDeleteComment(comment.id)}>Delete</button>
+                        <div className={`${btnStyles.rightAligned}`}>
+                        <button 
+                            variant="primary"
+                            className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                            type="submit"
+                            onClick={() => setEditingComment(comment)}>Edit
+                        </button>
+
+                        <button 
+                            variant="primary"
+                            className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                            type="submit"
+                            onClick={() => handleDeleteComment(comment.id)}>Delete
+                        </button>
+                        </div>
                     </div>
                 </div>
             ))}
