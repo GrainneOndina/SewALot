@@ -7,7 +7,7 @@ import styles from "../styles/Asset.module.css";
  */
 const Asset = ({ spinner, src, message }) => {
   return (
-    <div class="container">
+    <div className="container">
       <div className={`${styles.Asset} p-4`}>
         {spinner && <Spinner animation="border" />}
         {src && <img src={src} alt={message} />}

@@ -56,7 +56,7 @@ function SignInForm() {
   };
 
   return (
-    <div class="container">
+    <div className="container">
       <div className="d-flex flex-column align-items-center">
         <div className={`${appStyles.Content} p-4`}>
           <h2 className={styles.Header}>sign in</h2>

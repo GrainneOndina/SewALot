@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Post from "./Post";
+import Comment from "../comments/Comment";
 import Asset from "../../components/Asset";
 import Alert from "react-bootstrap/Alert";
 import appStyles from "../../App.module.css";
@@ -112,7 +113,7 @@ const handleSubmit = async (event) => {
 };
 
 return (
-  <div class="container">
+  <div className="container">
     <div className="d-flex flex-column align-items-center">
       <div className="col-lg-8">
       <Form className={styles.Form} onSubmit={handleSubmit}>

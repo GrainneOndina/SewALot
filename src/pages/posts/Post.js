@@ -7,6 +7,8 @@ import Avatar from "../../components/Avatar";
 import { axiosRes } from "../../api/axiosDefaults";
 import { MoreDropdown } from "../../components/MoreDropdown";
 import { useEffect } from 'react';
+import Comment from "../comments/Comment";
+import CommentCreateForm from "../comments/CommentCreateForm";
 
 /**
  * Component that represents a post.
@@ -168,6 +170,7 @@ const Post = (props) => {
             </OverlayTrigger>
           )}
           {likes_count}
+          
           <Link to={`/posts/${id}`}>
             <i className="far fa-comments" />
           </Link>

@@ -3,11 +3,9 @@ import { useParams } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import { axiosReq } from "../../api/axiosDefaults";
 import Post from "./Post";
+import Comment from "../comments/Comment";
 import appStyles from "../../App.module.css";
 
-/**
- * Component for rendering a single post page.
- */
 function PostPage() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
@@ -15,10 +13,10 @@ function PostPage() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const { data } = await axiosReq.get(`/posts/${id}`);
-        setPost(data);
+        const postResponse = await axiosReq.get(`/posts/${id}`);
+        setPost(postResponse.data);
       } catch (err) {
-        // console.log(err);
+        console.error("Error fetching post:", err);
       }
     };
 
@@ -26,11 +24,14 @@ function PostPage() {
   }, [id]);
 
   return (
-    <div class="container">
+    <div className="container">
       <div className={appStyles.Content}>
         <Row className="justify-content-center">
           <Col lg={8}>
-            {post ? <Post {...post} setPosts={setPost} postPage /> : null}
+            {post && <Post {...post} />}
+            <hr />
+            <h3>Comments</h3>
+            <Comment postId={id} />
           </Col>
         </Row>
       </div>

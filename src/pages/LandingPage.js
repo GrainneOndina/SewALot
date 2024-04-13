@@ -21,7 +21,7 @@ const LandingPage = () => {
   };
 
   return (
-    <div class="container">
+    <div className="container">
       <div className="d-flex flex-column align-items-center">
         <div className="col-lg-8">
           <h1 className={styles.Header}>Welcome to SewLot</h1>
@@ -34,11 +34,11 @@ const LandingPage = () => {
 
           <div onClick={toggleForm} className={styles.ToggleFormLink} style={{ cursor: "pointer", color: "blue" }}>
             {showSignInForm ? (
-              <div class="container, mt-3 text-center">
+              <div className="container, mt-3 text-center">
                 <p>Don't have an account? Sign up now!</p>
               </div>
             ) : (
-              <div class="container, mt-3 text-center">
+              <div className="container, mt-3 text-center">
                 <p>Already have an account? Sign in!</p>
               </div>
             )}
