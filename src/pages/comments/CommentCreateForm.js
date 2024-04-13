@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import btnStyles from "../../styles/Button.module.css";
 import Avatar from '../../components/Avatar';
-import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { axiosRes } from '../../api/axiosDefaults';
 import styles from '../../styles/CommentCreateEditForm.module.css';
 
-function CommentCreateForm({ postId, setComments, profile_image, profile_id, commentToEdit }) {
-    const [content, setContent] = useState(commentToEdit ? commentToEdit.content : '');
+function CommentCreateForm({ postId, setComments, profile_image, profile_id, commentToEdit, setEditingComment }) {
+    const [content, setContent] = useState('');
     const [error, setError] = useState('');
+    const formRef = useRef(null);  // Create a reference for the form
+
+
+    // Set content when commentToEdit changes
+    useEffect(() => {
+        setContent(commentToEdit ? commentToEdit.content : '');
+        if (commentToEdit && formRef.current) {
+            formRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }, [commentToEdit]);
 
     const isEditing = !!commentToEdit;
 
@@ -22,29 +31,35 @@ function CommentCreateForm({ postId, setComments, profile_image, profile_id, com
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const endpoint = isEditing ? `/comments/${commentToEdit.id}/` : '/comments/';
+        const method = isEditing ? 'put' : 'post';
+
         try {
-            const endpoint = isEditing ? `/comments/${commentToEdit.id}/` : '/comments/';
-            const method = isEditing ? 'put' : 'post';
             const { data } = await axiosRes[method](endpoint, {
                 content,
                 post: postId,
             });
+            console.log(data); 
 
-            setComments(prev => isEditing ? prev.map(c => c.id === data.id ? data : c) : [data, ...prev]);
-            setContent('');
+            if (isEditing) {
+                setComments(prev => prev.map(c => c.id === data.id ? data : c));
+                //setEditingComment(null); // Reset editing state after successful update
+            } else {
+                setComments(prev => [data, ...prev]);
+            }
+            setContent(''); // Clear the input field after submitting
         } catch (err) {
             console.error('Error submitting comment:', err);
             setError('Failed to post comment. Please try again.');
         }
     };
-    
 
     return (
-        <Form className="mt-2" onSubmit={handleSubmit}>
+        <Form ref={formRef} className="mt-2" onSubmit={handleSubmit}>
             <Form.Group>
                 <InputGroup>
                     <Link to={`/profiles/${profile_id}`}>
-                    <Avatar src={profile_image} height={55} />
+                        <Avatar src={profile_image} height={55} />
                     </Link>
                     <Form.Control
                         className={styles.Form}
@@ -66,11 +81,12 @@ function CommentCreateForm({ postId, setComments, profile_image, profile_id, com
                     className={`${btnStyles.Button} ${btnStyles.Blue}`}
                     type="submit"
                 >
-                    Post
+                    {isEditing ? 'Update' : 'Post'}
                 </Button>
             </div>
         </Form>
     );
+    
 }
 
 export default CommentCreateForm;

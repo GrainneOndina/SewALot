@@ -6,6 +6,7 @@ import { useCurrentUser } from "../../contexts/CurrentUserContext";
 
 function Comment({ postId }) {
     const [comments, setComments] = useState([]);
+    const [editingComment, setEditingComment] = useState(null);
     const currentUser = useCurrentUser(); 
 
     useEffect(() => {
@@ -43,11 +44,12 @@ function Comment({ postId }) {
                 setComments={handleAddComment}
                 profile_image={currentUser?.profile_image}
                 profile_id={currentUser?.id}
+                commentToEdit={editingComment}
             />
            {comments.map((comment) => (
     <div key={`${comment.id}-${comment.created_at}`}>
         <p>{comment.content}</p>
-        
+        <button onClick={() => setEditingComment(comment)}>Edit</button>
         <button onClick={() => handleDeleteComment(comment.id)}>Delete</button>
     </div>
             ))}
