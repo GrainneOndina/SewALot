@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { axiosReq } from '../../api/axiosDefaults';
+import { axiosRes } from "../../api/axiosDefaults";
 import CommentCreateForm from './CommentCreateForm';
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 
 function Comment({ postId }) {
     const [comments, setComments] = useState([]);
-    const currentUser = useCurrentUser(); // Assuming this hook returns the current user data
+    const currentUser = useCurrentUser(); 
 
     useEffect(() => {
         const fetchComments = async () => {
@@ -25,6 +26,16 @@ function Comment({ postId }) {
         setComments(prevComments => [newComment, ...prevComments]);
     };
 
+    const handleDeleteComment = async (commentId) => {
+        try {
+            await axiosRes.delete(`/comments/${commentId}/`);
+            setComments(prev => prev.filter(comment => comment.id !== commentId));
+        } catch (err) {
+            console.error('Failed to delete comment:', err);
+        }
+    };
+    
+
     return (
         <div>
             <CommentCreateForm
@@ -33,10 +44,12 @@ function Comment({ postId }) {
                 profile_image={currentUser?.profile_image}
                 profile_id={currentUser?.id}
             />
-            {comments.map((comment) => (
-                <div key={`${comment.id}-${comment.created_at}`}>
-                    <p>{comment.content}</p>
-                </div>
+           {comments.map((comment) => (
+    <div key={`${comment.id}-${comment.created_at}`}>
+        <p>{comment.content}</p>
+        
+        <button onClick={() => handleDeleteComment(comment.id)}>Delete</button>
+    </div>
             ))}
         </div>
     );

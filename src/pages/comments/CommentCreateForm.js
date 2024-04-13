@@ -9,40 +9,32 @@ import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { axiosRes } from '../../api/axiosDefaults';
 import styles from '../../styles/CommentCreateEditForm.module.css';
 
-function CommentCreateForm({ postId, setComments, profile_image, profile_id }) {
-    const [content, setContent] = useState('');
-    const [error, setError] = useState(''); // Ensure this is here
+function CommentCreateForm({ postId, setComments, profile_image, profile_id, commentToEdit }) {
+    const [content, setContent] = useState(commentToEdit ? commentToEdit.content : '');
+    const [error, setError] = useState('');
+
+    const isEditing = !!commentToEdit;
 
     const handleChange = (event) => {
         setContent(event.target.value);
-        setError(''); // Clear any existing error when the user changes the content
+        setError('');
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log("Submit handler called"); // Confirm method call
-    
-        if (!content.trim()) {
-            console.log("Content is empty or only whitespace."); // Check this condition
-            //alert("Can't post a comment without text."); // Alert should show here
-            setError("Can't post a comment without text."); // Error should be set here
-            return;
-        }
-    
-        console.log("Attempting to post comment:", content); // Confirm content isn't empty
-    
         try {
-            const { data } = await axiosRes.post('/comments/', {
+            const endpoint = isEditing ? `/comments/${commentToEdit.id}/` : '/comments/';
+            const method = isEditing ? 'put' : 'post';
+            const { data } = await axiosRes[method](endpoint, {
                 content,
                 post: postId,
             });
-    
-            console.log("Comment posted:", data); // Log the successful response
-            setComments(prevComments => [data, ...prevComments]);
-            setContent(''); // Clear the input field after successful submission
+
+            setComments(prev => isEditing ? prev.map(c => c.id === data.id ? data : c) : [data, ...prev]);
+            setContent('');
         } catch (err) {
             console.error('Error submitting comment:', err);
-            setError('Failed to post comment. Please try again.'); // Set an error message for the UI
+            setError('Failed to post comment. Please try again.');
         }
     };
     
