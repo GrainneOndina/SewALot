@@ -41,37 +41,39 @@ function Comment({ postId, profile_image, profile_id }) {
     
     return (
         <div>
-     <CommentCreateForm
-                    postId={postId}
-                    setComments={handleAddComment}
-                    profile_image={currentUser?.profile_image}
-                    profile_id={currentUser?.id}
-                    commentToEdit={editingComment}
-                />
-            {comments.map((comment) => (
-                <div key={`${comment.id}-${comment.created_at}`} className="d-flex align-items-center my-2">
-                    <Link to={`/profiles/${comment.profile_id}`}>
-                        <Avatar src={comment.profile_image} height={55} />
-                    </Link>
-                    <div className="ml-2">
-                        <p>{comment.content}</p>
-                        <div className={`${btnStyles.rightAligned}`}>
-                        <button 
-                            variant="primary"
-                            className={`${btnStyles.Button} ${btnStyles.Blue}`}
-                            type="submit"
-                            onClick={() => setEditingComment(comment)}>Edit
-                        </button>
+            <CommentCreateForm
+                postId={postId}
+                setComments={handleAddComment}
+                profile_image={currentUser?.profile_image}
+                profile_id={currentUser?.id}
+                commentToEdit={editingComment}
+            />
+                {comments.map((comment) => (
+                    <div key={`${comment.id}-${comment.created_at}`} className="d-flex align-items-center my-2">
+                        <Link to={`/profiles/${comment.profile_id}`}>
+                            <Avatar src={comment.profile_image} height={55} />
+                        </Link>
+                        <div className="ml-2">
+                            <p>{comment.content}</p>
+                            {/* Conditionally render edit and delete buttons */}
+                            {comment.is_owner && (
+                                <>
+                                    <button 
+                                        variant="primary" className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                                        onClick={() => setEditingComment(comment)}>
+                                        Edit
+                                    </button>
 
-                        <button 
-                            variant="primary"
-                            className={`${btnStyles.Button} ${btnStyles.Blue}`}
-                            type="submit"
-                            onClick={() => handleDeleteComment(comment.id)}>Delete
-                        </button>
+                                    <Button 
+                                        variant="primary" 
+                                        className={`${btnStyles.Button} ${btnStyles.Blue}`} 
+                                        onClick={() => handleDeleteComment(comment.id)}>
+                                        Delete
+                                    </Button>
+                                </>
+                            )}
                         </div>
                     </div>
-                </div>
             ))}
         </div>
     );
