@@ -133,7 +133,7 @@ function ProfilePage() {
   );
 
   return (
-    <div class="container">
+    <div className="container">
       <div className="d-flex flex-column align-items-center">
         <div className="col-lg-8">
           <div className={appStyles.MainContainer}>

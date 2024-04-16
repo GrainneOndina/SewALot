@@ -120,7 +120,6 @@ return (
         {errorMessage && <div className={styles.ErrorMessage}>{errorMessage}</div>}
 
         <Form.Group controlId="postContent">
-       
           <Form.Control
             as="textarea"
             rows={3}
@@ -130,8 +129,8 @@ return (
             aria-label="Add Content to Post."
           />
         </Form.Group>
+
         <Form.Group controlId="postUrl">
-         
           <Form.Control
             type="text"
             value={url}
@@ -139,10 +138,10 @@ return (
             placeholder="Add URL"
             aria-label="Add URL to Post."
           />
+
         </Form.Group>
         <div className={styles.UploadContainer}>
           <Form.Group>
-           
             <Form.Control
               type="file"
               accept="image/*"

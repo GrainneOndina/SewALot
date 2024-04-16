@@ -13,8 +13,8 @@ function PostPage() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const postResponse = await axiosReq.get(`/posts/${id}`);
-        setPost(postResponse.data);
+        const response = await axiosReq.get(`/posts/${id}`);
+        setPost(response.data);
       } catch (err) {
         console.error("Error fetching post:", err);
       }
@@ -23,15 +23,20 @@ function PostPage() {
     fetchPost();
   }, [id]);
 
+  const updatePostLikes = (updatedPost) => {
+    setPost(updatedPost);
+  };
+
   return (
     <div className="container">
       <div className={appStyles.Content}>
         <Row className="justify-content-center">
           <Col lg={8}>
-            {post && <Post {...post} />}
+          {post && <Post {...post} setPosts={updatePostLikes} />}
+          {post && <Post {...post} setPosts={(updatedPost) => setPost(updatedPost)} />}
             <hr />
             <h3>Comments</h3>
-            <Comment postId={id} />
+            {post && <Comment postId={id} />}
           </Col>
         </Row>
       </div>
