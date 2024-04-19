@@ -8,19 +8,14 @@ import Avatar from '../../components/Avatar';
 import { axiosRes } from '../../api/axiosDefaults';
 import styles from '../../styles/CommentCreateEditForm.module.css';
 
-function CommentCreateForm({ 
-    postId, 
-    setComments, 
-    profile_image, 
-    profile_id, 
-    commentToEdit, 
-    setEditingComment,
-}) {
-
+/**
+ * Form component for creating and editing comments.
+ * 
+ */
+function CommentCreateForm({ postId, addComment, profile_image, profile_id, commentToEdit, setEditingComment }) {
     const [content, setContent] = useState('');
     const [error, setError] = useState('');
-    const isEditing = !!commentToEdit;
-    const formRef = useRef(null);
+    const formRef = useRef(null);  // Create a reference for the form
 
     // Set content when commentToEdit changes
     useEffect(() => {
@@ -29,6 +24,8 @@ function CommentCreateForm({
             formRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     }, [commentToEdit]);
+
+    const isEditing = !!commentToEdit;
 
     const handleChange = (event) => {
         setContent(event.target.value);
@@ -39,21 +36,22 @@ function CommentCreateForm({
         event.preventDefault();
         const endpoint = isEditing ? `/comments/${commentToEdit.id}/` : '/comments/';
         const method = isEditing ? 'put' : 'post';
-        const payload = {
-            content,
-            post: postId,
-        };
 
         try {
-            const { data } = await axiosRes[method](endpoint, payload);
-            console.log("Response Data:", data);  // to debug the response
+            const { data } = await axiosRes[method](endpoint, {
+                content,
+                post: postId,
+            });
+            console.log(data); 
+
             if (isEditing) {
-                setComments(prev => prev.map(c => c.id === data.id ? data : c));
-                setEditingComment(null);
+                addComment({...data})
+                setEditingComment(null); // Reset editing state after successful update
             } else {
-                setComments(prev => [data, ...prev]);
+                addComment({...data})
             }
-            setContent('');
+            setContent(''); // Clear the input field after submitting
+
         } catch (err) {
             console.error('Error submitting comment:', err);
             setError('Failed to post comment. Please try again.');
@@ -82,7 +80,8 @@ function CommentCreateForm({
                 </InputGroup>
             </Form.Group>
             <div className="d-flex justify-content-center">
-                <Button variant="primary"
+                <Button
+                    variant="primary"
                     className={`${btnStyles.Button} ${btnStyles.Blue}`}
                     type="submit"
                 >

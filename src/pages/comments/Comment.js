@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { axiosReq } from '../../api/axiosDefaults';
+import { axiosRes } from "../../api/axiosDefaults";
 import CommentCreateForm from './CommentCreateForm';
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import Avatar from "../../components/Avatar";
 import Button from 'react-bootstrap/Button';
 import btnStyles from "../../styles/Button.module.css";
 
-function Comment({ postId }) {
+function Comment({ postId, profile_image, profile_id }) {
     const [comments, setComments] = useState([]);
     const [editingComment, setEditingComment] = useState(null);
     const currentUser = useCurrentUser(); 
@@ -17,6 +18,7 @@ function Comment({ postId }) {
             try {
                 const { data } = await axiosReq.get(`/comments/?post=${postId}`);
                 setComments(data.results);
+                console.log(data.results)
             } catch (err) {
                 console.error('Error fetching comments:', err);
             }
@@ -25,10 +27,14 @@ function Comment({ postId }) {
         fetchComments();
     }, [postId]);
 
-    const handleAddComment = (newComment) => {
+    const addComment = (newComment) => {
+        const itemIndex = comments.findIndex(oldComment => oldComment.id === newComment.id);
+    if (itemIndex !== -1) {
+        setComments(prevComments => prevComments.map(comment => comment.id === newComment.id ? newComment : comment));
+    } else {
         setComments(prevComments => [newComment, ...prevComments]);
-    };
-
+    }
+};
     const handleDeleteComment = async (commentId) => {
         try {
             await axiosReq.delete(`/comments/${commentId}/`);
@@ -37,13 +43,13 @@ function Comment({ postId }) {
             console.error('Failed to delete comment:', err);
         }
     };
-
+    
     return (
         <div>
             <CommentCreateForm
                 postId={postId}
-                setComments={handleAddComment}
-                profile_image={currentUser?.profile_image}
+                addComment={addComment}
+                p profile_image={currentUser?.profile_image}
                 profile_id={currentUser?.id}
                 commentToEdit={editingComment}
                 setEditingComment={setEditingComment}
@@ -56,26 +62,29 @@ function Comment({ postId }) {
                                 <Avatar src={comment.profile_image} height={55} />
                             </Link>
                             <div className="ml-3">
-                                <p className="mb-1"><strong>{comment.owner}</strong> - <small>{new Date(comment.created_at).toLocaleString()}</small></p>
+                                <p className="mb-1"><strong>{comment.owner}</strong></p>
                                 <p>{comment.content}</p>
+                                  <div>
+                                            {comment.is_owner && (
+                                        <div className="mt-2">
+                                            <Button 
+                                                variant="outline-primary" 
+                                                className={btnStyles.Button}
+                                                onClick={() => setEditingComment(comment)}>
+                                                Edit
+                                            </Button>
+                                            <Button 
+                                                variant="outline-danger"
+                                                className={`ml-2 ${btnStyles.Button}`} 
+                                                onClick={() => handleDeleteComment(comment.id)}>
+                                                Delete
+                                            </Button>
+                                        </div>
+                                    )}
+                                    </div>
                             </div>
                         </div>
-                        {comment.is_owner && (
-                            <div className="mt-2">
-                                <Button 
-                                    variant="outline-primary" 
-                                    className={btnStyles.Button}
-                                    onClick={() => setEditingComment(comment)}>
-                                    Edit
-                                </Button>
-                                <Button 
-                                    variant="outline-danger"
-                                    className={`ml-2 ${btnStyles.Button}`} 
-                                    onClick={() => handleDeleteComment(comment.id)}>
-                                    Delete
-                                </Button>
-                            </div>
-                        )}
+                        
                     </div>
                 </div>
             ))}

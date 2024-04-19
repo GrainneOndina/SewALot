@@ -54,8 +54,6 @@ function App() {
     };
   }, [filter, query, currentUser, pathname]);
 
-  console.log(currentUser);
-
   return (
     <div className={styles.App}>
       <NavBar />
