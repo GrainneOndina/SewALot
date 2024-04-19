@@ -1,204 +1,123 @@
 import React, { useState } from "react";
+import { usePosts } from "../../contexts/PostsContext";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Post from "./Post";
-import Comment from "../comments/Comment";
 import Asset from "../../components/Asset";
-import Alert from "react-bootstrap/Alert";
-import appStyles from "../../App.module.css";
-import btnStyles from "../../styles/Button.module.css";
-import styles from "../../styles/PostsPage.module.css";
-import { axiosReq } from "../../api/axiosDefaults";
-import NoResults from "../../assets/no-results.png";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { fetchMoreData } from "../../utils/utils";
-import { Container } from "react-bootstrap";
+import NoResults from "../../assets/no-results.png";
+import styles from "../../styles/PostsPage.module.css";
+import btnStyles from "../../styles/Button.module.css";
+import { axiosReq } from "../../api/axiosDefaults";
 
-/**
- * Component for rendering the posts page.
- */
-function PostsPage({ message, filter = "", currentposts, hasLoaded, setPosts }) {
-  const [content, setContent] = useState("");
-  const [url, setUrl] = useState("");
-  const [image, setImage] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [imageURL, setImageURL] = useState(null);
+function PostsPage({ message }) {
+    const { posts, hasMore, loadMorePosts, setPosts } = usePosts();
+    const [content, setContent] = useState("");
+    const [url, setUrl] = useState("");
+    const [image, setImage] = useState(null);
+    const [imageURL, setImageURL] = useState(null);
 
-/**
- * Handles the remove image event in the image input field.
- */
-const handleRemoveImage = () => {
-  setImage(null); // Reset the image state
-  setImageURL(null); // Reset the image URL state
-  setUrl(""); // Reset the URL state
-};
+    const handleImageChange = (event) => {
+        const selectedImage = event.target.files[0];
+        if (selectedImage && selectedImage.size <= 2 * 1024 * 1024) { 
+            setImage(selectedImage);
+            setImageURL(URL.createObjectURL(selectedImage));
+        } else {
+            alert('Image size exceeds the limit of 2MB.');
+        }
+    };
 
-/**
- * Handles the change event for the image input field.
- */
-const handleImageChange = (event) => {
-  const selectedImage = event.target.files[0];
-  if (selectedImage) {
-    if (selectedImage.size > 2 * 1024 * 1024) {
-      alert('Image size exceeds the limit. Please select a smaller image.');
-      setUrl(""); // Reset the URL state when image size exceeds the limit
-      return;
-    }
-    setImage(selectedImage);
+    const handleRemoveImage = () => {
+        setImage(null);
+        setImageURL(null);
+    };
 
-    // Create a temporary URL for the selected image file
-    const imageURL = URL.createObjectURL(selectedImage);
-    setImageURL(imageURL);
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (!content.trim()) {
+            alert("Can't post without text");
+            return;
+        }
 
-  }
-};
+        const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+        if (url && !urlRegex.test(url)) {
+            alert("Please enter a valid URL");
+            return;
+        }
 
-/**
- * Handles the submit event for the form.
- */
-const handleSubmit = async (event) => {
-  event.preventDefault();
+        const formData = new FormData();
+        formData.append("content", content.trim());
+        if (url) formData.append("url", url);
+        if (image) formData.append("image", image);
 
-  if (content.trim() === "") {
-    alert("Can't post without text");
-    return;
-  }
+        try {
+            const response = await axiosReq.post("/posts/", formData);
+            setPosts(prevPosts => [response.data, ...prevPosts]);
+            setContent("");
+            setUrl("");
+            setImage(null);
+            setImageURL(null);
+        } catch (error) {
+            console.error("Error creating post:", error);
+            alert("Failed to create post, please try again.");
+        }
+    };
 
-  const formData = new FormData();
-  formData.append("content", content);
-
-  // Check if URL is provided and if it's a valid URL
-  if (url) {
-    const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
-    if (!urlRegex.test(url)) {
-      alert("Please enter a valid URL");
-      return;
-    }
-    formData.append("url", url);
-  }
-
-  if (image) {
-    if (image.size > 2 * 1024 * 1024) {
-      alert('Image size exceeds the limit. Please select a smaller image.');
-      return;
-    }
-    
-    formData.append("image", image);
-  }
-
-  if (!url && !image) {
-    formData.delete("url");
-    formData.delete("image");
-  }
-
-  try {
-    const response = await axiosReq.post("/posts/", formData);
-    const newPost = response.data;
-
-    setContent("");
-    setUrl("");
-    setImage(null); // Reset image state to null after successful submission
-    setImageURL(""); // Reset imageURL state to empty string after successful submission
-
-    setPosts((prevPosts) => ({
-      ...prevPosts,
-      results: [newPost, ...prevPosts.results],
-    }));
-
-    // Reset the form to clear the file input field
-    event.target.reset();
-  } catch (error) {
-    // Handle error
-  }
-};
-
-return (
-  <div className="container">
-    <div className="d-flex flex-column align-items-center">
-      <div className="col-lg-8">
-      <Form className={styles.Form} onSubmit={handleSubmit}>
-        {errorMessage && <div className={styles.ErrorMessage}>{errorMessage}</div>}
-
-        <Form.Group controlId="postContent">
-       
-          <Form.Control
-            as="textarea"
-            rows={3}
-            value={content}
-            onChange={(event) => setContent(event.target.value)}
-            placeholder="Add post"
-            aria-label="Add Content to Post."
-          />
-        </Form.Group>
-        <Form.Group controlId="postUrl">
-         
-          <Form.Control
-            type="text"
-            value={url}
-            onChange={(event) => setUrl(event.target.value)}
-            placeholder="Add URL"
-            aria-label="Add URL to Post."
-          />
-        </Form.Group>
-        <div className={styles.UploadContainer}>
-          <Form.Group>
-           
-            <Form.Control
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              placeholder="Add Image"
-              aria-label="Add Image to post."
-            />
-          </Form.Group>
-          {imageURL && (
-            <div className={styles.ImageContainer}>
-              <button onClick={handleRemoveImage}>Remove Image</button>
-              <img
-                src={imageURL}
-                alt="Selected Image"
-                className={styles.Image}
-              />
-            </div>
-          )}
-          <div className="d-flex justify-content-center">
-            <Button
-              variant="primary"
-              type="submit"
-              className={`${btnStyles.Button} ${btnStyles.Blue}`}
-            >
-              Post
-            </Button>
-          </div>
-        </div>
-      </Form>
-          {hasLoaded ? (
-            <>
-              {currentposts.length ? (
-                <InfiniteScroll
-                  children={currentposts.map((post) => (
-                    <Post key={post.id} {...post} setPosts={setPosts} />
-                  ))}
-                  dataLength={currentposts.length}
-                  loader={<Asset spinner />}
-                  hasMore={!!currentposts.next}
-                  next={() => fetchMoreData(currentposts, setPosts)}
-                />
-              ) : (
-                <div className={appStyles.Content}>
-                  <Asset src={NoResults} message={message} />
+    return (
+        <div className="container">
+            <Form className={styles.Form} onSubmit={handleSubmit}>
+                <Form.Group controlId="postContent">
+                    <Form.Control
+                        as="textarea"
+                        rows={3}
+                        value={content}
+                        onChange={e => setContent(e.target.value)}
+                        placeholder="Add post"
+                    />
+                </Form.Group>
+                <Form.Group controlId="postUrl">
+                    <Form.Control
+                        type="text"
+                        value={url}
+                        onChange={e => setUrl(e.target.value)}
+                        placeholder="Add URL"
+                    />
+                </Form.Group>
+                <div className={styles.UploadContainer}>
+                    <Form.Group>
+                        <Form.Control
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                        />
+                        {imageURL && (
+                            <div className={styles.ImageContainer}>
+                                <button onClick={handleRemoveImage}>Remove Image</button>
+                                <img src={imageURL} alt="Selected" className={styles.Image} />
+                            </div>
+                        )}
+                    </Form.Group>
+                    <div className="d-flex justify-content-center">
+                        <Button variant="primary" type="submit" className={`${btnStyles.Button} ${btnStyles.Blue}`}>
+                            Post
+                        </Button>
+                    </div>
                 </div>
-              )}
-            </>
-          ) : (
-            <div className={appStyles.Content}>
-              <Asset spinner />
-            </div>
-          )}
+            </Form>
+            {posts.length > 0 ? (
+                <InfiniteScroll
+                    dataLength={posts.length}
+                    next={loadMorePosts}
+                    hasMore={hasMore}
+                    loader={<Asset spinner />}
+                >
+                    {posts.map(post => <Post key={post.id} {...post} />)}
+                </InfiniteScroll>
+            ) : (
+                <Asset src={NoResults} message={message} />
+            )}
         </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default PostsPage;

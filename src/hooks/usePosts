@@ -1,0 +1,27 @@
+import React, { useContext, createContext, useState, useCallback } from 'react';
+import axios from 'axios';
+
+const PostsContext = createContext();
+
+export const usePosts = () => useContext(PostsContext);
+
+export const PostsProvider = ({ children }) => {
+    const [posts, setPosts] = useState([]);
+    const [hasMore, setHasMore] = useState(true);
+
+    const loadMorePosts = useCallback(async () => {
+        try {
+            const response = await axios.get('/path-to-your-api');
+            setPosts(prevPosts => [...prevPosts, ...response.data]);
+            setHasMore(response.data.length > 0);
+        } catch (error) {
+            console.error('Failed to load posts:', error);
+        }
+    }, []);
+
+    return (
+        <PostsContext.Provider value={{ posts, setPosts, hasMore, loadMorePosts }}>
+            {children}
+        </PostsContext.Provider>
+    );
+};

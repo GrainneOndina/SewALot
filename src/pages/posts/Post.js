@@ -2,13 +2,15 @@ import React from "react";
 import styles from "../../styles/Post.module.css";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { Card, OverlayTrigger, Tooltip, Row, Col } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import Avatar from "../../components/Avatar";
-import { axiosRes } from "../../api/axiosDefaults";
+//import { axiosRes } from "../../api/axiosDefaults";
+import axios from "axios";
 import { MoreDropdown } from "../../components/MoreDropdown";
 import { useEffect } from 'react';
 import Comment from "../comments/Comment";
 import CommentCreateForm from "../comments/CommentCreateForm";
+import { usePosts } from "../../contexts/PostsContext";
 
 /**
  * Component that represents a post.
@@ -26,13 +28,15 @@ const Post = (props) => {
     likes_count,
     like_id,
     updated_at,
-    postPage,
+    setPost,
     setPosts,
+    handleUpdate
   } = props;
-
+  const { updatePost } = usePosts();  // Fetching the updatePost from context
+  const history = useHistory();
   const currentUser = useCurrentUser();
   const is_owner = currentUser?.username === owner;
-  const history = useHistory();
+  const { removePost } = usePosts();
 
   /**
    * Handles the edit action for the post.
@@ -46,51 +50,70 @@ const Post = (props) => {
    */
   const handleDelete = async () => {
     try {
-      await axiosRes.delete(`/posts/${id}/`);
-      history.push('/');
-      window.location.reload(true);
+        const response = await axios.delete(`/posts/${id}/`);
+        if (response.status === 204) {  // Check if the delete was successful
+            removePost(id);  // Remove the post from the global state
+            history.push('/');  // Navigate away after deletion
+        }
     } catch (err) {
-      // console.log(err);
+        console.error("Failed to delete the post:", err);
+        alert("Failed to delete the post, please try again.");
     }
-  };
+};
 
   /**
    * Handles the like action for the post.
    */
   const handleLike = async () => {
+    console.log('Adding like');
     try {
-      const { data } = await axiosRes.post("/likes/", { post: id });
-      setPosts((prevPosts) => ({
-        ...prevPosts,
-        results: prevPosts.results.map((post) => {
-          return post.id === id
-            ? { ...post, likes_count: post.likes_count + 1, like_id: data.id }
-            : post;
-        }),
-      }));
+        const response = await axios.post("/likes/", { post: id });
+        if (response.status === 201) {
+            const { data } = response;
+            const updatedPost = {
+                id,
+                owner,
+                profile_image,
+                content,
+                url,
+                image,
+                comments_count,
+                likes_count: likes_count + 1,
+                updated_at,
+                like_id: data.id
+            };
+            updatePost(updatedPost); // Update global state
+        }
     } catch (err) {
-      // console.log(err);
+        console.error("Failed to like post:", err);
     }
-  };
+};
 
   /**
    * Handles the unlike action for the post.
    */
   const handleUnlike = async () => {
     try {
-      await axiosRes.delete(`/likes/${like_id}/`);
-      setPosts((prevPosts) => ({
-        ...prevPosts,
-        results: prevPosts.results.map((post) => {
-          return post.id === id
-            ? { ...post, likes_count: post.likes_count - 1, like_id: null }
-            : post;
-        }),
-      }));
+        const response = await axios.delete(`/likes/${like_id}`);
+        if (response.status === 204) {
+            const updatedPost = {
+                id,
+                owner,
+                profile_image,
+                content,
+                url,
+                image,
+                comments_count,
+                likes_count: likes_count - 1,
+                updated_at,
+                like_id: null
+            };
+            updatePost(updatedPost); // Update global state
+        }
     } catch (err) {
-      // console.log(err);
+        console.error("Failed to unlike post:", err);
     }
-  };
+};
 
   /**
    * Handles the click event for the post content.
@@ -105,6 +128,11 @@ const Post = (props) => {
   const handleClickUrl = (event) => {
     event.stopPropagation();
   };
+  
+  const handlePostUpdate = (updatedData) => {
+    updatePost(updatedData);
+    setPost(updatedData);
+};
 
   return (
     <div className="container">
@@ -153,12 +181,12 @@ const Post = (props) => {
             >
               <i className="far fa-heart" />
             </OverlayTrigger>
-          ) : like_id ? (
-            <span onClick={handleUnlike}>
+          ) : like_id && currentUser ? (
+            <span id='true-heart' onClick={handleUnlike}>
               <i className={`fas fa-heart ${styles.Heart}`} />
             </span>
           ) : currentUser ? (
-            <span onClick={handleLike}>
+            <span id='false-heart' onClick={handleLike}>
               <i className={`far fa-heart ${styles.HeartOutline}`} />
             </span>
           ) : (
@@ -170,7 +198,7 @@ const Post = (props) => {
             </OverlayTrigger>
           )}
           {likes_count}
-          
+
           <Link to={`/posts/${id}`}>
             <i className="far fa-comments" />
           </Link>

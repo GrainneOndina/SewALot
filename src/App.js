@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import styles from "./App.module.css";
 import "./api/axiosDefaults";
@@ -15,112 +15,37 @@ import UsernameForm from "./pages/profiles/UsernameForm";
 import UserPasswordForm from "./pages/profiles/UserPasswordForm";
 import ProfileEditForm from "./pages/profiles/ProfileEditForm";
 import NotFound from "./components/NotFound";
-import { axiosReq } from "./api/axiosDefaults";
+import { PostsProvider } from './contexts/PostsContext'; // Correct import of PostsProvider
 import LandingPage from './pages/LandingPage';
 
-
-/**
- * The main App component.
- */
 function App() {
   const currentUser = useCurrentUser();
-  const profile_id = currentUser?.profile_id || '';
-  const [posts, setPosts] = useState({ results: [] });
-  const [filter, setFilter] = useState('');
-  const [query, setQuery] = useState('');
-  const [pathname, setPathname] = useState('');
-  const [hasLoaded, setHasLoaded] = useState('');
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const { data } = await axiosReq.get(
-          `/posts/?${filter}search=${query}`
-        );
-        setPosts(data);
-        setHasLoaded(true);
-      } catch (err) {
-        //console.log(err);
-      }
-    };
-
-    setHasLoaded(false);
-    const timer = setTimeout(() => {
-      fetchPosts();
-    }, 1000);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [filter, query, currentUser, pathname]);
 
   return (
-    <div className={styles.App}>
-      <NavBar />
-      <Container className={styles.Main}>
-        <Switch>
-          <Route
-            exact
-            path="/"
-            render={() => (
-              <PostsPage
-                message="No results found. Adjust the search keyword."
-                currentposts={[...posts.results]}
-                hasLoaded={hasLoaded}
-                setPosts={setPosts}
-                posts={posts}
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/feed"
-            render={() => (
-              <PostsPage
-                message="No results found. Adjust the search keyword or follow a user."
-                currentposts={posts.results.filter((post) => post.owner.following_id !== null)}
-                hasLoaded={hasLoaded}
-                setPosts={setPosts}
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/liked"
-            render={() => (
-              <PostsPage
-                message="No results found. Adjust the search keyword or like a post."
-                currentposts={posts.results.filter((post) => post.like_id !== null)}
-                hasLoaded={hasLoaded}
-                setPosts={setPosts}
-              />
-            )}
-          />
-          <Route exact path="/landing" render={() => <LandingPage />} />
-          <Route exact path="/signin" render={() => <SignInForm />} />
-          <Route exact path="/signup" render={() => <SignUpForm />} />
-          <Route exact path="/posts/:id" render={() => <PostPage />} />
-          <Route exact path="/posts/:id/edit" render={() => <PostEditForm />} />
-          <Route exact path="/profiles/:id" render={() => <ProfilePage />} />
-          <Route
-            exact
-            path="/profiles/:id/edit/username"
-            render={() => <UsernameForm />}
-          />
-          <Route
-            exact
-            path="/profiles/:id/edit/password"
-            render={() => <UserPasswordForm />}
-          />
-          <Route
-            exact
-            path="/profiles/:id/edit"
-            render={() => <ProfileEditForm />}
-          />
-          <Route render={() => <NotFound />} />
-        </Switch>
-      </Container>
-    </div>
+    <Router>
+      <div className={styles.App}>
+        <NavBar />
+        <Container className={styles.Main}>
+          <PostsProvider>
+            <Switch>
+              <Route exact path="/" component={PostsPage} />
+              <Route exact path="/feed" component={PostsPage} />
+              <Route exact path="/liked" component={PostsPage} />
+              <Route exact path="/landing" component={LandingPage} />
+              <Route exact path="/signin" component={SignInForm} />
+              <Route exact path="/signup" component={SignUpForm} />
+              <Route exact path="/posts/:id" component={PostPage} />
+              <Route exact path="/posts/:id/edit" component={PostEditForm} />
+              <Route exact path="/profiles/:id" component={ProfilePage} />
+              <Route exact path="/profiles/:id/edit/username" component={UsernameForm} />
+              <Route exact path="/profiles/:id/edit/password" component={UserPasswordForm} />
+              <Route exact path="/profiles/:id/edit" component={ProfileEditForm} />
+              <Route component={NotFound} />
+            </Switch>
+          </PostsProvider>
+        </Container>
+      </div>
+    </Router>
   );
 }
 
