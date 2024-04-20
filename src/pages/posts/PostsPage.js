@@ -65,57 +65,61 @@ function PostsPage({ message }) {
 
     return (
         <div className="container">
-            <Form className={styles.Form} onSubmit={handleSubmit}>
-                <Form.Group controlId="postContent">
-                    <Form.Control
-                        as="textarea"
-                        rows={3}
-                        value={content}
-                        onChange={e => setContent(e.target.value)}
-                        placeholder="Add post"
-                    />
-                </Form.Group>
-                <Form.Group controlId="postUrl">
-                    <Form.Control
-                        type="text"
-                        value={url}
-                        onChange={e => setUrl(e.target.value)}
-                        placeholder="Add URL"
-                    />
-                </Form.Group>
-                <div className={styles.UploadContainer}>
-                    <Form.Group>
-                        <Form.Control
-                            type="file"
-                            accept="image/*"
-                            onChange={handleImageChange}
-                        />
-                        {imageURL && (
-                            <div className={styles.ImageContainer}>
-                                <button onClick={handleRemoveImage}>Remove Image</button>
-                                <img src={imageURL} alt="Selected" className={styles.Image} />
+            <div className="d-flex flex-column align-items-center">
+                <div className="col-lg-8">
+                    <Form className={styles.Form} onSubmit={handleSubmit}>
+                        <Form.Group controlId="postContent">
+                            <Form.Control
+                                as="textarea"
+                                rows={3}
+                                value={content}
+                                onChange={e => setContent(e.target.value)}
+                                placeholder="Add post"
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="postUrl">
+                            <Form.Control
+                                type="text"
+                                value={url}
+                                onChange={e => setUrl(e.target.value)}
+                                placeholder="Add URL"
+                            />
+                        </Form.Group>
+                        <div className={styles.UploadContainer}>
+                            <Form.Group>
+                                <Form.Control
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                />
+                                {imageURL && (
+                                    <div className={styles.ImageContainer}>
+                                        <button onClick={handleRemoveImage}>Remove Image</button>
+                                        <img src={imageURL} alt="Selected" className={styles.Image} />
+                                    </div>
+                                )}
+                            </Form.Group>
+                            <div className="d-flex justify-content-center">
+                                <Button variant="primary" type="submit" className={`${btnStyles.Button} ${btnStyles.Blue}`}>
+                                    Post
+                                </Button>
                             </div>
-                        )}
-                    </Form.Group>
-                    <div className="d-flex justify-content-center">
-                        <Button variant="primary" type="submit" className={`${btnStyles.Button} ${btnStyles.Blue}`}>
-                            Post
-                        </Button>
-                    </div>
+                        </div>
+                    </Form>
+                    {posts.length > 0 ? (
+                        <InfiniteScroll
+                            dataLength={posts.length}
+                            next={loadMorePosts}
+                            hasMore={hasMore}
+                            loader={<Asset spinner />}
+                        >
+                            {posts.map(post => <Post key={post.id} {...post} />)}
+                        </InfiniteScroll>
+                    ) : (
+                        <Asset src={NoResults} message={message} />
+                    )}
                 </div>
-            </Form>
-            {posts.length > 0 ? (
-                <InfiniteScroll
-                    dataLength={posts.length}
-                    next={loadMorePosts}
-                    hasMore={hasMore}
-                    loader={<Asset spinner />}
-                >
-                    {posts.map(post => <Post key={post.id} {...post} />)}
-                </InfiniteScroll>
-            ) : (
-                <Asset src={NoResults} message={message} />
-            )}
+            </div>
         </div>
     );
 }

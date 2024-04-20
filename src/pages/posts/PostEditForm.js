@@ -54,30 +54,34 @@ function PostEditForm() {
     };
 
     return (
-        <Form className={styles.Form} onSubmit={handleSubmit}>
-            <Form.Group>
-                <Form.Label>Content</Form.Label>
-                <Form.Control
-                    as="textarea"
-                    name="content"
-                    value={postData.content}
-                    onChange={handleChange}
-                />
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Image</Form.Label>
-                <Form.Control
-                    type="file"
-                    ref={imageInput}
-                    onChange={handleChangeImage}
-                    accept="image/*"
-                />
-                {imageUrl && <img src={imageUrl} alt="Selected" />}
-            </Form.Group>
-            <Button variant="primary" type="submit">
-                Update Post
-            </Button>
-        </Form>
+        <div className="d-flex flex-column align-items-center">
+            <div className="col-lg-8">
+                <Form className={styles.Form} onSubmit={handleSubmit}>
+                    <Form.Group>
+                        <Form.Label>Content</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            name="content"
+                            value={postData.content}
+                            onChange={handleChange}
+                        />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Image</Form.Label>
+                        <Form.Control
+                            type="file"
+                            ref={imageInput}
+                            onChange={handleChangeImage}
+                            accept="image/*"
+                        />
+                        {imageUrl && <img src={imageUrl} alt="Selected" />}
+                    </Form.Group>
+                    <Button variant="primary" type="submit">
+                        Update Post
+                    </Button>
+                </Form>
+            </div>
+        </div>
     );
 }
 

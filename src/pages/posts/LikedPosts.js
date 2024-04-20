@@ -1,18 +1,22 @@
 import React from "react";
-import { usePosts } from "../../contexts/PostsContext"; // Adjust the path as necessary
-import Post from "./Post"; // Adjust the path as necessary
+import { usePosts } from "../../contexts/PostsContext";
+import Post from "./Post";
 
 const LikedPosts = () => {
   const { posts } = usePosts();
-  const likedPosts = posts.filter(post => post.like_id != null); // Ensure you have like_id set correctly in your global state
+  const likedPosts = posts.filter(post => post.like_id != null);
 
   return (
     <div>
-      {likedPosts.length > 0 ? (
-        likedPosts.map(post => <Post key={post.id} {...post} />)
-      ) : (
-        <p>No liked posts yet!</p>
-      )}
+        <div className="d-flex flex-column align-items-center">
+            <div className="col-lg-8">
+                {likedPosts.length > 0 ? (
+                    likedPosts.map(post => <Post key={post.id} {...post} />)
+                ) : (
+                    <p>No liked posts yet!</p>
+                )}
+            </div>
+        </div>
     </div>
   );
 };

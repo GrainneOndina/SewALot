@@ -32,6 +32,7 @@ export const PostsProvider = ({ children }) => {
     const updatePost = updatedPost => {
         setPosts(prevPosts => prevPosts.map(post => post.id === updatedPost.id ? updatedPost : post));
     };
+    
 
     const removePost = (id) => {
         setPosts(prevPosts => prevPosts.filter(post => post.id !== id));

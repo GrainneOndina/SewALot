@@ -59,7 +59,7 @@ const Post = (props) => {
         console.error("Failed to delete the post:", err);
         alert("Failed to delete the post, please try again.");
     }
-};
+  };
 
   /**
    * Handles the like action for the post.
@@ -74,12 +74,13 @@ const Post = (props) => {
           likes_count: likes_count + 1,
           like_id: data.id
         };
-        updatePost(updatedPost);
+        updatePost(updatedPost); // Update global context
+        props.handlePostUpdate(updatedPost); // Update local state in PostPage
       }
     } catch (err) {
       console.error("Failed to like post:", err);
     }
-  };
+};
 
   /**
    * Handles the unlike action for the post.
@@ -93,12 +94,13 @@ const Post = (props) => {
           likes_count: likes_count - 1,
           like_id: null
         };
-        updatePost(updatedPost);
+        updatePost(updatedPost); // Update global context
+        props.handlePostUpdate(updatedPost); // Update local state in PostPage
       }
     } catch (err) {
       console.error("Failed to unlike post:", err);
     }
-  };
+};
 
   /**
    * Handles the click event for the post content.

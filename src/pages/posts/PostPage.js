@@ -26,17 +26,21 @@ function PostPage() {
 
     return (
         <div className="container">
-            <div className={appStyles.Content}>
-                {post ? (
-                    <>
-                        <Post {...post} />
-                        <hr />
-                        <h3>Comments</h3>
-                        <Comment postId={id} />
-                    </>
-                ) : (
-                    <div>Loading...</div>
-                )}
+            <div className="d-flex flex-column align-items-center">
+                <div className="col-lg-8">
+                    <div className={appStyles.Content}>
+                        {post ? (
+                            <>
+                                <Post {...post} handlePostUpdate={handlePostUpdate} />
+                                <hr />
+                                <h3>Comments</h3>
+                                <Comment postId={id} />
+                            </>
+                        ) : (
+                            <div>Loading...</div>
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );
