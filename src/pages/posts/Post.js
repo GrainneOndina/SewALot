@@ -105,8 +105,8 @@ const Post = (props) => {
                 image,
                 comments_count,
                 likes_count: likes_count - 1,
-                updated_at,
-                like_id: null
+                like_id: null,
+                updated_at
             };
             updatePost(updatedPost); // Update global state
         }

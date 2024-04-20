@@ -14,13 +14,15 @@ import Post from "../posts/Post";
 import { fetchMoreData } from "../../utils/utils";
 import NoResults from "../../assets/no-results.png";
 import { ProfileEditDropdown } from "../../components/MoreDropdown";
+import { usePosts } from "../../contexts/PostsContext"; // Make sure this import is correct
 
 /**
  * Component for displaying a user profile page.
  */
 function ProfilePage() {
   const [hasLoaded, setHasLoaded] = useState(false);
-  const [profilePosts, setProfilePosts] = useState({ results: [] });
+  //const [profilePosts, setProfilePosts] = useState({ results: [] });
+  const { posts, setPosts } = usePosts(); // Use global posts state
   const currentUser = useCurrentUser();
   const { id } = useParams();
   const history = useHistory();
@@ -28,29 +30,21 @@ function ProfilePage() {
   const { pageProfile } = useProfileData();
   const [profile] = pageProfile.results;
   const is_owner = currentUser?.username === profile?.owner;
+  const profilePosts = posts.filter(post => post.owner === profile?.owner);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [
-          { data: pageProfile },
-          { data: profilePosts }
-        ] = await Promise.all([
-          axiosReq.get(`/profiles/${id}/`),
-          axiosReq.get(`/posts/?owner__profile=${id}`)
-        ]);
-
+        const { data: pageProfile } = await axiosReq.get(`/profiles/${id}/`);
         setProfileData((prevState) => ({
           ...prevState,
           pageProfile: { results: [pageProfile] }
         }));
-        setProfilePosts(profilePosts);
         setHasLoaded(true);
       } catch (err) {
-        // console.log(err);
+        console.log(err);
       }
     };
-
     fetchData();
   }, [id, setProfileData]);
 
@@ -106,22 +100,22 @@ function ProfilePage() {
     </>
   );
 
+  // Adjust post filter and mapping for global posts context
+  
+
   const mainProfilePosts = (
     <>
       <hr />
       <p className="text-center">{profile?.owner}'s posts</p>
       <hr />
-      {profilePosts.results.length ? (
+      {profilePosts.length ? (
         <InfiniteScroll
-          children={profilePosts.results
-            .filter((post) => post.owner === profile?.owner)
-            .map((post) => (
-              <Post key={post.id} {...post} setPosts={setProfilePosts} />
-            ))}
-          dataLength={profilePosts.results.length}
+          children={profilePosts.map((post) => (
+            <Post key={post.id} {...post} setPosts={setPosts} />
+          ))}
+          dataLength={profilePosts.length}
           loader={<Asset spinner />}
-          hasMore={!!profilePosts.next}
-          next={() => fetchMoreData(profilePosts, setProfilePosts)}
+          hasMore={false} // Adjust according to your pagination logic
         />
       ) : (
         <Asset
