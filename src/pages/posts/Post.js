@@ -65,55 +65,40 @@ const Post = (props) => {
    * Handles the like action for the post.
    */
   const handleLike = async () => {
-    console.log('Adding like');
     try {
-        const response = await axios.post("/likes/", { post: id });
-        if (response.status === 201) {
-            const { data } = response;
-            const updatedPost = {
-                id,
-                owner,
-                profile_image,
-                content,
-                url,
-                image,
-                comments_count,
-                likes_count: likes_count + 1,
-                updated_at,
-                like_id: data.id
-            };
-            updatePost(updatedPost); // Update global state
-        }
+      const response = await axios.post("/likes/", { post: id });
+      if (response.status === 201) {
+        const { data } = response;
+        const updatedPost = {
+          ...props,
+          likes_count: likes_count + 1,
+          like_id: data.id
+        };
+        updatePost(updatedPost);
+      }
     } catch (err) {
-        console.error("Failed to like post:", err);
+      console.error("Failed to like post:", err);
     }
-};
+  };
 
   /**
    * Handles the unlike action for the post.
    */
   const handleUnlike = async () => {
     try {
-        const response = await axios.delete(`/likes/${like_id}`);
-        if (response.status === 204) {
-            const updatedPost = {
-                id,
-                owner,
-                profile_image,
-                content,
-                url,
-                image,
-                comments_count,
-                likes_count: likes_count - 1,
-                like_id: null,
-                updated_at
-            };
-            updatePost(updatedPost); // Update global state
-        }
+      const response = await axios.delete(`/likes/${like_id}`);
+      if (response.status === 204) {
+        const updatedPost = {
+          ...props,
+          likes_count: likes_count - 1,
+          like_id: null
+        };
+        updatePost(updatedPost);
+      }
     } catch (err) {
-        console.error("Failed to unlike post:", err);
+      console.error("Failed to unlike post:", err);
     }
-};
+  };
 
   /**
    * Handles the click event for the post content.

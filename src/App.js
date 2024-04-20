@@ -17,6 +17,7 @@ import ProfileEditForm from "./pages/profiles/ProfileEditForm";
 import NotFound from "./components/NotFound";
 import { PostsProvider } from './contexts/PostsContext'; // Correct import of PostsProvider
 import LandingPage from './pages/LandingPage';
+import LikedPosts from './pages/posts/LikedPosts';
 
 function App() {
   const currentUser = useCurrentUser();
@@ -30,7 +31,7 @@ function App() {
             <Switch>
               <Route exact path="/" component={PostsPage} />
               <Route exact path="/feed" component={PostsPage} />
-              <Route exact path="/liked" component={PostsPage} />
+              <Route exact path="/liked" component={LikedPosts} />
               <Route exact path="/landing" component={LandingPage} />
               <Route exact path="/signin" component={SignInForm} />
               <Route exact path="/signup" component={SignUpForm} />
