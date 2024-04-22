@@ -22,6 +22,8 @@ function PostsPage({ message }) {
         if (selectedImage && selectedImage.size <= 2 * 1024 * 1024) { 
             setImage(selectedImage);
             setImageURL(URL.createObjectURL(selectedImage));
+            setImageURL(""); // Clear the image URL if the file is too large
+            imageInput.current.value = ""; // Also clear the file input
         } else {
             alert('Image size exceeds the limit of 2MB.');
         }
