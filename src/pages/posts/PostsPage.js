@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { usePosts } from "../../contexts/PostsContext";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -9,6 +9,7 @@ import NoResults from "../../assets/no-results.png";
 import styles from "../../styles/PostsPage.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import { axiosReq } from "../../api/axiosDefaults";
+import Alert from "react-bootstrap/Alert";
 
 function PostsPage({ message }) {
     const { posts, hasMore, loadMorePosts, setPosts } = usePosts();
@@ -16,34 +17,41 @@ function PostsPage({ message }) {
     const [url, setUrl] = useState("");
     const [image, setImage] = useState(null);
     const [imageURL, setImageURL] = useState(null);
+    const [errors, setErrors] = useState({});
+    const fileInputRef = useRef();  // Reference to the file input
 
     const handleImageChange = (event) => {
         const selectedImage = event.target.files[0];
-        if (selectedImage && selectedImage.size <= 2 * 1024 * 1024) { 
-            setImage(selectedImage);
-            setImageURL(URL.createObjectURL(selectedImage));
-            setImageURL(""); // Clear the image URL if the file is too large
-            imageInput.current.value = ""; // Also clear the file input
-        } else {
-            alert('Image size exceeds the limit of 2MB.');
+        if (selectedImage) {
+            if (selectedImage.size > 2 * 1024 * 1024) {
+                setErrors({ image: 'Image size exceeds the limit of 2MB.' });
+                setImage(null);
+                setImageURL("");
+                fileInputRef.current.value = "";
+            } else {
+                setErrors({ ...errors, image: null });
+                setImage(selectedImage);
+                setImageURL(URL.createObjectURL(selectedImage));
+            }
         }
     };
 
     const handleRemoveImage = () => {
         setImage(null);
         setImageURL(null);
+        fileInputRef.current.value = ""; // Clear the file input
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (!content.trim()) {
-            alert("Can't post without text");
+            setErrors({ ...errors, content: "Can't post without text" });
             return;
         }
 
         const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
         if (url && !urlRegex.test(url)) {
-            alert("Please enter a valid URL");
+            setErrors({ ...errors, url: "Please enter a valid URL" });
             return;
         }
 
@@ -59,9 +67,11 @@ function PostsPage({ message }) {
             setUrl("");
             setImage(null);
             setImageURL(null);
+            fileInputRef.current.value = "";
+            setErrors({});
         } catch (error) {
             console.error("Error creating post:", error);
-            alert("Failed to create post, please try again.");
+            setErrors({ form: "Failed to create post, please try again." });
         }
     };
 
@@ -70,6 +80,7 @@ function PostsPage({ message }) {
             <div className="d-flex flex-column align-items-center">
                 <div className="col-lg-8">
                     <Form className={styles.Form} onSubmit={handleSubmit}>
+                        {errors.form && <Alert variant="danger">{errors.form}</Alert>}
                         <Form.Group controlId="postContent">
                             <Form.Control
                                 as="textarea"
@@ -77,23 +88,32 @@ function PostsPage({ message }) {
                                 value={content}
                                 onChange={e => setContent(e.target.value)}
                                 placeholder="Add post"
+                                aria-label="Add content to post"
                             />
                         </Form.Group>
+                        {errors.content && <Alert variant="danger">{errors.content}</Alert>}
+
                         <Form.Group controlId="postUrl">
                             <Form.Control
                                 type="text"
                                 value={url}
                                 onChange={e => setUrl(e.target.value)}
                                 placeholder="Add URL"
+                                aria-label="Add URL to post"
                             />
+                            {errors.url && <Alert variant="danger">{errors.url}</Alert>}
                         </Form.Group>
+
                         <div className={styles.UploadContainer}>
-                            <Form.Group>
+                            <Form.Group controlId="postImage">
                                 <Form.Control
                                     type="file"
                                     accept="image/*"
                                     onChange={handleImageChange}
+                                    ref={fileInputRef}
+                                    aria-label="Upload image for post"
                                 />
+                                {errors.image && <Alert variant="danger">{errors.image}</Alert>}
                                 {imageURL && (
                                     <div className={styles.ImageContainer}>
                                         <button onClick={handleRemoveImage}>Remove Image</button>
