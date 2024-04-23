@@ -97,7 +97,7 @@ function SignInForm() {
               </Form.Control.Feedback>}
             </Form.Group>
             {/* Empty div for spacing */}
-            <div style={{ height: "3rem" }}></div>
+            <div style={{ height: "4rem" }}></div>
            
             <Button className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`} type="submit">
               Sign in

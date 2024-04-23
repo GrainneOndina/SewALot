@@ -2,14 +2,11 @@ import React, { useEffect, useState } from "react";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import { useHistory, useParams } from "react-router-dom";
 import { axiosRes } from "../../api/axiosDefaults";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import btnStyles from "../../styles/Button.module.css";
-import appStyles from "../../App.module.css";
 
 /**
  * Component for the user password change form.
@@ -23,9 +20,14 @@ const UserPasswordForm = () => {
     new_password1: "",
     new_password2: "",
   });
-  const { new_password1, new_password2 } = userData;
-
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (currentUser?.profile_id?.toString() !== id) {
+      // Redirect user if they are not the owner of this profile
+      history.push("/");
+    }
+  }, [currentUser, history, id]);
 
   /**
    * Handles the input change event.
@@ -36,13 +38,6 @@ const UserPasswordForm = () => {
       [event.target.name]: event.target.value,
     });
   };
-
-  useEffect(() => {
-    if (currentUser?.profile_id?.toString() !== id) {
-      // Redirect user if they are not the owner of this profile
-      history.push("/");
-    }
-  }, [currentUser, history, id]);
 
   /**
    * Handles the form submission.
@@ -59,55 +54,63 @@ const UserPasswordForm = () => {
   };
 
   return (
-    <div class="container">
-      <Row>
-        <Col className="py-2 mx-auto text-center" md={6}>
-          <Container className={appStyles.Content}>
-            <Form onSubmit={handleSubmit}>
-              <Form.Group>
-                <Form.Label>New password</Form.Label>
-                <Form.Control
-                  placeholder="new password"
-                  type="password"
-                  value={new_password1}
-                  onChange={handleChange}
-                  name="new_password1"
-                />
-              </Form.Group>
-              {errors?.new_password1?.map((message, idx) => (
-                <Alert key={idx} variant="warning">
-                  {message}
-                </Alert>
-              ))}
-              <Form.Group>
-                <Form.Label>Confirm password</Form.Label>
-                <Form.Control
-                  placeholder="confirm new password"
-                  type="password"
-                  value={new_password2}
-                  onChange={handleChange}
-                  name="new_password2"
-                />
-              </Form.Group>
-              {errors?.new_password2?.map((message, idx) => (
-                <Alert key={idx} variant="warning">
-                  {message}
-                </Alert>
-              ))}
-              <Button
-                className={`${btnStyles.Button} ${btnStyles.Blue}`}
-                onClick={() => history.goBack()}
-              >
-                cancel
-              </Button>
-              <Button type="submit" className={`${btnStyles.Button} ${btnStyles.Blue}`}>
-                save
-              </Button>
-            </Form>
-          </Container>
-        </Col>
-      </Row>
-    </div>
+    <Container className="py-2 mx-auto text-center" style={{ maxWidth: "500px" }}>
+      <Form onSubmit={handleSubmit} aria-label="Change Password Form">
+        <Form.Group controlId="new_password1">
+          <Form.Label>New Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Enter new password"
+            name="new_password1"
+            value={userData.new_password1}
+            onChange={handleChange}
+            aria-describedby="password1Help"
+            isInvalid={!!errors.new_password1}
+          />
+          <Form.Text id="password1Help" muted>
+            Password must be 8-20 characters long.
+          </Form.Text>
+          {errors.new_password1 && (
+            <Alert variant="warning" role="alert" aria-live="assertive">
+              {errors.new_password1.join(", ")}
+            </Alert>
+          )}
+        </Form.Group>
+
+        <Form.Group controlId="new_password2">
+          <Form.Label>Confirm New Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Confirm new password"
+            name="new_password2"
+            value={userData.new_password2}
+            onChange={handleChange}
+            aria-describedby="password2Help"
+            isInvalid={!!errors.new_password2}
+          />
+          <Form.Text id="password2Help" muted>
+            Please confirm your new password.
+          </Form.Text>
+          {errors.new_password2 && (
+            <Alert variant="warning" role="alert" aria-live="assertive">
+              {errors.new_password2.join(", ")}
+            </Alert>
+          )}
+        </Form.Group>
+
+        <div className="d-flex justify-content-between">
+          <Button
+            className={`${btnStyles.Button} ${btnStyles.Blue}`}
+            onClick={() => history.goBack()}
+          >
+            cancel
+          </Button>
+          <Button className={`${btnStyles.Button} ${btnStyles.Blue}`} type="submit">
+            save
+          </Button>
+        </div>
+      </Form>
+    </Container>
   );
 };
 

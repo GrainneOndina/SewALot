@@ -97,6 +97,9 @@ const SignUpForm = () => {
                 isInvalid={!!errors.password1}
                 aria-label="Password"
               />
+              <Form.Text id="passwordHelpBlock" muted>
+                Password must be 8-20 characters long.
+              </Form.Text>
               {errors.password1 && <Form.Control.Feedback type="invalid">
                 {errors.password1.join(", ")}
               </Form.Control.Feedback>}

@@ -4,11 +4,6 @@
     margin-bottom: 20px;
   }
   
-  .Profile.MobileProfile {
-    flex-direction: column;
-    align-items: center;
-  }
-  
   .Profile .Info {
     display: flex;
     align-items: center;

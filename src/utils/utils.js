@@ -22,36 +22,6 @@ export const fetchMoreData = async (resource, setResource) => {
 };
 
 /**
- * Helper function to handle following a profile.
- */
-export const followHelper = (profile, clickedProfile, following_id) => {
-  return profile.id === clickedProfile.id
-    ? {
-        ...profile,
-        followers_count: profile.followers_count + 1,
-        following_id,
-      }
-    : profile.is_owner
-    ? { ...profile, following_count: profile.following_count + 1 }
-    : profile;
-};
-
-/**
- * Helper function to handle unfollowing a profile.
- */
-export const unfollowHelper = (profile, clickedProfile) => {
-  return profile.id === clickedProfile.id
-    ? {
-        ...profile,
-        followers_count: profile.followers_count - 1,
-        following_id: null,
-      }
-    : profile.is_owner
-    ? { ...profile, following_count: profile.following_count - 1 }
-    : profile;
-};
-
-/**
  * Sets the token timestamp in the local storage.
  */
 export const setTokenTimestamp = (data) => {

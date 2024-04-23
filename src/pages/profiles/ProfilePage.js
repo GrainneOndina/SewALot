@@ -1,32 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import { Row, Col, Image, Button, Container } from "react-bootstrap";
+import { useHistory, useParams } from "react-router-dom";
+import { Row, Col, Image, Container } from "react-bootstrap";
 import Asset from "../../components/Asset";
 import styles from "../../styles/ProfilePage.module.css";
 import appStyles from "../../App.module.css";
-import btnStyles from "../../styles/Button.module.css";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
-import { useParams } from "react-router";
 import { axiosReq } from "../../api/axiosDefaults";
 import { useProfileData, useSetProfileData } from "../../contexts/ProfileDataContext";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Post from "../posts/Post";
-import { fetchMoreData } from "../../utils/utils";
 import NoResults from "../../assets/no-results.png";
 import { ProfileEditDropdown } from "../../components/MoreDropdown";
-import { usePosts } from "../../contexts/PostsContext"; // Make sure this import is correct
+import { usePosts } from "../../contexts/PostsContext";
 
 /**
  * Component for displaying a user profile page.
  */
 function ProfilePage() {
   const [hasLoaded, setHasLoaded] = useState(false);
-  //const [profilePosts, setProfilePosts] = useState({ results: [] });
   const { posts, setPosts } = usePosts(); // Use global posts state
   const currentUser = useCurrentUser();
   const { id } = useParams();
   const history = useHistory();
-  const { setProfileData, handleFollow, handleUnfollow } = useSetProfileData();
+  const { setProfileData } = useSetProfileData();
   const { pageProfile } = useProfileData();
   const [profile] = pageProfile.results;
   const is_owner = currentUser?.username === profile?.owner;
@@ -50,25 +46,16 @@ function ProfilePage() {
 
   const mainProfile = (
     <>
-      {/* Dropdown Menu or Follow Button */}
+      {/* Dropdown Menu*/}
       <Row className="justify-content-end">
-        <Col md={3} xs={12} className="text-right">
+        <Col md={1} xs={1} className="text-right">
           {/* Profile Edit Dropdown */}
           {profile?.is_owner && (
             <ProfileEditDropdown
               id={profile?.id}
               handleEdit={() => history.push(`/profiles/${id}/edit`)}
+              aria-label="Edit profile options"
             />
-          )}
-  
-          {/* Follow/Unfollow Button */}
-          {currentUser && !is_owner && (
-            <Button
-              className={`${btnStyles.Button} ${btnStyles.BlackOutline} mt-3`}
-              onClick={() => (profile?.following_id ? handleUnfollow(profile) : handleFollow(profile))}
-            >
-              {profile?.following_id ? 'unfollow' : 'follow'}
-            </Button>
           )}
         </Col>
       </Row>
@@ -79,10 +66,11 @@ function ProfilePage() {
         <Col md={3} xs={12} className="text-center mb-3">
           <Container className="d-flex align-items-center justify-content-center">
             <Image
-              className={styles.ProfileImage} 
+              className={styles.ProfileImage}
               roundedCircle
               src={profile?.image}
               style={{ width: "150px" }}
+              alt={`Profile image of ${profile?.owner}`}
             />
           </Container>
         </Col>
@@ -100,9 +88,6 @@ function ProfilePage() {
     </>
   );
 
-  // Adjust post filter and mapping for global posts context
-  
-
   const mainProfilePosts = (
     <>
       <hr />
@@ -115,19 +100,21 @@ function ProfilePage() {
           ))}
           dataLength={profilePosts.length}
           loader={<Asset spinner />}
-          hasMore={false} // Adjust according to your pagination logic
+          hasMore={false}
+          aria-label={`${profile?.owner}'s posts`}
         />
       ) : (
         <Asset
           src={NoResults}
           message={`No results found, ${profile?.owner} hasn't posted yet.`}
+          alt="No results found"
         />
       )}
     </>
   );
 
   return (
-    <div className="container">
+    <Container>
       <div className="d-flex flex-column align-items-center">
         <div className="col-lg-8">
           <div className={appStyles.MainContainer}>
@@ -140,7 +127,7 @@ function ProfilePage() {
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 }
 

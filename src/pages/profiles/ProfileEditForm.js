@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { Form, Button, Alert, Container } from "react-bootstrap";
+import { Form, Button, Alert, Container, Image } from "react-bootstrap";
 import { axiosReq } from "../../api/axiosDefaults";
 import { useCurrentUser, useSetCurrentUser } from "../../contexts/CurrentUserContext";
 import btnStyles from "../../styles/Button.module.css";
-import appStyles from "../../App.module.css";
 
 /**
  * Component for editing a user profile.
@@ -13,27 +12,27 @@ const ProfileEditForm = () => {
   const setCurrentUser = useSetCurrentUser();
   const { id } = useParams();
   const history = useHistory();
-  const imageFile = useRef();
+  const imageInput = useRef();
 
   const [profileData, setProfileData] = useState({
     description: "",
-    image: "",
+    image: null,
   });
   const { description, image } = profileData;
 
+  const [currentImage, setCurrentImage] = useState("");
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
         const { data } = await axiosReq.get(`/profiles/${id}/`);
-        const { description } = data;
-        setProfileData((prevState) => ({
-          ...prevState,
-          description: description || "",
-        }));
+        setProfileData({
+          description: data.description || "",
+          image: null,  // Clear the file input to prevent sending it if not changed
+        });
+        setCurrentImage(data.image); // Keep the current image displayed
       } catch (err) {
-        // console.log(err);
         history.push("/");
       }
     };
@@ -54,68 +53,71 @@ const ProfileEditForm = () => {
       ...profileData,
       image: file,
     });
+    setCurrentImage(URL.createObjectURL(file)); // Update the display image
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
     formData.append("description", description);
-    formData.append("image", image);
+    if (image) {
+      formData.append("image", image);
+    }
 
     try {
       const { data } = await axiosReq.put(`/profiles/${id}/`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        headers: { "Content-Type": "multipart/form-data" },
       });
-      setProfileData((prevState) => ({
-        ...prevState,
-        description: data.description, // Set the description value in the ProfileDataContext
-      }));
       setCurrentUser((currentUser) => ({
         ...currentUser,
         profile_image: data.image,
       }));
       history.goBack();
     } catch (err) {
-      // console.log(err);
       setErrors(err.response?.data);
     }
   };
 
   return (
-    <div class="container">
+    <Container>
       <div className="d-flex flex-column align-items-center">
         <div className="col-lg-8">
-          <div className={appStyles.Content}>
-            <Form onSubmit={handleSubmit}>
-              <Form.Group controlId="description">
-                <Form.Label>Description</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  name="description"
-                  rows={7}
-                  value={description}
-                  onChange={handleChange}
-                />
-              </Form.Group>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="description">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                name="description"
+                rows={7}
+                value={description}
+                onChange={handleChange}
+                aria-describedby="descriptionHelpBlock"
+              />
+              {errors.description && (
+                <Alert variant="warning">{errors.description.join(", ")}</Alert>
+              )}
+            </Form.Group>
 
-              <Form.Group controlId="image">
-                <Form.Label>Profile Image</Form.Label>
-                <Form.Control
-                  type="file"
-                  accept="image/*"
-                  ref={imageFile}
-                  onChange={handleImageChange}
-                />
-              </Form.Group>
+            <Form.Group controlId="image">
+              <Form.Label>Profile Image</Form.Label>
+              {currentImage && (
+                <div>
+                  <Image src={currentImage} alt="Profile" thumbnail />
+                </div>
+              )}
+              <Form.Control
+                type="file"
+                accept="image/*"
+                ref={imageInput}
+                onChange={handleImageChange}
+                aria-describedby="imageHelpBlock"
+              />
+              {errors.image && (
+                <Alert variant="warning">{errors.image}</Alert>
+              )}
+            </Form.Group>
 
-              {errors?.description?.map((message, idx) => (
-                <Alert variant="warning" key={idx}>
-                  {message}
-                </Alert>
-              ))}
-
+            <div className="d-flex justify-content-between">
               <Button
                 className={`${btnStyles.Button} ${btnStyles.Blue}`}
                 onClick={() => history.goBack()}
@@ -125,11 +127,11 @@ const ProfileEditForm = () => {
               <Button className={`${btnStyles.Button} ${btnStyles.Blue}`} type="submit">
                 Save
               </Button>
-            </Form>
-          </div>
+            </div>
+          </Form>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 

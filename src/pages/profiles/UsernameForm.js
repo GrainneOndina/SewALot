@@ -9,7 +9,6 @@ import { useHistory, useParams } from "react-router-dom";
 import { axiosRes } from "../../api/axiosDefaults";
 import { useCurrentUser, useSetCurrentUser } from "../../contexts/CurrentUserContext";
 import btnStyles from "../../styles/Button.module.css";
-import appStyles from "../../App.module.css";
 
 /**
  * Component for the username change form.
@@ -30,60 +29,74 @@ const UsernameForm = () => {
     }
   }, [currentUser, history, id]);
 
-  /**
-   * Handles the form submission.
-   */
+  const handleChange = (event) => {
+    setUsername(event.target.value);
+    if (event.target.value.length < 3 || event.target.value.length > 30) {
+      setErrors({ username: ["Your username must be between 3 and 30 characters long."] });
+    } else {
+      setErrors({ ...errors, username: null });
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      await axiosRes.put("/dj-rest-auth/user/", {
-        username,
-      });
-      setCurrentUser((prevUser) => ({
-        ...prevUser,
-        username,
-      }));
-      history.goBack();
-    } catch (err) {
-      // console.log(err);
-      setErrors(err.response?.data);
+    if (!errors.username && username.length >= 3 && username.length <= 30) {
+      try {
+        const response = await axiosRes.put("/dj-rest-auth/user/", { username });
+        setCurrentUser((prevUser) => ({
+          ...prevUser,
+          username: response.data.username,
+        }));
+        history.goBack();
+      } catch (err) {
+        setErrors(err.response?.data);
+      }
     }
   };
 
   return (
-    <div class="container">
+    <Container className="mt-5">
       <Row>
-        <Col className="py-2 mx-auto text-center" md={6}>
-          <Container className={appStyles.Content}>
-            <Form onSubmit={handleSubmit} className="my-2">
-              <Form.Group>
-                <Form.Label>Change username</Form.Label>
-                <Form.Control
-                  placeholder="username"
-                  type="text"
-                  value={username}
-                  onChange={(event) => setUsername(event.target.value)}
-                />
-              </Form.Group>
-              {errors?.username?.map((message, idx) => (
-                <Alert key={idx} variant="warning">
-                  {message}
+        <Col md={6} className="mx-auto">
+          <h2 className="text-center">Change Username</h2>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="username">
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter new username"
+                value={username}
+                onChange={handleChange}
+                aria-describedby="usernameHelpBlock"
+              />
+              <Form.Text id="usernameHelpBlock" muted>
+                Your username must be unique, 3-30 characters long.
+              </Form.Text>
+              {errors.username && (
+                <Alert variant="warning" className="mt-2">
+                  {errors.username.join(", ")}
                 </Alert>
-              ))}
+              )}
+            </Form.Group>
+            <div className="d-flex justify-content-between">
               <Button
                 className={`${btnStyles.Button} ${btnStyles.Blue}`}
                 onClick={() => history.goBack()}
               >
-                cancel
+                Cancel
               </Button>
-              <Button className={`${btnStyles.Button} ${btnStyles.Blue}`} type="submit">
-                save
+              <Button
+                className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                type="submit"
+                disabled={!!errors.username || username.length < 3 || username.length > 30}
+              >
+                Save
               </Button>
-            </Form>
-          </Container>
+            </div>
+          </Form>
         </Col>
       </Row>
-    </div>
+    </Container>
   );
 };
 
