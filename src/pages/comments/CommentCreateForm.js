@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
-import btnStyles from "../../styles/Button.module.css";
+import Alert from 'react-bootstrap/Alert';
 import Avatar from '../../components/Avatar';
 import { axiosRes } from '../../api/axiosDefaults';
 import styles from '../../styles/CommentCreateEditForm.module.css';
+import btnStyles from "../../styles/Button.module.css";
 
 /**
  * Form component for creating and editing comments.
- * 
  */
 function CommentCreateForm({ postId, addComment, profile_image, profile_id, commentToEdit, setEditingComment }) {
     const [content, setContent] = useState('');
@@ -34,8 +34,14 @@ function CommentCreateForm({ postId, addComment, profile_image, profile_id, comm
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (!content.trim()) {
+            setError('Cannot post an empty comment.');
+            return;
+        }
+
         const endpoint = isEditing ? `/comments/${commentToEdit.id}/` : '/comments/';
         const method = isEditing ? 'put' : 'post';
+
 
         try {
             const { data } = await axiosRes[method](endpoint, {
@@ -45,13 +51,13 @@ function CommentCreateForm({ postId, addComment, profile_image, profile_id, comm
             console.log(data); 
 
             if (isEditing) {
-                addComment({...data})
-                setEditingComment(null); // Reset editing state after successful update
+                addComment(data);
+                setEditingComment(null);
             } else {
-                addComment({...data})
+                addComment(data);
             }
-            setContent(''); // Clear the input field after submitting
-
+            setContent('');
+            setError('');
         } catch (err) {
             console.error('Error submitting comment:', err);
             setError('Failed to post comment. Please try again.');
@@ -59,11 +65,11 @@ function CommentCreateForm({ postId, addComment, profile_image, profile_id, comm
     };
 
     return (
-        <Form ref={formRef} className="mt-2" onSubmit={handleSubmit}>
+        <Form ref={formRef} className="mt-2" onSubmit={handleSubmit} aria-label={isEditing ? "Edit Comment" : "Create Comment"}>
             <Form.Group>
                 <InputGroup>
-                    <Link to={`/profiles/${profile_id}`}>
-                        <Avatar src={profile_image} height={55} />
+                    <Link to={`/profiles/${profile_id}`} aria-label="View profile">
+                        <Avatar src={profile_image} height={55} alt={`Profile image for ${profile_id}`} />
                     </Link>
                     <Form.Control
                         className={styles.Form}
@@ -73,24 +79,24 @@ function CommentCreateForm({ postId, addComment, profile_image, profile_id, comm
                         onChange={handleChange}
                         isInvalid={!!error}
                         rows={2}
+                        aria-label="Add a comment" 
                     />
-                    <Form.Control.Feedback type="invalid">
-                        {error}
-                    </Form.Control.Feedback>
+                   
                 </InputGroup>
             </Form.Group>
+            {error && <Alert variant="danger">{error}</Alert>}
             <div className="d-flex justify-content-center">
                 <Button
                     variant="primary"
                     className={`${btnStyles.Button} ${btnStyles.Blue}`}
                     type="submit"
+                    aria-label={isEditing ? "Update Comment" : "Post Comment"}
                 >
                     {isEditing ? 'Update' : 'Post'}
                 </Button>
             </div>
         </Form>
     );
-    
 }
 
 export default CommentCreateForm;

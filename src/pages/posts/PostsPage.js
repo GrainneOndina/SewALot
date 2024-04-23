@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { usePosts } from "../../contexts/PostsContext";
+import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Post from "./Post";
@@ -24,12 +25,12 @@ function PostsPage({ message }) {
         const selectedImage = event.target.files[0];
         if (selectedImage) {
             if (selectedImage.size > 2 * 1024 * 1024) {
-                setErrors({ image: 'Image size exceeds the limit of 2MB.' });
+                setErrors({ ...errors, image: 'Image size exceeds the limit of 2MB.' });
                 setImage(null);
                 setImageURL("");
                 fileInputRef.current.value = "";
             } else {
-                setErrors({ ...errors, image: null });
+                setErrors({ ...errors, image: '' });
                 setImage(selectedImage);
                 setImageURL(URL.createObjectURL(selectedImage));
             }
@@ -39,7 +40,8 @@ function PostsPage({ message }) {
     const handleRemoveImage = () => {
         setImage(null);
         setImageURL(null);
-        fileInputRef.current.value = ""; // Clear the file input
+        fileInputRef.current.value = "";
+        setErrors({ ...errors, image: '' });
     };
 
     const handleSubmit = async (event) => {
@@ -76,7 +78,7 @@ function PostsPage({ message }) {
     };
 
     return (
-        <div className="container">
+        <Container>
             <div className="d-flex flex-column align-items-center">
                 <div className="col-lg-8">
                     <Form className={styles.Form} onSubmit={handleSubmit}>
@@ -90,8 +92,8 @@ function PostsPage({ message }) {
                                 placeholder="Add post"
                                 aria-label="Add content to post"
                             />
+                            {errors.content && <Alert variant="danger">{errors.content}</Alert>}
                         </Form.Group>
-                        {errors.content && <Alert variant="danger">{errors.content}</Alert>}
 
                         <Form.Group controlId="postUrl">
                             <Form.Control
@@ -142,7 +144,7 @@ function PostsPage({ message }) {
                     )}
                 </div>
             </div>
-        </div>
+        </Container>
     );
 }
 

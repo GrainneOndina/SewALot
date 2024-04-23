@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../../styles/Post.module.css";
+import Container from "react-bootstrap/Container";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { Card, OverlayTrigger, Tooltip, Row, Col } from "react-bootstrap";
 import { Link, useHistory, useParams } from "react-router-dom";
@@ -122,7 +123,7 @@ const Post = (props) => {
 };
 
   return (
-    <div className="container">
+    <Container>
       <Card className={styles.Post}>
         <Card.Body>
           <Row className="align-items-center">
@@ -192,7 +193,7 @@ const Post = (props) => {
           {comments_count}
         </div>
       </Card>
-    </div>
+    </Container>
   );
 };
 

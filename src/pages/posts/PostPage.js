@@ -25,19 +25,23 @@ function PostPage() {
     };
 
     return (
-        <div className="container">
+        <div className="container" aria-live="polite">
             <div className="d-flex flex-column align-items-center">
                 <div className="col-lg-8">
                     <div className={appStyles.Content}>
                         {post ? (
                             <>
-                                <Post {...post} handlePostUpdate={handlePostUpdate} />
+                                <article>
+                                    <Post {...post} handlePostUpdate={handlePostUpdate} />
+                                </article>
                                 <hr />
-                                <h3>Comments</h3>
-                                <Comment postId={id} />
+                                <section aria-labelledby="commentsHeading">
+                                    <h3 id="commentsHeading">Comments</h3>
+                                    <Comment postId={id} />
+                                </section>
                             </>
                         ) : (
-                            <div>Loading...</div>
+                            <div role="alert" aria-busy="true">Loading...</div>
                         )}
                     </div>
                 </div>

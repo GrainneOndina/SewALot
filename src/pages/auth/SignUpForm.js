@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import { Form, Button, Alert, Container } from "react-bootstrap";
 import styles from "../../styles/SignInUpForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import appStyles from "../../App.module.css";
-import { Form, Button, Alert, Container } from "react-bootstrap";
 import axios from "axios";
 import { useRedirect } from "../../hooks/useRedirect";
 import { useSetCurrentUser } from "../../contexts/CurrentUserContext";
@@ -21,11 +21,15 @@ const SignUpForm = () => {
     password2: "",
   });
   const { username, password1, password2 } = signUpData;
-
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const location = useLocation();
+  const firstInputRef = useRef(null);
 
+  useEffect(() => {
+    firstInputRef.current && firstInputRef.current.focus();
+  }, [errors]);
+  
   /**
    * Handles the input change.
    */
@@ -34,6 +38,7 @@ const SignUpForm = () => {
       ...signUpData,
       [event.target.name]: event.target.value,
     });
+    setErrors({ ...errors, [event.target.name]: null });
   };
 
   /**
@@ -59,14 +64,13 @@ const SignUpForm = () => {
   };
 
   return (
-    <div class="container">
+    <Container>
       <div className="d-flex flex-column align-items-center">
         <div className={`${appStyles.Content} p-4`}>
           <h2 className={styles.Header}>sign up</h2>
 
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="username">
-              <Form.Label className="d-none">username</Form.Label>
               <Form.Control
                 className={styles.Input}
                 type="text"
@@ -74,17 +78,15 @@ const SignUpForm = () => {
                 name="username"
                 value={username}
                 onChange={handleChange}
+                isInvalid={!!errors.username}
+                ref={firstInputRef}
+                aria-label="Username"
               />
+              {errors.username && <Form.Control.Feedback type="invalid">
+                {errors.username.join(", ")}
+              </Form.Control.Feedback>}
             </Form.Group>
-            {errors.username &&
-              errors.username.map((message, idx) => (
-                <Alert variant="warning" key={idx}>
-                  {message}
-                </Alert>
-              ))}
-
             <Form.Group controlId="password1">
-              <Form.Label className="d-none">Password</Form.Label>
               <Form.Control
                 className={styles.Input}
                 type="password"
@@ -92,49 +94,39 @@ const SignUpForm = () => {
                 name="password1"
                 value={password1}
                 onChange={handleChange}
+                isInvalid={!!errors.password1}
+                aria-label="Password"
               />
+              {errors.password1 && <Form.Control.Feedback type="invalid">
+                {errors.password1.join(", ")}
+              </Form.Control.Feedback>}
             </Form.Group>
-            {errors.password1 &&
-              errors.password1.map((message, idx) => (
-                <Alert key={idx} variant="warning">
-                  {message}
-                </Alert>
-              ))}
-
             <Form.Group controlId="password2">
-              <Form.Label className="d-none">Confirm password</Form.Label>
               <Form.Control
                 className={styles.Input}
                 type="password"
-                placeholder="Confirm password"
+                placeholder="Confirm Password"
                 name="password2"
                 value={password2}
                 onChange={handleChange}
+                isInvalid={!!errors.password2}
+                aria-label="Confirm Password"
               />
+              {errors.password2 && <Form.Control.Feedback type="invalid">
+                {errors.password2.join(", ")}
+              </Form.Control.Feedback>}
             </Form.Group>
-            {errors.password2 &&
-              errors.password2.map((message, idx) => (
-                <Alert key={idx} variant="warning">
-                  {message}
-                </Alert>
-              ))}
 
-            <Button
-              className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright} d-flex justify-content-center`}
-              type="submit"
-            >
-              Sign up
+            <Button className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`} type="submit">
+              Sign Up
             </Button>
-            {errors.non_field_errors &&
-              errors.non_field_errors.map((message, idx) => (
-                <Alert key={idx} variant="warning" className="mt-3">
-                  {message}
-                </Alert>
-              ))}
+            {errors.non_field_errors && <Alert variant="danger" className="mt-3">
+              {errors.non_field_errors.join(", ")}
+            </Alert>}
           </Form>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };
 

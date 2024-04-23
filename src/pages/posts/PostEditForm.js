@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, useHistory } from "react-router-dom";
+import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
@@ -75,54 +76,73 @@ function PostEditForm() {
     };
 
     return (
-        <div className="container">
+        <Container>
             <div className="d-flex flex-column align-items-center">
                 <div className="col-lg-8">
                     <Form className={styles.Form} onSubmit={handleSubmit}>
-                        <Form.Group controlId="postContent">
-                            <Form.Label>Content</Form.Label>
-                            <Form.Control
-                                as="textarea"
-                                rows={3}
-                                name="content"
-                                value={postData.content}
-                                onChange={handleChange}
-                                aria-describedby="contentError"
-                            />
-                            {errors.content && <Alert variant="danger">{errors.content.join(", ")}</Alert>}
-                        </Form.Group>
+                    <Form.Group controlId="postContent">
+                        <Form.Label>Content</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            rows={3}
+                            name="content"
+                            value={postData.content}
+                            onChange={handleChange}
+                            aria-describedby="contentHelp contentError"
+                        />
+                        {errors.content && (
+                            <Alert variant="danger" role="alert" aria-live="polite">
+                                {errors.content.join(", ")}
+                            </Alert>
+                        )}
+                        <Form.Text id="contentHelp" muted>
+                            Enter the content of your post here.
+                        </Form.Text>
+                    </Form.Group>
 
-                        <Form.Group controlId="postUrl">
-                            <Form.Label>URL</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="url"
-                                value={postData.url}
-                                onChange={handleChange}
-                                placeholder="Add URL"
-                                aria-describedby="urlError"
-                            />
-                            {errors.url && <Alert variant="danger">{errors.url.join(", ")}</Alert>}
-                        </Form.Group>
+                    <Form.Group controlId="postUrl">
+                        <Form.Label>URL</Form.Label>
+                        <Form.Control
+                            type="text"
+                            name="url"
+                            value={postData.url}
+                            onChange={handleChange}
+                            placeholder="Add URL"
+                            aria-describedby="urlHelp urlError"
+                        />
+                        {errors.url && (
+                            <Alert variant="danger" role="alert" aria-live="polite">
+                                {errors.url.join(", ")}
+                            </Alert>
+                        )}
+                        <Form.Text id="urlHelp" muted>
+                            Enter a URL if relevant.
+                        </Form.Text>
+                    </Form.Group>
 
-                        <Form.Group controlId="postImage">
-                            <Form.Label>Image</Form.Label>
-                            <Form.Control
-                                type="file"
-                                ref={imageInput}
-                                onChange={handleChangeImage}
-                                accept="image/*"
-                                aria-describedby="imageError"
-                            />
-                            {imageUrl && (
-                                <div className={styles.ImageContainer}>
-                                    <Image src={imageUrl} alt="Selected" thumbnail className="img-fluid" />
-                                </div>
-                            )}
-                            {errors.image && <Alert variant="danger">{errors.image}</Alert>}
-                        </Form.Group>
-
-
+                    <Form.Group controlId="postImage">
+                        <Form.Label>Image</Form.Label>
+                        <Form.Control
+                            type="file"
+                            ref={imageInput}
+                            onChange={handleChangeImage}
+                            accept="image/*"
+                            aria-describedby="imageHelp imageError"
+                        />
+                        {imageUrl && (
+                            <div className={styles.ImageContainer}>
+                                <Image src={imageUrl} alt="Selected" thumbnail className="img-fluid" />
+                            </div>
+                        )}
+                        {errors.image && (
+                            <Alert variant="danger" role="alert" aria-live="polite">
+                                {errors.image}
+                            </Alert>
+                        )}
+                        <Form.Text id="imageHelp" muted>
+                            Upload an image if relevant.
+                        </Form.Text>
+                    </Form.Group>
                         <Button variant="primary" type="submit" className={`${btnStyles.Button} ${btnStyles.Blue}`}>
                             Update Post
                         </Button>
@@ -136,7 +156,7 @@ function PostEditForm() {
                     </Form>
                 </div>
             </div>
-        </div>
+        </Container>
     );
 }
 
