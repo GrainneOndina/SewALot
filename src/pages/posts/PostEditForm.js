@@ -16,6 +16,7 @@ function PostEditForm() {
     const { updatePost } = usePosts();
     const [postData, setPostData] = useState({ content: "", url: "", image: null });
     const [imageUrl, setImageUrl] = useState("");
+    const [originalUrl, setOriginalUrl] = useState("");
     const [errors, setErrors] = useState({});
     const imageInput = useRef(null);
 
@@ -29,135 +30,143 @@ function PostEditForm() {
                     image: data.image
                 });
                 setImageUrl(data.image || "");
+                setOriginalUrl(data.url); // Store the original URL to compare later
             } catch (error) {
                 console.error("Failed to fetch post details:", error);
             }
         };
         fetchPost();
     }, [id]);
+    
 
     const handleChange = event => {
-        setPostData({ ...postData, [event.target.name]: event.target.value });
-    };
-
-    const handleChangeImage = event => {
+        const { name, value } = event.target;
+        
+        // Avoid handling file input through this handler
+        if (event.target.type === 'file') return;
+    
+        setPostData(prevData => ({
+            ...prevData,
+            [name]: value
+        }));
+    
+        if (name === "content" && value.trim() !== "" && errors.content) {
+            setErrors(prevErrors => ({ ...prevErrors, content: null }));
+        } else if (name === "url") {
+            if (value.trim() === "" && postData.url) {
+                setErrors(prevErrors => ({ ...prevErrors, url: null }));
+            }
+        }
+    };    
+    
+    const handleImageChange = event => {
         const file = event.target.files[0];
         if (file) {
             if (file.size > 2 * 1024 * 1024) {
-                //alert('Image size exceeds the limit of 2MB.');
-                setErrors({...errors, image: 'Image size exceeds the limit of 2MB.'});
+                setErrors({ ...errors, image: 'Image size exceeds the limit of 2MB.' });
                 setImageUrl(""); // Clear the image URL if the file is too large
                 imageInput.current.value = ""; // Also clear the file input
-                return;
+            } else {
+                setPostData({ ...postData, image: file });
+                setImageUrl(URL.createObjectURL(file));
+                setErrors({ ...errors, image: null }); // Clear any existing image errors
             }
-            setErrors({...errors, image: ''});
-            //setImageError(""); // Clear any existing error messages
-            setPostData({ ...postData, image: file });
-            setImageUrl(URL.createObjectURL(file));
+        } else {
+            // Handle case where file is not selected or input is cleared
+            setPostData(prev => ({ ...prev, image: null }));
+            setImageUrl("");
         }
     };
-
+    
     const handleSubmit = async event => {
         event.preventDefault();
+
+        // Checking if the URL was originally present and now it's being cleared
+        if (postData.url === "" && originalUrl) {
+            setErrors(prevErrors => ({
+                ...prevErrors,
+                url: "URL field cannot be empty. Please provide a URL or leave the original."
+            }));
+            setPostData(prevData => ({ ...prevData, url: originalUrl })); // Reset URL to original
+            return; // Stop the form submission if there's an error
+        }
+    
         const formData = new FormData();
         formData.append("content", postData.content);
-        if (postData.url) formData.append("url", postData.url);
-        if (postData.image) formData.append("image", postData.image);
-
+        if (postData.url) {
+            formData.append("url", postData.url);
+        }
+        if (postData.image instanceof File) {
+            formData.append("image", postData.image);
+        }
+    
         try {
             const response = await axiosReq.put(`/posts/${id}/`, formData);
             updatePost(response.data);
-            //history.push("/feed");
-            //history.goBack();
+            history.goBack();
         } catch (error) {
             console.error("Error updating post:", error);
             setErrors(error.response?.data || {});
-            //alert("Failed to update post, please try again.");
         }
-    };
+    };    
 
     return (
         <Container>
             <div className="d-flex flex-column align-items-center">
                 <div className="col-lg-8">
-                    <Form className={styles.Form} onSubmit={handleSubmit}>
-                    <Form.Group controlId="postContent">
-                        <Form.Label>Content</Form.Label>
-                        <Form.Control
-                            as="textarea"
-                            rows={3}
-                            name="content"
-                            value={postData.content}
-                            onChange={handleChange}
-                            aria-describedby="contentHelp contentError"
-                        />
-                        {errors.content && (
-                            <Alert variant="danger" role="alert" aria-live="polite">
-                                {errors.content.join(", ")}
-                            </Alert>
-                        )}
-                        <Form.Text id="contentHelp" muted>
-                            Enter the content of your post here.
-                        </Form.Text>
-                    </Form.Group>
+                    <Form className={styles.Form} onSubmit={handleSubmit} encType="multipart/form-data">
+                        <Form.Group controlId="postContent">
+                            <Form.Label>Content</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                rows={3}
+                                name="content"
+                                value={postData.content}
+                                onChange={handleChange}
+                                aria-describedby="contentHelp contentError"
+                            />
+                            {errors.content && (
+                                <Alert variant="danger">{errors.content}</Alert>
+                            )}
+                        </Form.Group>
 
-                    <Form.Group controlId="postUrl">
-                        <Form.Label>URL</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="url"
-                            value={postData.url}
-                            onChange={handleChange}
-                            placeholder="Add URL"
-                            aria-describedby="urlHelp urlError"
-                        />
-                        {errors.url && (
-                            <Alert variant="danger" role="alert" aria-live="polite">
-                                {errors.url.join(", ")}
-                            </Alert>
-                        )}
-                        <Form.Text id="urlHelp" muted>
-                            Enter a URL if relevant.
-                        </Form.Text>
-                    </Form.Group>
+                        <Form.Group controlId="postUrl">
+                            <Form.Label>URL</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="url"
+                                value={postData.url}
+                                onChange={handleChange}
+                                placeholder={!postData.url ? "Add URL" : ""}
+                                aria-describedby="urlHelp"
+                            />
+                            {errors.url && (
+                                <Alert variant="danger">{errors.url}</Alert>
+                            )}
+                        </Form.Group>
 
-                    <Form.Group controlId="postImage">
-                        <Form.Label>Image</Form.Label>
-                        <Form.Control
-                            type="file"
-                            ref={imageInput}
-                            onChange={handleChangeImage}
-                            accept="image/*"
-                            aria-describedby="imageHelp imageError"
-                        />
-                        {imageUrl && (
-                            <div className={styles.ImageContainer}>
+                        <Form.Group controlId="postImage">
+                            <Form.Label>Image</Form.Label>
+                            <Form.Control
+                                type="file"
+                                ref={imageInput}
+                                onChange={handleImageChange}
+                                accept="image/*"
+                                aria-describedby="imageHelp"
+                            />
+                            {imageUrl && (
                                 <Image src={imageUrl} alt="Selected" thumbnail className="img-fluid" />
-                            </div>
-                        )}
-                        {errors.image && (
-                            <Alert variant="danger" role="alert" aria-live="polite">
-                                {errors.image}
-                            </Alert>
-                        )}
-                        <Form.Text id="imageHelp" muted>
-                            Upload an image if relevant.
-                        </Form.Text>
-                    </Form.Group>
+                            )}
+                            {errors.image && (
+                                <Alert variant="danger">{errors.image}</Alert>
+                            )}
+                        </Form.Group>
+
                         <div className="d-flex justify-content-between">
-                            <Button
-                                variant="secondary"
-                                className={`${btnStyles.Button} ${btnStyles.Red}`}
-                                onClick={() => history.goBack()}
-                            >
-                                cancel
+                            <Button variant="secondary" className={`${btnStyles.Button} ${btnStyles.Red}`} onClick={() => history.goBack()}>
+                                Cancel
                             </Button>
-                            <Button 
-                                variant="primary" 
-                                type="submit" 
-                                className={`${btnStyles.Button} ${btnStyles.Blue}`}
-                                onClick={() => history.goBack()}
-                            >
+                            <Button variant="primary" type="submit" className={`${btnStyles.Button} ${btnStyles.Blue}`}>
                                 Update Post
                             </Button>
                         </div>
