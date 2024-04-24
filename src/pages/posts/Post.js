@@ -3,14 +3,10 @@ import styles from "../../styles/Post.module.css";
 import Container from "react-bootstrap/Container";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { Card, OverlayTrigger, Tooltip, Row, Col } from "react-bootstrap";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Avatar from "../../components/Avatar";
-//import { axiosRes } from "../../api/axiosDefaults";
 import axios from "axios";
 import { MoreDropdown } from "../../components/MoreDropdown";
-import { useEffect } from 'react';
-import Comment from "../comments/Comment";
-import CommentCreateForm from "../comments/CommentCreateForm";
 import { usePosts } from "../../contexts/PostsContext";
 
 /**
@@ -25,19 +21,14 @@ const Post = (props) => {
     content,
     url,
     image,
-    comments_count,
     likes_count,
     like_id,
     updated_at,
-    setPost,
-    setPosts,
-    handleUpdate
   } = props;
-  const { updatePost } = usePosts();  // Fetching the updatePost from context
   const history = useHistory();
   const currentUser = useCurrentUser();
   const is_owner = currentUser?.username === owner;
-  const { removePost } = usePosts();
+  const { updatePost, removePost } = usePosts();
 
   /**
    * Handles the edit action for the post.
@@ -53,12 +44,16 @@ const Post = (props) => {
     try {
         const response = await axios.delete(`/posts/${id}/`);
         if (response.status === 204) {  // Check if the delete was successful
-            removePost(id);  // Remove the post from the global state
-            history.push('/');  // Navigate away after deletion
+          removePost(id);
+          if (window.location.pathname.includes(`/posts/`)) {
+            history.goBack(); 
+          } else {
+             // Stay on page
+          }
         }
     } catch (err) {
-        console.error("Failed to delete the post:", err);
-        alert("Failed to delete the post, please try again.");
+      console.error("Failed to delete the post:", err);
+      alert("Failed to delete the post, please try again.");
     }
   };
 
@@ -81,7 +76,7 @@ const Post = (props) => {
     } catch (err) {
       console.error("Failed to like post:", err);
     }
-};
+  };
 
   /**
    * Handles the unlike action for the post.
@@ -101,7 +96,7 @@ const Post = (props) => {
     } catch (err) {
       console.error("Failed to unlike post:", err);
     }
-};
+  };
 
   /**
    * Handles the click event for the post content.
@@ -110,28 +105,18 @@ const Post = (props) => {
     history.push(`/posts/${id}`);
   };
 
-  /**
-   * Handles the click event for the post URL.
-   */
-  const handleClickUrl = (event) => {
-    event.stopPropagation();
-  };
-  
-  const handlePostUpdate = (updatedData) => {
-    updatePost(updatedData);
-    setPost(updatedData);
-};
-
   return (
     <Container>
       <Card className={styles.Post}>
         <Card.Body>
+
           <Row className="align-items-center">
             <Col xs="auto">
-              <Link to={`/profiles/${profile_id}`}>
-                <Avatar src={profile_image} height={55} />
+            <Link to={`/profiles/${profile_id}`} aria-label={`View ${owner}'s profile`}>
+                <Avatar src={profile_image} alt={`Profile of ${owner}`} height={55} />
               </Link>
             </Col>
+
             <Col className={`text-left ${styles.Owner}`}>
               <Link to={`/profiles/${profile_id}`} className={styles.OwnerDate}>
                 <span>{owner}</span>
@@ -139,28 +124,37 @@ const Post = (props) => {
                 <span className={styles.Date}>{updated_at}</span>
               </Link>
             </Col>
+
             <Col xs="auto" className="ml-auto">
               {is_owner && <MoreDropdown handleEdit={handleEdit} handleDelete={handleDelete} />}
             </Col>
           </Row>
-          {content && (
-            <p className={styles.Content} onClick={handleClickContent}>
-              {content}
-            </p>
-          )}
+
+          <Card.Text onClick={handleClickContent} role="button" tabIndex={0} aria-label="View full post">
+            {content}
+          </Card.Text>
         </Card.Body>
 
         <Link to={`/posts/${id}`}>
-          <Card.Img src={image} alt="" />
+        {image && (
+          <Card.Img src={image} alt="User uploaded post image" />
+        )}
         </Link>
         {url && (
-          <div className={styles.URLOverlay}>
-            <a href={url} target="_blank" rel="noopener noreferrer" onClick={handleClickUrl}>
-              <p className={styles.LinkText}>Check this link out</p>
-            </a>
-          </div>
+          <OverlayTrigger overlay={<Tooltip>{`Visit external link: ${url}`}</Tooltip>}>
+          <a 
+            href={url} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            onClick={(e) => e.stopPropagation()} 
+            aria-label={`Visit external site linked from the post`}
+          >
+            Check this link out
+          </a>
+        </OverlayTrigger>
         )}
 
+      <Card.Footer>
         <div className={styles.PostBar}>
           {is_owner ? (
             <OverlayTrigger
@@ -170,11 +164,11 @@ const Post = (props) => {
               <i className="far fa-heart" />
             </OverlayTrigger>
           ) : like_id && currentUser ? (
-            <span id='true-heart' onClick={handleUnlike}>
+            <span id='true-heart' onClick={handleUnlike} aria-label="Unlike post">
               <i className={`fas fa-heart ${styles.Heart}`} />
             </span>
           ) : currentUser ? (
-            <span id='false-heart' onClick={handleLike}>
+            <span id='false-heart' onClick={handleLike} aria-label="Like post">
               <i className={`far fa-heart ${styles.HeartOutline}`} />
             </span>
           ) : (
@@ -185,13 +179,13 @@ const Post = (props) => {
               <i className="far fa-heart" />
             </OverlayTrigger>
           )}
-          {likes_count}
-
-          <Link to={`/posts/${id}`}>
-            <i className="far fa-comments" />
-          </Link>
-          {comments_count}
+          <span>{likes_count}</span>
+          <Link to={`/posts/${id}`} aria-label={`View comments on ${owner}'s post`}>
+              <i className="far fa-comments" />
+            </Link>
         </div>
+        </Card.Footer>
+
       </Card>
     </Container>
   );

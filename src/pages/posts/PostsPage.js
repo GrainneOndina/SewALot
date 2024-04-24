@@ -20,7 +20,17 @@ function PostsPage({ message }) {
     const [imageURL, setImageURL] = useState(null);
     const [errors, setErrors] = useState({});
     const fileInputRef = useRef();  // Reference to the file input
-
+    
+    const handleContentChange = (e) => {
+        setContent(e.target.value);
+        setErrors(prevErrors => ({ ...prevErrors, content: "" }));  // Clear content error
+    };
+    
+    const handleUrlChange = (e) => {
+        setUrl(e.target.value);
+        setErrors(prevErrors => ({ ...prevErrors, url: "" }));  // Clear URL error
+    };
+    
     const handleImageChange = (event) => {
         const selectedImage = event.target.files[0];
         if (selectedImage) {
@@ -30,7 +40,7 @@ function PostsPage({ message }) {
                 setImageURL("");
                 fileInputRef.current.value = "";
             } else {
-                setErrors({ ...errors, image: '' });
+                setErrors({ ...errors, image: '' });  // Clear image error
                 setImage(selectedImage);
                 setImageURL(URL.createObjectURL(selectedImage));
             }
@@ -88,7 +98,7 @@ function PostsPage({ message }) {
                                 as="textarea"
                                 rows={3}
                                 value={content}
-                                onChange={e => setContent(e.target.value)}
+                                onChange={handleContentChange}
                                 placeholder="Add post"
                                 aria-label="Add content to post"
                             />
@@ -99,7 +109,7 @@ function PostsPage({ message }) {
                             <Form.Control
                                 type="text"
                                 value={url}
-                                onChange={e => setUrl(e.target.value)}
+                                onChange={handleUrlChange}
                                 placeholder="Add URL"
                                 aria-label="Add URL to post"
                             />
@@ -118,7 +128,13 @@ function PostsPage({ message }) {
                                 {errors.image && <Alert variant="danger">{errors.image}</Alert>}
                                 {imageURL && (
                                     <div className={styles.ImageContainer}>
-                                        <button onClick={handleRemoveImage}>Remove Image</button>
+                                        <div className="d-flex justify-content-center">
+                                            <button 
+                                                className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                                                onClick={handleRemoveImage}>
+                                                Remove Image
+                                            </button>
+                                        </div>
                                         <img src={imageURL} alt="Selected" className={styles.Image} />
                                     </div>
                                 )}

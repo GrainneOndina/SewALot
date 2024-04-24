@@ -67,7 +67,8 @@ function PostEditForm() {
         try {
             const response = await axiosReq.put(`/posts/${id}/`, formData);
             updatePost(response.data);
-            history.push("/feed");
+            //history.push("/feed");
+            //history.goBack();
         } catch (error) {
             console.error("Error updating post:", error);
             setErrors(error.response?.data || {});
@@ -143,16 +144,23 @@ function PostEditForm() {
                             Upload an image if relevant.
                         </Form.Text>
                     </Form.Group>
-                        <Button variant="primary" type="submit" className={`${btnStyles.Button} ${btnStyles.Blue}`}>
-                            Update Post
-                        </Button>
-                        <Button
-                            variant="secondary"
-                            className={`${btnStyles.Button} ${btnStyles.Red}`}
-                            onClick={() => history.goBack()}
-                        >
-                            Cancel
-                        </Button>
+                        <div className="d-flex justify-content-between">
+                            <Button
+                                variant="secondary"
+                                className={`${btnStyles.Button} ${btnStyles.Red}`}
+                                onClick={() => history.goBack()}
+                            >
+                                cancel
+                            </Button>
+                            <Button 
+                                variant="primary" 
+                                type="submit" 
+                                className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                                onClick={() => history.goBack()}
+                            >
+                                Update Post
+                            </Button>
+                        </div>
                     </Form>
                 </div>
             </div>

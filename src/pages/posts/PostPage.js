@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { usePosts } from "../../contexts/PostsContext";
 import { useParams } from "react-router-dom";
 import { axiosReq } from "../../api/axiosDefaults";
 import Post from "./Post";
 import Comment from "../comments/Comment";
 import appStyles from "../../App.module.css";
-import { usePosts } from "../../contexts/PostsContext";
 
 function PostPage() {
     const { id } = useParams();
