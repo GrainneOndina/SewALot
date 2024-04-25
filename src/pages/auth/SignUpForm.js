@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Form, Button, Alert, Container } from "react-bootstrap";
 import styles from "../../styles/SignInUpForm.module.css";
@@ -24,11 +24,6 @@ const SignUpForm = () => {
   const [errors, setErrors] = useState({});
   const history = useHistory();
   const location = useLocation();
-  const firstInputRef = useRef(null);
-
-  useEffect(() => {
-    firstInputRef.current && firstInputRef.current.focus();
-  }, [errors]);
   
   /**
    * Handles the input change.
@@ -79,7 +74,6 @@ const SignUpForm = () => {
                 value={username}
                 onChange={handleChange}
                 isInvalid={!!errors.username}
-                ref={firstInputRef}
                 aria-label="Username"
               />
               {errors.username && <Form.Control.Feedback type="invalid">

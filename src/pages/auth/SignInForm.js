@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
@@ -18,7 +18,6 @@ import { setTokenTimestamp } from "../../utils/utils";
 function SignInForm() {
   const setCurrentUser = useSetCurrentUser();
   useRedirect("loggedIn");
-  const firstInputRef = useRef(null);
 
   const [signInData, setSignInData] = useState({
     username: "",
@@ -27,10 +26,6 @@ function SignInForm() {
   const { username, password } = signInData;
   const [errors, setErrors] = useState({});
   const history = useHistory();
-
-  useEffect(() => {
-    firstInputRef.current && firstInputRef.current.focus();
-  }, [errors]);
 
   /**
    * Handles the form submission.
@@ -73,7 +68,6 @@ function SignInForm() {
                 value={username}
                 onChange={handleChange}
                 isInvalid={!!errors.username}
-                ref={firstInputRef}
                 aria-label="Username"
               />
               {errors.username && <Form.Control.Feedback type="invalid">
