@@ -35,12 +35,14 @@ function SignInForm() {
     try {
       const { data } = await axios.post("/dj-rest-auth/login/", signInData);
       setCurrentUser(data.user);
+      localStorage.setItem('authToken', data.token); // Storing the token in local storage
       setTokenTimestamp(data);
       history.goBack();
     } catch (err) {
       setErrors(err.response?.data);
     }
   };
+  
 
   /**
    * Handles the input change.

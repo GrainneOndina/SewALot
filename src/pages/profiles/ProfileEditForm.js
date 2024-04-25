@@ -13,13 +13,11 @@ const ProfileEditForm = () => {
   const { id } = useParams();
   const history = useHistory();
   const imageInput = useRef();
-
   const [profileData, setProfileData] = useState({
     description: "",
     image: null,
   });
   const { description, image } = profileData;
-
   const [currentImage, setCurrentImage] = useState("");
   const [errors, setErrors] = useState({});
 
@@ -119,7 +117,7 @@ const ProfileEditForm = () => {
 
             <div className="d-flex justify-content-between">
               <Button
-                className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                className={`${btnStyles.Button} ${btnStyles.Black}`}
                 onClick={() => history.goBack()}
               >
                 Cancel

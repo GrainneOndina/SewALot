@@ -179,10 +179,11 @@ const Post = (props) => {
               <i className="far fa-heart" />
             </OverlayTrigger>
           )}
-          <span>{likes_count}</span>
-          <Link to={`/posts/${id}`} aria-label={`View comments on ${owner}'s post`}>
+          <span className={styles.farfa}>{likes_count}</span>
+
+          <Link to={`/posts/${id}?focus=comments`} aria-label={`View comments on ${owner}'s post`}>
               <i className="far fa-comments" />
-            </Link>
+          </Link>
         </div>
         </Card.Footer>
 

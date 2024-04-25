@@ -80,7 +80,7 @@ const UsernameForm = () => {
             </Form.Group>
             <div className="d-flex justify-content-between">
               <Button
-                className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                className={`${btnStyles.Button} ${btnStyles.Black}`}
                 onClick={() => history.goBack()}
               >
                 Cancel

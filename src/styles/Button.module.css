@@ -6,6 +6,8 @@
   padding: 4px 10px;
   margin-left: 2px;
   margin-right: 2px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   min-width: 75px;
 }
 
@@ -42,7 +44,7 @@
 .BlueOutline,
 .Blue:hover {
   /* border: 1px solid #2142b2; */
-  background-color: #59069c;
+  background-color: #460879;
   color: #ffffff;
 }
 

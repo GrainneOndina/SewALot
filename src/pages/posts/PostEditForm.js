@@ -163,7 +163,7 @@ function PostEditForm() {
                         </Form.Group>
 
                         <div className="d-flex justify-content-between">
-                            <Button variant="secondary" className={`${btnStyles.Button} ${btnStyles.Red}`} onClick={() => history.goBack()}>
+                            <Button variant="secondary" className={`${btnStyles.Button} ${btnStyles.Black}`} onClick={() => history.goBack()}>
                                 Cancel
                             </Button>
                             <Button variant="primary" type="submit" className={`${btnStyles.Button} ${btnStyles.Blue}`}>
