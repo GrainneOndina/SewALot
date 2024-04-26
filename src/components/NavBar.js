@@ -49,7 +49,7 @@ const NavBar = () => {
         onClick={handleSignOut}
         aria-label="Sign Out"
       >
-        <i className="fas fa-sign-out-alt"></i>Sign out
+        <i className="fas fa-sign-out-alt"></i>   Sign out
       </NavLink>
       
       <NavLink
@@ -116,7 +116,7 @@ const NavBar = () => {
             to="/"
             aria-label="Home"
           >
-            <i className="fas fa-home"></i>Home
+            <i className="fas fa-home"></i>   Home
           </NavLink>
         </div>
 
@@ -127,7 +127,7 @@ const NavBar = () => {
             to="/liked"
             aria-label="Liked"
           >
-            <i className="fas fa-heart"></i>Liked
+            <i className="fas fa-heart"></i>   Liked
           </NavLink>
         </div>
 

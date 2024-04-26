@@ -119,7 +119,7 @@ function PostEditForm() {
                             <Form.Label>Content</Form.Label>
                             <Form.Control
                                 as="textarea"
-                                rows={3}
+                                rows={7}
                                 name="content"
                                 value={postData.content}
                                 onChange={handleChange}

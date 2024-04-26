@@ -18,7 +18,6 @@ const Profile = ({ profile }) => {
           <div className={styles.Profile}>
           </div>
         </div>
-
         <div className="col-sm">
           <Link className={styles.OwnerLink} to={`/profiles/${id}`} aria-label={`View profile of ${owner}`}>
             <strong>{owner}</strong>

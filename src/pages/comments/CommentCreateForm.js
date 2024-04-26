@@ -15,13 +15,16 @@ import btnStyles from "../../styles/Button.module.css";
 function CommentCreateForm({ postId, addComment, profile_image, profile_id, commentToEdit, setEditingComment }) {
     const [content, setContent] = useState('');
     const [error, setError] = useState('');
-    const formRef = useRef(null);  // Create a reference for the form
+    const textAreaRef = useRef(null);  // Reference for the textarea
 
-    // Set content when commentToEdit changes
     useEffect(() => {
         setContent(commentToEdit ? commentToEdit.content : '');
-        if (commentToEdit && formRef.current) {
-            formRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Apply focus and style when editing
+        if (commentToEdit && textAreaRef.current) {
+            textAreaRef.current.focus();
+            textAreaRef.current.style.boxShadow = '0 0 0 2px yellow';
+        } else if (textAreaRef.current) {
+            textAreaRef.current.style.boxShadow = 'none'; // Remove style when not editing
         }
     }, [commentToEdit]);
 
@@ -30,6 +33,15 @@ function CommentCreateForm({ postId, addComment, profile_image, profile_id, comm
     const handleChange = (event) => {
         setContent(event.target.value);
         setError('');
+    };
+
+    const handleCancel = () => {
+        setEditingComment(null);
+        setContent('');
+        setError('');
+        if (textAreaRef.current) {
+            textAreaRef.current.style.boxShadow = 'none';
+        }
     };
 
     const handleSubmit = async (event) => {
@@ -42,22 +54,16 @@ function CommentCreateForm({ postId, addComment, profile_image, profile_id, comm
         const endpoint = isEditing ? `/comments/${commentToEdit.id}/` : '/comments/';
         const method = isEditing ? 'put' : 'post';
 
-
         try {
             const { data } = await axiosRes[method](endpoint, {
                 content,
                 post: postId,
             });
-            console.log(data); 
 
-            if (isEditing) {
-                addComment(data);
-                setEditingComment(null);
-            } else {
-                addComment(data);
-            }
+            addComment(data);
             setContent('');
             setError('');
+            handleCancel();  // Reset everything after successful submit
         } catch (err) {
             console.error('Error submitting comment:', err);
             setError('Failed to post comment. Please try again.');
@@ -65,30 +71,40 @@ function CommentCreateForm({ postId, addComment, profile_image, profile_id, comm
     };
 
     return (
-        <Form ref={formRef} className="mt-2" onSubmit={handleSubmit} aria-label={isEditing ? "Edit Comment" : "Create Comment"}>
+        <Form className="mt-2" onSubmit={handleSubmit} aria-label={isEditing ? "Edit Comment" : "Create Comment"}>
             <Form.Group>
                 <InputGroup>
                     <Link to={`/profiles/${profile_id}`} aria-label="View profile">
                         <Avatar src={profile_image} height={55} alt={`Profile image for ${profile_id}`} />
                     </Link>
                     <Form.Control
+                        ref={textAreaRef}
                         className={styles.Form}
                         placeholder="Add a comment..."
                         as="textarea"
                         value={content}
                         onChange={handleChange}
                         isInvalid={!!error}
-                        rows={2}
+                        rows={3}
                         aria-label="Add a comment" 
                     />
-                   
                 </InputGroup>
             </Form.Group>
             {error && <Alert variant="danger">{error}</Alert>}
-            <div className="d-flex justify-content-center">
+            <div className="d-flex justify-content-between ">
+                {isEditing && (
+                    <Button
+                        variant="secondary"
+                        className={`${btnStyles.Button} ${btnStyles.Black}`}
+                        onClick={handleCancel}
+                        aria-label="Cancel edit"
+                    >
+                        Cancel
+                    </Button>
+                )}
                 <Button
                     variant="primary"
-                    className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                    className={`${btnStyles.Button} ${btnStyles.Blue}`} align-items-center
                     type="submit"
                     aria-label={isEditing ? "Update Comment" : "Post Comment"}
                 >

@@ -72,13 +72,6 @@ function Comment({ postId, profile_image, profile_id }) {
                                   <div>
                                     {comment.is_owner && (
                                         <div className="mt-2">
-                                           <Button 
-                                            variant="outline-primary" 
-                                            className={btnStyles.Button}
-                                            onClick={() => setEditingComment(comment)}
-                                            aria-label="Edit comment">
-                                            Edit
-                                        </Button>
                                         <Button 
                                             variant="outline-danger"
                                             className={`ml-2 ${btnStyles.Button}`} 
@@ -86,12 +79,18 @@ function Comment({ postId, profile_image, profile_id }) {
                                             aria-label="Delete comment">
                                             Delete
                                         </Button>
+                                        <Button 
+                                            variant="outline-primary" 
+                                            className={btnStyles.Button}
+                                            onClick={() => setEditingComment(comment)}
+                                            aria-label="Edit comment">
+                                            Edit
+                                        </Button>
                                         </div>
                                     )}
-                                    </div>
+                                </div>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
             ))}
