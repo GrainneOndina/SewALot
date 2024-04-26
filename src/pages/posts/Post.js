@@ -10,7 +10,10 @@ import { usePosts } from "../../contexts/PostsContext";
 import { toast } from 'react-toastify';
 
 /**
- * Component that represents a post.
+ * Component that represents a single post, displaying the owner's details,
+ * the content, and options for editing and deleting the post if the user owns it.
+ * It also allows liking and unliking the post.
+ * @param {Object} props - Contains all properties passed to the component, including post details.
  */
 const Post = (props) => {
   const {
@@ -31,23 +34,23 @@ const Post = (props) => {
   const { updatePost, removePost } = usePosts();
 
   /**
-   * Handles the edit action for the post.
+   * Redirects the user to the post editing page.
    */
   const handleEdit = () => {
     history.push(`/posts/${id}/edit`);
   };
 
   /**
-   * Handles the delete action for the post.
+   * Deletes the post and provides feedback with a toast message.
    */
   const handleDelete = async () => {
     try {
-        const response = await axios.delete(`/posts/${id}/`);
-        if (response.status === 204) {  // Check if the delete was successful
-          removePost(id);
-          toast.success("Post deleted successfully!");
-          if (window.location.pathname.includes(`/posts/`)) {
-            history.goBack(); 
+      const response = await axios.delete(`/posts/${id}/`);
+      if (response.status === 204) {  
+        removePost(id);
+        toast.success("Post deleted successfully!");
+        if (window.location.pathname.includes(`/posts/`)) {
+          history.goBack(); 
           } else {
              // Stay on page
           }
@@ -58,7 +61,7 @@ const Post = (props) => {
   };
 
   /**
-   * Handles the like action for the post.
+   * Handles liking the post and updates the context with the new state.
    */
   const handleLike = async () => {
     try {
@@ -79,7 +82,7 @@ const Post = (props) => {
   };
 
   /**
-   * Handles the unlike action for the post.
+   * Handles unliking the post and updates the context with the new state.
    */
   const handleUnlike = async () => {
     try {
@@ -99,7 +102,7 @@ const Post = (props) => {
   };
 
   /**
-   * Handles the click event for the post content.
+   * Navigates to the detailed view of the post.
    */
   const handleClickContent = () => {
     history.push(`/posts/${id}`);
@@ -108,14 +111,12 @@ const Post = (props) => {
   return (
       <Card className={styles.Post}>
         <Card.Body>
-
           <Row className="align-items-center">
             <Col xs="auto">
             <Link to={`/profiles/${profile_id}`} aria-label={`View ${owner}'s profile`}>
                 <Avatar src={profile_image} alt={`Profile of ${owner}`} height={55} />
               </Link>
             </Col>
-
             <Col className={`text-left ${styles.Owner}`}>
               <Link to={`/profiles/${profile_id}`} className={styles.OwnerDate}>
                 <span>{owner}</span>
@@ -123,17 +124,14 @@ const Post = (props) => {
                 <span className={styles.Date}>{updated_at}</span>
               </Link>
             </Col>
-
             <Col xs="auto" className="ml-auto">
               {is_owner && <MoreDropdown handleEdit={handleEdit} handleDelete={handleDelete} />}
             </Col>
           </Row>
-
           <Card.Text onClick={handleClickContent} role="button" tabIndex={0} aria-label="View full post">
             {content}
           </Card.Text>
         </Card.Body>
-
         <Link to={`/posts/${id}`}>
         {image && (
           <Card.Img src={image} alt="User uploaded post image" />
@@ -152,7 +150,6 @@ const Post = (props) => {
           </a>
         </OverlayTrigger>
         )}
-
       <Card.Footer>
         <div className={styles.PostBar}>
           {is_owner ? (
@@ -179,7 +176,6 @@ const Post = (props) => {
             </OverlayTrigger>
           )}
           <span className={styles.farfa}>{likes_count}</span>
-
           <Link to={`/posts/${id}?focus=comments`} aria-label={`View comments on ${owner}'s post`}>
               <i className="far fa-comments" />
           </Link>

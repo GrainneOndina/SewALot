@@ -5,17 +5,15 @@ import Nav from "react-bootstrap/Nav";
 import logo from "../assets/logo.png";
 import styles from "../styles/NavBar.module.css";
 import { NavLink, useHistory, Redirect } from "react-router-dom";
-import {
-  useCurrentUser,
-  useSetCurrentUser,
-} from "../contexts/CurrentUserContext";
+import { useCurrentUser, useSetCurrentUser } from "../contexts/CurrentUserContext";
 import axios from "axios";
 import useClickOutsideToggle from "../hooks/useClickOutsideToggle";
 import { removeTokenTimestamp } from "../utils/utils";
 import { Row } from "react-bootstrap";
 
 /**
- * NavBar component that renders the navigation bar.
+ * NavBar component that provides navigation links and user authentication options.
+ * Handles user sign-out and redirects to the sign-in page on logout.
  */
 const NavBar = () => {
   const currentUser = useCurrentUser();
@@ -24,8 +22,7 @@ const NavBar = () => {
   const { expanded, setExpanded, ref } = useClickOutsideToggle();
 
   /**
-   * Handles the sign out process.
-   * Clears the user session and redirects to the sign-in page.
+   * handleSignOut - Signs out the user, clears session storage, and redirects to the landing page.
    */
   const handleSignOut = async () => {
     try {
@@ -34,14 +31,17 @@ const NavBar = () => {
       removeTokenTimestamp();
       history.push("/signin");
     } catch (err) {
-      //console.log(err);
+      
     }
   };
 
+  
+  // Redirect unauthenticated users to the landing page
   if (!currentUser) {
     return <Redirect to="/landing" />;
   }
 
+  // Icons displayed when a user is logged in
   const loggedInIcons = (
     <>
       <NavLink className={styles.NavLink} 
@@ -51,7 +51,6 @@ const NavBar = () => {
       >
         <i className="fas fa-sign-out-alt"></i>   Sign out
       </NavLink>
-      
       <NavLink
         className={`${styles.NavLink} ${styles.AvatarLink}`}
         activeClassName={styles.activeAvatar}
@@ -67,6 +66,7 @@ const NavBar = () => {
     </>
   );
 
+  // Icons displayed when no user is logged in
   const loggedOutIcons = (
     <>
       <NavLink
@@ -75,7 +75,7 @@ const NavBar = () => {
         to="/signin"
         aria-label="Sign In"
       >
-        <i className="fas fa-sign-in-alt"></i>Sign in
+        <i className="fas fa-sign-in-alt"></i>   Sign in
       </NavLink>
       <NavLink
         to="/signup"
@@ -83,68 +83,59 @@ const NavBar = () => {
         activeClassName={styles.Active}
         aria-label="Sign Up"
       >
-        <i className="fas fa-user-plus"></i>Sign up
+        <i className="fas fa-user-plus"></i>   Sign up
       </NavLink>
     </>
   );
 
   return (
     <div className="col-lg-8">
-        <Navbar
-          key={currentUser ? currentUser.id : "guest"}
-          expanded={expanded}
-          className={styles.NavBar}
-          expand="md"
-          fixed="top"
-          style={{ justifyContent: "space-between" }}
-        >
-        <div>
-          <NavLink to="/">
-            <img src={logo} 
-            alt="logo" 
-            className={styles.Logo} 
-            aria-label="Logo / Home"
-            />
-          </NavLink>
-        </div>
-
-         <div>
-          <NavLink
-            className={styles.NavLink}
-            activeClassName={styles.Active}
-            exact
-            to="/"
-            aria-label="Home"
-          >
-            <i className="fas fa-home"></i>   Home
-          </NavLink>
-        </div>
-
-        <div>
-          <NavLink
-            className={styles.NavLink}
-            activeClassName={styles.Active}
-            to="/liked"
-            aria-label="Liked"
-          >
-            <i className="fas fa-heart"></i>   Liked
-          </NavLink>
-        </div>
-
-        <div>
-          <Navbar.Toggle
-            ref={ref}
-            onClick={() => setExpanded(!expanded)}
-            aria-controls="basic-navbar-nav"
-            aria-label="Menu navigation"
+      <Navbar
+        key={currentUser ? currentUser.id : "guest"}
+        expanded={expanded}
+        className={styles.NavBar}
+        expand="md"
+        fixed="top"
+        style={{ justifyContent: "space-between" }}
+      >
+        <NavLink to="/">
+          <img src={logo} 
+          alt="logo" 
+          className={styles.Logo} 
+          aria-label="Logo / Home"
           />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ml-auto text-left">
-              {currentUser ? loggedInIcons : loggedOutIcons}
-            </Nav>
-          </Navbar.Collapse>
-        </div>
+        </NavLink>
 
+        <NavLink
+          className={styles.NavLink}
+          activeClassName={styles.Active}
+          exact
+          to="/"
+          aria-label="Home"
+        >
+          <i className="fas fa-home"></i>   Home
+        </NavLink>
+
+        <NavLink
+          className={styles.NavLink}
+          activeClassName={styles.Active}
+          to="/liked"
+          aria-label="Liked"
+        >
+          <i className="fas fa-heart"></i>   Liked
+        </NavLink>
+
+        <Navbar.Toggle
+          ref={ref}
+          onClick={() => setExpanded(!expanded)}
+          aria-controls="basic-navbar-nav"
+          aria-label="Menu navigation"
+        />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ml-auto text-right">
+            {currentUser ? loggedInIcons : loggedOutIcons}
+          </Nav>
+        </Navbar.Collapse>
       </Navbar>
     </div>
   );

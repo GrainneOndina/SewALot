@@ -3,6 +3,12 @@ import Container from "react-bootstrap/Container";
 import { usePosts } from "../../contexts/PostsContext";
 import Post from "./Post";
 
+/**
+ * LikedPosts component displays a list of posts that have been liked by the user.
+ * It utilizes the PostsContext to fetch posts data and filters those with a like_id.
+ * 
+ * @returns {JSX.Element} Container wrapping liked posts or a message if none exist.
+ */
 const LikedPosts = () => {
   const { posts } = usePosts();
   const likedPosts = posts.filter(post => post.like_id != null);
@@ -20,7 +26,7 @@ const LikedPosts = () => {
             )}
             </div>
         </div>
-   </Container>
+    </Container>
   );
 };
 

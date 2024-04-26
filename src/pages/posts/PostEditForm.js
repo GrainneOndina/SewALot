@@ -11,6 +11,10 @@ import btnStyles from "../../styles/Button.module.css";
 import { usePosts } from "../../contexts/PostsContext";
 import { toast } from 'react-toastify';
 
+/**
+ * Form component for editing a post. Allows the user to update content, URL, and image.
+ * Provides validation feedback and updates the post upon successful submission.
+ */
 function PostEditForm() {
     const { id } = useParams();
     const history = useHistory();
@@ -39,7 +43,6 @@ function PostEditForm() {
         fetchPost();
     }, [id]);
     
-
     const handleChange = event => {
         const { name, value } = event.target;
         
@@ -58,7 +61,7 @@ function PostEditForm() {
                 setErrors(prevErrors => ({ ...prevErrors, url: null }));
             }
         }
-    };    
+    };
     
     const handleImageChange = event => {
         const file = event.target.files[0];
@@ -110,7 +113,7 @@ function PostEditForm() {
             console.error("Error updating post:", error);
             setErrors(error.response?.data || {});
         }
-    };    
+    };
 
     return (
         <Container>
@@ -131,7 +134,6 @@ function PostEditForm() {
                                 <Alert variant="danger">{errors.content}</Alert>
                             )}
                         </Form.Group>
-
                         <Form.Group controlId="postUrl">
                             <Form.Label>URL</Form.Label>
                             <Form.Control
@@ -146,7 +148,6 @@ function PostEditForm() {
                                 <Alert variant="danger">{errors.url}</Alert>
                             )}
                         </Form.Group>
-
                         <Form.Group controlId="postImage">
                             <Form.Label>Image</Form.Label>
                             <Form.Control
@@ -163,7 +164,6 @@ function PostEditForm() {
                                 <Alert variant="danger">{errors.image}</Alert>
                             )}
                         </Form.Group>
-
                         <div className="d-flex justify-content-between">
                             <Button variant="secondary" className={`${btnStyles.Button} ${btnStyles.Black}`} onClick={() => history.goBack()}>
                                 Cancel

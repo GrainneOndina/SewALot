@@ -11,7 +11,16 @@ import btnStyles from "../../styles/Button.module.css";
 import { toast } from 'react-toastify';
 
 /**
- * Form component for creating and editing comments.
+ * Component for creating or editing a comment.
+ * 
+ * @param {Object} props Component properties
+ * @param {number} props.postId ID of the post for the comment
+ * @param {function} props.addComment Function to add the comment to the list
+ * @param {string} props.profile_image URL to the user's profile image
+ * @param {number} props.profile_id ID of the user's profile
+ * @param {Object} props.commentToEdit The comment data that is being edited, if any
+ * @param {function} props.setEditingComment Function to set the editing state
+ * @returns {JSX.Element} The rendered form for creating or editing a comment
  */
 function CommentCreateForm({ postId, addComment, profile_image, profile_id, commentToEdit, setEditingComment }) {
     const [content, setContent] = useState('');
@@ -20,7 +29,6 @@ function CommentCreateForm({ postId, addComment, profile_image, profile_id, comm
 
     useEffect(() => {
         setContent(commentToEdit ? commentToEdit.content : '');
-        // Apply focus and style when editing
         if (commentToEdit && textAreaRef.current) {
             textAreaRef.current.focus();
             textAreaRef.current.style.boxShadow = '0 0 0 2px yellow';
@@ -64,7 +72,7 @@ function CommentCreateForm({ postId, addComment, profile_image, profile_id, comm
             addComment(data);
             setContent('');
             setError('');
-            handleCancel();  // Reset everything after successful submit
+            handleCancel();
             toast.success(isEditing ? "Comment updated successfully!" : "Comment added successfully!");
         } catch (err) {
             setError('Failed to post comment. Please try again.');

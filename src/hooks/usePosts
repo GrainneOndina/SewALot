@@ -1,14 +1,29 @@
 import React, { useContext, createContext, useState, useCallback } from 'react';
 import axios from 'axios';
 
+/**
+ * Context for managing posts within the application.
+ */
 const PostsContext = createContext();
 
+/**
+ * Custom hook to access the posts context.
+ * @returns {object} Context value that includes posts, and operations like setPosts and loadMorePosts.
+ */
 export const usePosts = () => useContext(PostsContext);
 
+/**
+ * Provider component that encapsulates the posts logic and provides context to its children.
+ * @param {React.ReactNode} children - The child components that will consume the context.
+ */
 export const PostsProvider = ({ children }) => {
     const [posts, setPosts] = useState([]);
     const [hasMore, setHasMore] = useState(true);
 
+    /**
+     * Loads more posts from the server and appends them to the current list of posts.
+     * Updates the 'hasMore' state based on whether there are more posts to load.
+     */
     const loadMorePosts = useCallback(async () => {
         try {
             const response = await axios.get('/path-to-your-api');

@@ -10,6 +10,16 @@ import btnStyles from "../../styles/Button.module.css";
 import Alert from 'react-bootstrap/Alert';
 import { toast } from 'react-toastify';
 
+
+/**
+ * Component that handles rendering and managing individual comments.
+ * 
+ * @param {Object} props Component properties
+ * @param {number} props.postId ID of the post the comments belong to
+ * @param {string} props.profile_image URL to the user's profile image
+ * @param {number} props.profile_id ID of the user's profile
+ * @returns {JSX.Element} The rendered component
+ */
 function Comment({ postId, profile_image, profile_id }) {
     const [comments, setComments] = useState([]);
     const [errors, setErrors] = useState({});
@@ -17,11 +27,13 @@ function Comment({ postId, profile_image, profile_id }) {
     const currentUser = useCurrentUser();
 
     useEffect(() => {
+        /**
+         * Fetches comments for a post from the server.
+         */
         const fetchComments = async () => {
             try {
                 const { data } = await axiosReq.get(`/comments/?post=${postId}`);
                 setComments(data.results);
-                console.log(data.results);
             } catch (err) {
                 console.error('Error fetching comments:', err);
                 setErrors({ fetch: 'Failed to load comments.' });
@@ -31,14 +43,25 @@ function Comment({ postId, profile_image, profile_id }) {
         fetchComments();
     }, [postId]);
 
+    /**
+     * Adds a new or updated comment to the state.
+     * 
+     * @param {Object} newComment The new or updated comment object
+     */
     const addComment = (newComment) => {
         const itemIndex = comments.findIndex(oldComment => oldComment.id === newComment.id);
-    if (itemIndex !== -1) {
-        setComments(prevComments => prevComments.map(comment => comment.id === newComment.id ? newComment : comment));
-    } else {
-        setComments(prevComments => [newComment, ...prevComments]);
-    }
-};
+        if (itemIndex !== -1) {
+            setComments(prevComments => prevComments.map(comment => comment.id === newComment.id ? newComment : comment));
+        } else {
+            setComments(prevComments => [newComment, ...prevComments]);
+        }
+    };
+
+    /**
+     * Handles deleting a comment from the server and updates the state.
+     * 
+     * @param {number} commentId ID of the comment to be deleted
+     */
     const handleDeleteComment = async (commentId) => {
         try {
             await axiosReq.delete(`/comments/${commentId}/`);
@@ -99,5 +122,5 @@ function Comment({ postId, profile_image, profile_id }) {
         </div>
     );
 }
-       
+
 export default Comment;

@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 
 /**
  * Custom hook that handles redirecting based on user authentication status.
+ * @param {string} userAuthStatus - Status of user authentication ('loggedIn' or 'loggedOut').
  */
 export const useRedirect = (userAuthStatus) => {
   const history = useHistory();
@@ -17,12 +18,12 @@ export const useRedirect = (userAuthStatus) => {
       try {
         await axios.post("/dj-rest-auth/token/refresh/");
 
-        // if user is logged in, the code below will run
+        // Redirect if user is logged in and 'loggedIn' status is used
         if (userAuthStatus === "loggedIn") {
           history.push("/");
         }
       } catch (err) {
-        // if user is not logged in, the code below will run
+        // Redirect if user is not logged in and 'loggedOut' status is used
         if (userAuthStatus === "loggedOut") {
           history.push("/");
         }

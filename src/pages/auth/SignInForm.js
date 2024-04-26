@@ -14,22 +14,23 @@ import { setTokenTimestamp } from "../../utils/utils";
 import { toast } from 'react-toastify';
 
 /**
- * Sign-in form component.
+ * Component for user sign-in functionality.
  */
 function SignInForm() {
   const setCurrentUser = useSetCurrentUser();
   useRedirect("loggedIn");
 
   const [signInData, setSignInData] = useState({
-    username: "",
-    password: "",
+      username: "",
+      password: "",
   });
   const { username, password } = signInData;
   const [errors, setErrors] = useState({});
   const history = useHistory();
 
   /**
-   * Handles the form submission.
+   * Handles the submission of the sign-in form.
+   * Authenticates user, sets user context, and redirects.
    */
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -45,14 +46,13 @@ function SignInForm() {
     }
   };
   
-
   /**
-   * Handles the input change.
+   * Updates state for sign-in data on user input.
    */
   const handleChange = (event) => {
     setSignInData({
-      ...signInData,
-      [event.target.name]: event.target.value,
+        ...signInData,
+        [event.target.name]: event.target.value,
     });
   };
 
@@ -107,7 +107,7 @@ function SignInForm() {
           </Form>
         </div>
       </div>
-      </Container>
+    </Container>
   );
 }
 

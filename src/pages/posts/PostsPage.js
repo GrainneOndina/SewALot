@@ -13,6 +13,10 @@ import { axiosReq } from "../../api/axiosDefaults";
 import Alert from "react-bootstrap/Alert";
 import { toast } from 'react-toastify';
 
+/**
+ * PostsPage component that provides functionality for adding new posts,
+ * displaying posts, and managing pagination of posts using infinite scrolling.
+ */
 function PostsPage({ message }) {
     const { posts, hasMore, loadMorePosts, setPosts } = usePosts();
     const [content, setContent] = useState("");
@@ -21,17 +25,26 @@ function PostsPage({ message }) {
     const [imageURL, setImageURL] = useState(null);
     const [errors, setErrors] = useState({});
     const fileInputRef = useRef();  // Reference to the file input
-    
+
+    /**
+     * Handles changes to the content of the post.
+     */
     const handleContentChange = (e) => {
         setContent(e.target.value);
         setErrors(prevErrors => ({ ...prevErrors, content: "" }));  // Clear content error
     };
-    
+
+    /**
+     * Handles changes to the URL field of the post.
+     */
     const handleUrlChange = (e) => {
         setUrl(e.target.value);
         setErrors(prevErrors => ({ ...prevErrors, url: "" }));  // Clear URL error
     };
-    
+
+    /**
+     * Handles changes to the image input, managing file size validation.
+     */
     const handleImageChange = (event) => {
         const selectedImage = event.target.files[0];
         if (selectedImage) {
@@ -48,6 +61,9 @@ function PostsPage({ message }) {
         }
     };
 
+    /**
+     * Removes the selected image and clears related errors.
+     */
     const handleRemoveImage = () => {
         setImage(null);
         setImageURL(null);
@@ -55,6 +71,9 @@ function PostsPage({ message }) {
         setErrors({ ...errors, image: '' });
     };
 
+    /**
+     * Submits the form data to create a new post.
+     */
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (!content.trim()) {

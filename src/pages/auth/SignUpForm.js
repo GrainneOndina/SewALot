@@ -11,7 +11,7 @@ import { setTokenTimestamp } from "../../utils/utils";
 import { toast } from 'react-toastify';
 
 /**
- * Sign-up form component.
+ * Component for handling the user sign-up process.
  */
 const SignUpForm = () => {
   useRedirect("loggedIn");
@@ -27,7 +27,7 @@ const SignUpForm = () => {
   const location = useLocation();
   
   /**
-   * Handles the input change.
+   * Updates the sign-up form data based on user input.
    */
   const handleChange = (event) => {
     setSignUpData({
@@ -38,7 +38,7 @@ const SignUpForm = () => {
   };
 
   /**
-   * Handles the form submission.
+   * Submits the sign-up form data to the server, registers the user, and logs them in.
    */
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -56,6 +56,7 @@ const SignUpForm = () => {
       toast.success("Signed up and logged in successfully!");
     } catch (err) {
       setErrors(err.response?.data);
+      toast.error("Failed to sign up.");
     }
   };
 
