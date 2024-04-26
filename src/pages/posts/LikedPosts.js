@@ -2,6 +2,7 @@ import React from "react";
 import Container from "react-bootstrap/Container";
 import { usePosts } from "../../contexts/PostsContext";
 import Post from "./Post";
+import styles from "../../styles/LikedPosts.module.css";
 
 /**
  * LikedPosts component displays a list of posts that have been liked by the user.
@@ -17,13 +18,13 @@ const LikedPosts = () => {
     <Container>
         <div className="d-flex flex-column align-items-center">
             <div className="col-lg-8">
-            {likedPosts.length > 0 ? (
-                <section>
-                    {likedPosts.map(post => <Post key={post.id} {...post} />)}
-                </section>
-            ) : (
-                <h5 aria-live="polite">No liked posts yet!</h5>
-            )}
+                {likedPosts.length > 0 ? (
+                    <section>
+                        {likedPosts.map(post => <Post key={post.id} {...post} />)}
+                    </section>
+                ) : (
+                    <h6 className={styles.Liked} aria-live="polite">No liked posts yet!</h6>
+                )}
             </div>
         </div>
     </Container>

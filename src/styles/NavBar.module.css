@@ -28,6 +28,17 @@ body {
   margin-left: 15px;
   margin-right: 15px;
 }
+
+.brandTitle {
+  color: rgb(10, 119, 108);
+  margin-left: 5x;
+  margin-top: 3px;
+}
+
+.NavLinkNoUnderline {
+  text-decoration: none !important;
+}
+
 .ProfileLink {
   display: flex;
   align-items: center;

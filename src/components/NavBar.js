@@ -88,54 +88,64 @@ const NavBar = () => {
     </>
   );
 
-  return (
+    return (
     <div className="col-lg-8">
-      <Navbar
-        key={currentUser ? currentUser.id : "guest"}
-        expanded={expanded}
-        className={styles.NavBar}
-        expand="md"
-        fixed="top"
-        style={{ justifyContent: "space-between" }}
-      >
-        <NavLink to="/">
-          <img src={logo} 
-          alt="logo" 
-          className={styles.Logo} 
-          aria-label="Logo / Home"
+        <Navbar
+          key={currentUser ? currentUser.id : "guest"}
+          expanded={expanded}
+          className={styles.NavBar}
+          expand="md"
+          fixed="top"
+          style={{ justifyContent: "space-between" }}
+        >
+        <div className="d-flex align-items-center">  {/* Added flex container for logo and h6 */}
+          <NavLink to="/">
+            <img src={logo} 
+            alt="logo" 
+            className={styles.Logo} 
+            aria-label="Logo / Home"
+            />
+          </NavLink>
+          <NavLink to="/" className={styles.NavLinkNoUnderline}>
+        <h5 className={`${styles.brandTitle} d-none d-md-block`}>SewLot</h5> {/* Hide on xs to sm, show on md and larger */}
+          </NavLink>
+        </div>
+         <div>
+          <NavLink
+            className={styles.NavLink}
+            activeClassName={styles.Active}
+            exact
+            to="/"
+            aria-label="Home"
+          >
+            <i className="fas fa-home"></i>   Home
+          </NavLink>
+        </div>
+        <div>
+          <NavLink
+            className={styles.NavLink}
+            activeClassName={styles.Active}
+            to="/liked"
+            aria-label="Liked"
+          >
+            <i className="fas fa-heart"></i>   Liked
+          </NavLink>
+        </div>
+
+        <div>
+          <Navbar.Toggle
+            ref={ref}
+            onClick={() => setExpanded(!expanded)}
+            aria-controls="basic-navbar-nav"
+            aria-label="Menu navigation"
           />
-        </NavLink>
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="ml-auto text-left">
+              {currentUser ? loggedInIcons : loggedOutIcons}
+            </Nav>
+          </Navbar.Collapse>
+        </div>
 
-        <NavLink
-          className={styles.NavLink}
-          activeClassName={styles.Active}
-          exact
-          to="/"
-          aria-label="Home"
-        >
-          <i className="fas fa-home"></i>   Home
-        </NavLink>
-
-        <NavLink
-          className={styles.NavLink}
-          activeClassName={styles.Active}
-          to="/liked"
-          aria-label="Liked"
-        >
-          <i className="fas fa-heart"></i>   Liked
-        </NavLink>
-
-        <Navbar.Toggle
-          ref={ref}
-          onClick={() => setExpanded(!expanded)}
-          aria-controls="basic-navbar-nav"
-          aria-label="Menu navigation"
-        />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ml-auto text-right">
-            {currentUser ? loggedInIcons : loggedOutIcons}
-          </Nav>
-        </Navbar.Collapse>
       </Navbar>
     </div>
   );

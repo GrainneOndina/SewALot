@@ -6,8 +6,13 @@
   text-align: center;
 }
 
-.Owner{
-  text-decoration: none;
+.Owner {
+  text-align: left;
+}
+
+.OwnerDate {
+  color: rgb(10, 119, 108);
+  text-decoration: none !important;
 }
 
 .farfa {
@@ -25,8 +30,4 @@
 
 .HeartOutline:hover {
   color: #f85032;
-}
-
-.Owner {
-  text-align: left;
 }
