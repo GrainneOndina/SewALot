@@ -6,7 +6,8 @@ import styles from ".././styles/LandingPage.module.css";
 import Button from "react-bootstrap/Button";
 
 /**
- * LandingPage component renders the landing page content.
+ * LandingPage component that renders the landing page content,
+ * allowing users to toggle between SignInForm and SignUpForm.
  * @returns {JSX.Element} The rendered JSX element.
  */
 const LandingPage = () => {
@@ -53,6 +54,7 @@ const LandingPage = () => {
               src="images/sewingmachin.jpg"
               alt="Sewing Machine"
               className="img-fluid"
+              style={{ marginBottom: '30px' }}
             />
           </div>
         </div>

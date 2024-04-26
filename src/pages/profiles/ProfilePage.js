@@ -15,7 +15,8 @@ import { usePosts } from "../../contexts/PostsContext";
 import { toast } from 'react-toastify';
 
 /**
- * Component for displaying a user profile page.
+ * ProfilePage - Component for displaying a user profile page, including profile details and the user's posts.
+ * Utilizes InfiniteScroll for loading posts and shows an edit dropdown for owners.
  */
 function ProfilePage() {
   const [hasLoaded, setHasLoaded] = useState(false);
@@ -39,7 +40,7 @@ function ProfilePage() {
         }));
         setHasLoaded(true);
       } catch (err) {
-
+        toast.error("Failed to load profile data.");
       }
     };
     fetchData();

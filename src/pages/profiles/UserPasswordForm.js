@@ -10,7 +10,9 @@ import btnStyles from "../../styles/Button.module.css";
 import { toast } from 'react-toastify';
 
 /**
- * Component for the user password change form.
+ * UserPasswordForm - Component for updating a user's password.
+ * Allows users to enter a new password and confirm it. The form validates the input and updates
+ * the password in the backend. It also provides feedback on the success or failure of the password update.
  */
 const UserPasswordForm = () => {
   const history = useHistory();

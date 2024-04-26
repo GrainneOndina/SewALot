@@ -4,7 +4,11 @@ import styles from "../styles/Profile.module.css";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 
 /**
- * Component for rendering a profile.
+ * Profile - Component for displaying a simple profile view with a link to the profile's page.
+ * It displays the profile owner's username and provides a link to the detailed profile page.
+ *
+ * @param {Object} profile - The profile object containing details like id and owner's username.
+ * @returns {JSX.Element} - A rendered view of a profile snippet.
  */
 const Profile = ({ profile }) => {
   const { id, owner } = profile;

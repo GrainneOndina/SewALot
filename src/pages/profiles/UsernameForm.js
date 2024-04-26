@@ -12,7 +12,8 @@ import btnStyles from "../../styles/Button.module.css";
 import { toast } from 'react-toastify';
 
 /**
- * Component for the username change form.
+ * UsernameForm - Component for changing a user's username.
+ * Validates the username length and updates it in the backend on form submission.
  */
 const UsernameForm = () => {
   const [username, setUsername] = useState("");

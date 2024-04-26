@@ -7,7 +7,9 @@ import btnStyles from "../../styles/Button.module.css";
 import { toast } from 'react-toastify';
 
 /**
- * Component for editing a user profile.
+ * ProfileEditForm - A component for editing user profiles.
+ * Allows a user to update their profile description and image.
+ * Utilizes a form with validation and image preview functionality.
  */
 const ProfileEditForm = () => {
   const setCurrentUser = useSetCurrentUser();
@@ -48,11 +50,13 @@ const ProfileEditForm = () => {
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
-    setProfileData({
-      ...profileData,
-      image: file,
-    });
-    setCurrentImage(URL.createObjectURL(file)); // Update the display image
+    if (file) {
+      setProfileData({
+        ...profileData,
+        image: file,
+      });
+      setCurrentImage(URL.createObjectURL(file)); // Update the display image
+    }
   };
 
   const handleSubmit = async (event) => {
