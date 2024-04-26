@@ -4,6 +4,7 @@ import { Form, Button, Alert, Container, Image } from "react-bootstrap";
 import { axiosReq } from "../../api/axiosDefaults";
 import { useCurrentUser, useSetCurrentUser } from "../../contexts/CurrentUserContext";
 import btnStyles from "../../styles/Button.module.css";
+import { toast } from 'react-toastify';
 
 /**
  * Component for editing a user profile.
@@ -71,6 +72,7 @@ const ProfileEditForm = () => {
         profile_image: data.image,
       }));
       history.goBack();
+      toast.success("Profile updated successfully!");
     } catch (err) {
       setErrors(err.response?.data);
     }

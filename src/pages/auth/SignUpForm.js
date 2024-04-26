@@ -8,6 +8,7 @@ import axios from "axios";
 import { useRedirect } from "../../hooks/useRedirect";
 import { useSetCurrentUser } from "../../contexts/CurrentUserContext";
 import { setTokenTimestamp } from "../../utils/utils";
+import { toast } from 'react-toastify';
 
 /**
  * Sign-up form component.
@@ -52,8 +53,8 @@ const SignUpForm = () => {
 
       const { from } = location.state || { from: { pathname: "/" } };
       history.replace(from);
+      toast.success("Signed up and logged in successfully!");
     } catch (err) {
-      // console.log(err.response?.data);
       setErrors(err.response?.data);
     }
   };

@@ -8,6 +8,7 @@ import Avatar from '../../components/Avatar';
 import { axiosRes } from '../../api/axiosDefaults';
 import styles from '../../styles/CommentCreateEditForm.module.css';
 import btnStyles from "../../styles/Button.module.css";
+import { toast } from 'react-toastify';
 
 /**
  * Form component for creating and editing comments.
@@ -64,9 +65,10 @@ function CommentCreateForm({ postId, addComment, profile_image, profile_id, comm
             setContent('');
             setError('');
             handleCancel();  // Reset everything after successful submit
+            toast.success(isEditing ? "Comment updated successfully!" : "Comment added successfully!");
         } catch (err) {
-            console.error('Error submitting comment:', err);
             setError('Failed to post comment. Please try again.');
+            toast.error('Failed to submit comment.');
         }
     };
 

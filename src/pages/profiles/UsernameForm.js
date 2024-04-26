@@ -9,6 +9,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { axiosRes } from "../../api/axiosDefaults";
 import { useCurrentUser, useSetCurrentUser } from "../../contexts/CurrentUserContext";
 import btnStyles from "../../styles/Button.module.css";
+import { toast } from 'react-toastify';
 
 /**
  * Component for the username change form.
@@ -48,8 +49,10 @@ const UsernameForm = () => {
           username: response.data.username,
         }));
         history.goBack();
+        toast.success("Username updated successfully!");
       } catch (err) {
         setErrors(err.response?.data);
+        toast.error("Failed to update username.");
       }
     }
   };

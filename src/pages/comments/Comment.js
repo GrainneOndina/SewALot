@@ -8,6 +8,7 @@ import Avatar from "../../components/Avatar";
 import Button from 'react-bootstrap/Button';
 import btnStyles from "../../styles/Button.module.css";
 import Alert from 'react-bootstrap/Alert';
+import { toast } from 'react-toastify';
 
 function Comment({ postId, profile_image, profile_id }) {
     const [comments, setComments] = useState([]);
@@ -42,9 +43,10 @@ function Comment({ postId, profile_image, profile_id }) {
         try {
             await axiosReq.delete(`/comments/${commentId}/`);
             setComments(prev => prev.filter(comment => comment.id !== commentId));
+            toast.success("Comment deleted successfully!");
         } catch (err) {
-            console.error('Failed to delete comment:', err);
             setErrors({ delete: `Failed to delete comment with ID ${commentId}.` });
+            toast.error('Failed to delete comment.');
         }
     };
     

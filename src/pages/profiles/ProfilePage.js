@@ -12,6 +12,7 @@ import Post from "../posts/Post";
 import NoResults from "../../assets/no-results.png";
 import { ProfileEditDropdown } from "../../components/MoreDropdown";
 import { usePosts } from "../../contexts/PostsContext";
+import { toast } from 'react-toastify';
 
 /**
  * Component for displaying a user profile page.

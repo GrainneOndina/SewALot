@@ -11,6 +11,7 @@ import appStyles from "../../App.module.css";
 import { useSetCurrentUser } from "../../contexts/CurrentUserContext";
 import { useRedirect } from "../../hooks/useRedirect";
 import { setTokenTimestamp } from "../../utils/utils";
+import { toast } from 'react-toastify';
 
 /**
  * Sign-in form component.
@@ -38,8 +39,9 @@ function SignInForm() {
       localStorage.setItem('authToken', data.token); // Storing the token in local storage
       setTokenTimestamp(data);
       history.goBack();
+      toast.success("Signed in successfully!");
     } catch (err) {
-      setErrors(err.response?.data);
+      toast.error("Failed to sign in.");
     }
   };
   
