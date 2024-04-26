@@ -4,6 +4,7 @@ import Container from "react-bootstrap/Container";
 import styles from "./App.module.css";
 import "./api/axiosDefaults";
 import NavBar from "./components/NavBar";
+import Footer from "./components/Fotter";
 import SignUpForm from "./pages/auth/SignUpForm";
 import SignInForm from "./pages/auth/SignInForm";
 import PostPage from "./pages/posts/PostPage";
@@ -15,12 +16,16 @@ import UsernameForm from "./pages/profiles/UsernameForm";
 import UserPasswordForm from "./pages/profiles/UserPasswordForm";
 import ProfileEditForm from "./pages/profiles/ProfileEditForm";
 import NotFound from "./components/NotFound";
-import { PostsProvider } from './contexts/PostsContext'; // Correct import of PostsProvider
+import { PostsProvider } from './contexts/PostsContext';
 import LandingPage from './pages/LandingPage';
 import LikedPosts from './pages/posts/LikedPosts';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+/**
+ * The App component sets up the routing for the entire application and includes global components like NavBar and Footer.
+ * It defines the main layout and theming across the application and manages routes to different functionalities and pages.
+ */
 function App() {
   const currentUser = useCurrentUser();
 
@@ -59,6 +64,7 @@ function App() {
           </PostsProvider>
         </Container>
       </div>
+      <Footer />
     </Router>
   );
 }
