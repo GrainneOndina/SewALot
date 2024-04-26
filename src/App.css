@@ -38,3 +38,9 @@
     transform: rotate(360deg);
   }
 }
+
+@import '~react-toastify/dist/ReactToastify.css';
+.Toastify__toast {
+  background-color: #e0faee; /* Custom background color */
+  color: rgb(19, 61, 45); /* Custom text color */
+}

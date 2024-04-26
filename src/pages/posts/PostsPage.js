@@ -11,6 +11,7 @@ import styles from "../../styles/PostsPage.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import { axiosReq } from "../../api/axiosDefaults";
 import Alert from "react-bootstrap/Alert";
+import { toast } from 'react-toastify';
 
 function PostsPage({ message }) {
     const { posts, hasMore, loadMorePosts, setPosts } = usePosts();
@@ -81,9 +82,10 @@ function PostsPage({ message }) {
             setImageURL(null);
             fileInputRef.current.value = "";
             setErrors({});
+            toast.success("Post added successfully!");
         } catch (error) {
-            console.error("Error creating post:", error);
             setErrors({ form: "Failed to create post, please try again." });
+            toast.error("Failed to create post.");
         }
     };
 

@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "../../styles/Post.module.css";
-import Container from "react-bootstrap/Container";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { Card, OverlayTrigger, Tooltip, Row, Col } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
@@ -8,6 +7,7 @@ import Avatar from "../../components/Avatar";
 import axios from "axios";
 import { MoreDropdown } from "../../components/MoreDropdown";
 import { usePosts } from "../../contexts/PostsContext";
+import { toast } from 'react-toastify';
 
 /**
  * Component that represents a post.
@@ -45,6 +45,7 @@ const Post = (props) => {
         const response = await axios.delete(`/posts/${id}/`);
         if (response.status === 204) {  // Check if the delete was successful
           removePost(id);
+          toast.success("Post deleted successfully!");
           if (window.location.pathname.includes(`/posts/`)) {
             history.goBack(); 
           } else {
@@ -52,8 +53,7 @@ const Post = (props) => {
           }
         }
     } catch (err) {
-      console.error("Failed to delete the post:", err);
-      alert("Failed to delete the post, please try again.");
+
     }
   };
 
@@ -106,7 +106,6 @@ const Post = (props) => {
   };
 
   return (
-    <Container>
       <Card className={styles.Post}>
         <Card.Body>
 
@@ -188,7 +187,6 @@ const Post = (props) => {
         </Card.Footer>
 
       </Card>
-    </Container>
   );
 };
 

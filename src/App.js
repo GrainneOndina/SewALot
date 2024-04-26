@@ -18,6 +18,8 @@ import NotFound from "./components/NotFound";
 import { PostsProvider } from './contexts/PostsContext'; // Correct import of PostsProvider
 import LandingPage from './pages/LandingPage';
 import LikedPosts from './pages/posts/LikedPosts';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const currentUser = useCurrentUser();
@@ -25,6 +27,17 @@ function App() {
   return (
     <Router>
       <div className={styles.App}>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
         <NavBar />
         <Container className={styles.Main}>
           <PostsProvider>

@@ -9,6 +9,7 @@ import { axiosReq } from "../../api/axiosDefaults";
 import styles from "../../styles/PostCreateEditForm.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import { usePosts } from "../../contexts/PostsContext";
+import { toast } from 'react-toastify';
 
 function PostEditForm() {
     const { id } = useParams();
@@ -104,6 +105,7 @@ function PostEditForm() {
             const response = await axiosReq.put(`/posts/${id}/`, formData);
             updatePost(response.data);
             history.goBack();
+            toast.success("Post updated successfully!");
         } catch (error) {
             console.error("Error updating post:", error);
             setErrors(error.response?.data || {});

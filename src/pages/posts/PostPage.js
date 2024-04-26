@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { usePosts } from "../../contexts/PostsContext";
 import { useParams, useLocation } from "react-router-dom";
 import { axiosReq } from "../../api/axiosDefaults";
+import Container from "react-bootstrap/Container";
 import Post from "./Post";
 import Comment from "../comments/Comment";
 import appStyles from "../../App.module.css";
+import { toast } from 'react-toastify';
 
 function PostPage() {
     const { id } = useParams();
@@ -39,28 +41,28 @@ function PostPage() {
     };
 
     return (
-        <div className="container" aria-live="polite">
-            <div className="d-flex flex-column align-items-center">
-                <div className="col-lg-8">
-                    <div className={appStyles.Content}>
-                        {post ? (
-                            <>
-                                <article>
-                                    <Post {...post} handlePostUpdate={handlePostUpdate} />
-                                </article>
-                                <hr />
-                                <section aria-labelledby="commentsHeading">
-                                    <h3 id="commentsHeading">Comments</h3>
-                                    <Comment postId={id} />
-                                </section>
-                            </>
-                        ) : (
-                            <div role="alert" aria-busy="true">Loading...</div>
-                        )}
+        <Container>
+                <div className="d-flex flex-column align-items-center" aria-live="polite">
+                    <div className="col-lg-8">
+                        <div className={appStyles.Content}>
+                            {post ? (
+                                <>
+                                    <article>
+                                        <Post {...post} handlePostUpdate={handlePostUpdate} />
+                                    </article>
+                                    <hr />
+                                    <section aria-labelledby="commentsHeading">
+                                        <h3 id="commentsHeading">Comments</h3>
+                                        <Comment postId={id} />
+                                    </section>
+                                </>
+                            ) : (
+                                <div role="alert" aria-busy="true">Loading...</div>
+                            )}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+        </Container>
     );
 }
 
