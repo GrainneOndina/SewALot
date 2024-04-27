@@ -114,7 +114,7 @@ function CommentCreateForm({ postId, addComment, profile_image, profile_id, comm
                 )}
                 <Button
                     variant="primary"
-                    className={`${btnStyles.Button} ${btnStyles.Blue}`} align-items-center
+                    className={`${btnStyles.Button} ${btnStyles.Blue}`}
                     type="submit"
                     aria-label={isEditing ? "Update Comment" : "Post Comment"}
                 >

@@ -27,11 +27,12 @@ const NavBar = () => {
   const handleSignOut = async () => {
     try {
       await axios.post("dj-rest-auth/logout/");
-      setCurrentUser(null);
       removeTokenTimestamp();
+      localStorage.removeItem('authToken');
+      setCurrentUser(null);
       history.push("/signin");
     } catch (err) {
-      
+      //console.error("Error during sign-out:", err);
     }
   };
 

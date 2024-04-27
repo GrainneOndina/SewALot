@@ -77,12 +77,15 @@ const Post = (props) => {
           like_id: data.id
         };
         updatePost(updatedPost); // Update global context
-        props.handlePostUpdate(updatedPost); // Update local state in PostPage
+        if (props.handlePostUpdate) {
+          props.handlePostUpdate(updatedPost); // Safely call if function is provided
+        }
       }
     } catch (err) {
       console.error("Failed to like post:", err);
     }
   };
+  
 
   /**
    * Handles unliking the post and updates the context with the new state.
@@ -97,13 +100,15 @@ const Post = (props) => {
           like_id: null
         };
         updatePost(updatedPost); // Update global context
-        props.handlePostUpdate(updatedPost); // Update local state in PostPage
+        if (props.handlePostUpdate) {
+          props.handlePostUpdate(updatedPost); // Safely call if function is provided
+        }
       }
     } catch (err) {
       console.error("Failed to unlike post:", err);
     }
   };
-
+  
   /**
    * Navigates to the detailed view of the post.
    */
@@ -122,7 +127,7 @@ const Post = (props) => {
             </Col>
             <Col className={`text-left ${styles.Owner}`}>
               <Link to={`/profiles/${profile_id}`} className={styles.OwnerDate}>
-                <span>{owner}</span>
+                <span><strong>{owner}</strong></span>
                 <br />
                 <span className={styles.Date}>{updated_at}</span>
               </Link>

@@ -40,9 +40,10 @@ function SignInForm() {
       localStorage.setItem('authToken', data.token); // Storing the token in local storage
       setTokenTimestamp(data);
       history.goBack();
-      toast.success("Signed in successfully!");
+      toast.success(`Welcome back, ${data.user.username}!`);
     } catch (err) {
-      toast.error("Failed to sign in.");
+      const errorMessages = err.response?.data || { non_field_errors: ["Failed to sign in."] };
+      setErrors(errorMessages);
     }
   };
   

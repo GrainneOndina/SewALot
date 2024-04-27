@@ -43,23 +43,25 @@ const SignUpForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post("/dj-rest-auth/registration/", signUpData);
-      const signInResponse = await axios.post("/dj-rest-auth/login/", {
-        username: signUpData.username,
-        password: signUpData.password1,
-      });
-      setCurrentUser(signInResponse.data.user);
-      setTokenTimestamp(signInResponse.data);
-
-      const { from } = location.state || { from: { pathname: "/" } };
-      history.replace(from);
-      toast.success("Signed up and logged in successfully!");
+      const registrationResponse = await axios.post("/dj-rest-auth/registration/", signUpData);
+      if (registrationResponse.status === 201) {
+        const signInResponse = await axios.post("/dj-rest-auth/login/", {
+          username: signUpData.username,
+          password: signUpData.password1,
+        });
+        setCurrentUser(signInResponse.data.user);
+        setTokenTimestamp(signInResponse.data);
+  
+        const { from } = location.state || { from: { pathname: "/" } };
+        history.replace(from);
+        toast.success(`Welcome, ${signInResponse.data.user.username}!`);
+      }
     } catch (err) {
       setErrors(err.response?.data);
       toast.error("Failed to sign up.");
     }
   };
-
+  
   return (
     <Container>
       <div className="d-flex flex-column align-items-center">
