@@ -1,3 +1,14 @@
+.appContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Make sure container fills at least all the viewport height */
+}
+
+.content {
+  flex: 1; /* This makes the content area grow and take up any remaining space */
+  padding: 20px; /* Optional, for some spacing */
+}
+
 .Post {
   background-color: #ffffff;
   border: 2px dotted #ec7627;
