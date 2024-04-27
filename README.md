@@ -164,64 +164,69 @@ Sony Xperia 5 III
 ### Manual testing
 |Command input              |Expected response                     |Results |
 |----------------|-------------------------------|-----------------------------|
-|**Nav bar**                |         ||
-|- Clicking Sewlot logo	|Home- All posts are rendered   |Pass |
-|- Clicking Home		|Home- All posts are rendered 	|Pass |
-|- Clicking Feed |All posts belonging to followed users are rendered |x |
-|- Clicking Like icon on post    | Poste is liked, hart is reed      |Pass |
-|- Clicking Like icon on post when liked |Poste is unliked, hart is not reed |Pass |
-|- Clicking Liked link	|All users liked posts are rendered  |Pass |
-|- Clicking Sign out	|User is signed out |Pass |
-|- Clicking user avatar	|User is redirected to profile page |Pass |
+|**Nav bar** | ||
+|- Clicking Sewlot logo |Home- All posts are rendered |Pass |
+|- Clicking Home |Home- All posts are rendered |Pass |
+|- Clicking Liked link |All posts user has liked are rendered |Pass |
+|- Clicking Sign out |User is signed out |Pass |
+|- Clicking user avatar |User is redirected to profile page |Pass |
 |- Open page in large window| Nav bar is viewed whit all links viewed |Pass|
-|- Open page in Mobile   |Nav bar is viewed as hamburger menu |Pass |
-|- Clicking hamburger menu   |Nav bar links are viewed |Pass |
-|  |         | |
-|- If user is not signed in |Nav bar is not viewed         |Pass |
-|- When user sign up|  NavBar and posts is viewed |Pass|
-|- When user sign in first time | NavBar is viewed |Pass|
-|- When user sign in first time | Post is viewed |X|
-|- When user sign in again | NavBar and posts is viewed |Pass|
-|-  |         | |
+|- Open page in Mobile |Nav bar is viewed as hamburger menu |Pass |
+|- Clicking hamburger menu |Nav bar sign ut and profile link are viewed |Pass |
+| | | |
+|- If user is not signed in |Landing page is rendering sign in or sign up |Pass |
+|- Clicking: Allready have an account? / Don't have an account? |Changeses between Sign in and Sign up |Pass|
+|- When user tryes to sign up or in | Validate username and password correct  |Pass|
+|- Signing in or up| Welcome "Name" message is viewed |Pass|
+|- When user sign in/up| Redirect to Home |Pass|
+|- | | |
 |**Profile page**
-|Users own profile page  |       ||
+|Users own profile page | ||
 |- Users own profile | Users own info, posts and a dropdown-menu is viewed |Pass|
-|- clicking the dropdown-menu |Choises Edit profile, change username and change password is viewed   |Pass |
-|- Clicking Edit profile    |  Edit profile image is rendered |Pass |
-|- On Edit profile    |Uploding a new image changes the profile image   |Pass |
-|- Clicking Change username | Change username form is rendered  |Pass |
-|- On Change username   |Writing a new name changes the username   |Pass |
+|- clicking the dropdown-menu |Choises Edit profile, change username and change password is viewed |Pass |
+|- Clicking Edit profile | Form for adding userinfo and chanege image is renderd |Pass |
+|- On Edit profile |Uploding a new image changes the profile image. Size is validated|Pass |
+|- Clicking Change username | Change username form is rendered |Pass |
+|- On Change username |Writing a new name changes the username, username is validated |Pass |
 |- Clicking Change password | Change password form is rendered |Pass |
-|- On Change password  |Writing a new password changes the password   |Pass |
-|- On Change password  |Writing a not appropriate password throes an error |Pass|
-| Another users profile page  |       ||
-|- Users profile | Users info, posts and a follow button is viewed  |Pass |
-|- Clicking Follow |The user is followed and the button changes to unfollow|Pass|
-|- Clicking Follow   |The users posts are viewed under feed  |x |
+|- On Change password |Writing a new password changes the password |Pass |
+|- On Change password |Writing a not appropriate password throes an Alert |Pass|
+| | | |
+| Another users profile page | ||
+|- Users profile | Users info and posts are viewed|Pass |
 |.|||
-|**Post:**	      |  | |
-|- Adding text in Add post feelde  and clicking Post|Adds the post to home |Pass|
-|- Also adding an image ore/and an url |  Also adds the image/url to post |Pass |
-|- Clicking Post whitout text in add post| Don't adds empty post |Pass|
-|- Clicking Post whitout text in add post| Tells user its not posible to add post with out content |Pass|
+|**Post:** | | |
+|- Adding text in Add post fealed and clicking Post|Adds the post to home |Pass|
+|- Also adding an image ore/and an URL | Also adds the image/url to post |Pass |
+|- Clicking Post whitout text in add post| Alert, Can't add empty post |Pass|
+|- Clicking Post, with an invalid URL in add post| Tells user: Please enter a valid URL |Pass|
 |- Clicking Post whit a too big image in add post| Tells user: Image size exceeds the limit. Please select a smaller image |Pass|
-|- Clicking Post, with an invalid url in add post| Tells user: Please enter a valid URL |Pass|
-|- In post edit form. Clicking Save, with an invalid url in add post| Tells user: Please enter a valid URL |Pass|
-|- In post edit form. Clicking Post whit a too big image in add post| Tells user: Image size exceeds the limit. Please select a smaller image |Pass|
+|- In post edit form. Clicking Save, with out an valid URL | Tells user: Please enter a valid URL or keep the one you have. Re populating the URL field whit old URL URL |Pass|
+|- In post edit form. Choosing a new image that is too big| Tells user: Image size exceeds the limit. Please select a smaller image |Pass|
 |- Clicking a post, image or text |Post page is viewed |Pass |
-|- Users own Post page | Post and a dropdown-menu is viewed |Pass|
-|- Clicking the dropdown-menu |Choises Edit post or delete is viewed   |Pass |
-|- Clicking Edit profile    |  Edit post form is rendered |Pass |
-|- On Edit profile    |Change any content is updating the post   |Pass |
-|- Clicking Delete   |  Deletes the post |Pass |
-|- Clicking Delete   |Removes the deleted post from array without refrech |X |
-|- Another users own Post page | Post is viewed |Pass|
-|**Sequerety:**	      |  | |
-|- Trying to sign up whit a already used Username |Error |Pass|
-|- Trying to sign up whit a password blank password |Error |Pass|
-|- Trying to sign up whit a password shoreter than 8 caracters |Error |Pass|
-|- Trying to sign in whit a password invalid pasword |Error |Pass|
-|- Trying to accses forms by url whith out singing in |Error |Pass|
+|- Users own Post | Dropdown-menu is viewed in right top corner |Pass|
+|- Clicking the dropdown-menu |Choises Edit post or delete is viewed |Pass |
+|- Clicking Edit post | Edit post form is rendered |Pass |
+|- On Edit post |Change any content is updating the post |Pass |
+|- Clicking Delete | Deletes the post |Pass |
+|- Another users Post | Post Dropdown-menu is not viewed |Pass|
+|- Hoovering or Clicking Like icon on users own post | Message: You can't like your own post |Pass |
+|- Clicking Like icon on post | Poste is liked, hart is reed |Pass |
+|- Clicking Like icon on post when liked |Poste is unliked, hart is not reed |Pass |
+|- | | |
+|**Comment:** | | |
+|- Clicking comment icon att post bottom | Redirect to Post Page and focus on Comment form to add a new comment  |Pass|
+|- Clicking Post, whitout text in comment feald | Tells user its not posible to add comment with out content |Pass|
+|- Adding a comment | the comment is renderd at the top of comments, just under the form. |Pass|
+|- Clicking Edit on comment | Opens the comment for editing in comment form feald. Focusing on the feald that also gets an yellow frame for extra focus |Pass|
+|- Clicking delete button on comment | Deletes comment |Pass|
+|-|||
+|**Sequerety:** | | |
+|- Trying to sign up whit a already used Username |Error Alert |Pass|
+|- Trying to sign up whit a password blank password |Error Alert  |Pass|
+|- Trying to sign up whit a password shoreter than 8 caracters |Error Alert  |Pass|
+|- Trying to sign in whit a password invalid pasword |Error Alert  |Pass|
+|- Trying to accses forms by url whith out singing in |Error Alert |Pass|
 
 ### Fixed issues:
 During the testing, two inexplicable errors with page reload came up.

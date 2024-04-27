@@ -51,11 +51,22 @@ const ProfileEditForm = () => {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setProfileData({
-        ...profileData,
-        image: file,
-      });
-      setCurrentImage(URL.createObjectURL(file)); // Update the display image
+      if (file.size > 2 * 1024 * 1024) { // Checks if the file size is greater than 2MB
+        setErrors({ ...errors, image: 'Image size exceeds the limit of 2MB.' });
+        setCurrentImage(""); // Clear the image preview
+        imageInput.current.value = ""; // Clear the file input field
+      } else {
+        setProfileData({
+          ...profileData,
+          image: file,
+        });
+        setCurrentImage(URL.createObjectURL(file)); // Update the display image
+        setErrors({ ...errors, image: null }); // Clear any existing image errors
+      }
+    } else {
+      // Handle case where file is not selected or input is cleared
+      setProfileData(prev => ({ ...prev, image: null }));
+      setCurrentImage("");
     }
   };
 
