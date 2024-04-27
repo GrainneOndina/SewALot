@@ -1,13 +1,13 @@
 import React from "react";
-import styles from "../../styles/Post.module.css";
-import { useCurrentUser } from "../../contexts/CurrentUserContext";
-import { Card, OverlayTrigger, Tooltip, Row, Col } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
+import { Card, OverlayTrigger, Tooltip, Row, Col } from "react-bootstrap";
 import Avatar from "../../components/Avatar";
+import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import axios from "axios";
-import { MoreDropdown } from "../../components/MoreDropdown";
 import { usePosts } from "../../contexts/PostsContext";
+import { MoreDropdown } from "../../components/MoreDropdown";
 import { toast } from 'react-toastify';
+import styles from "../../styles/Post.module.css";
 
 /**
  * Component that represents a single post, displaying the owner's details,
@@ -20,7 +20,7 @@ const Post = (props) => {
     id,
     owner,
     profile_id,
-    profile_image,
+    profile_image: initialProfileImage,
     content,
     url,
     image,
@@ -32,6 +32,9 @@ const Post = (props) => {
   const currentUser = useCurrentUser();
   const is_owner = currentUser?.username === owner;
   const { updatePost, removePost } = usePosts();
+  
+  // Use updated profile image from current user context if the post belongs to the current user
+  const profile_image = currentUser?.profile_id === profile_id ? currentUser.profile_image : initialProfileImage;
 
   /**
    * Redirects the user to the post editing page.
@@ -56,7 +59,7 @@ const Post = (props) => {
           }
         }
     } catch (err) {
-
+      toast.error("Failed to delete post.");
     }
   };
 
@@ -114,8 +117,8 @@ const Post = (props) => {
           <Row className="align-items-center">
             <Col xs="auto">
             <Link to={`/profiles/${profile_id}`} aria-label={`View ${owner}'s profile`}>
-                <Avatar src={profile_image} alt={`Profile of ${owner}`} height={55} />
-              </Link>
+              <Avatar src={profile_image} alt={`Profile of ${owner}`} height={55} />
+            </Link>
             </Col>
             <Col className={`text-left ${styles.Owner}`}>
               <Link to={`/profiles/${profile_id}`} className={styles.OwnerDate}>
