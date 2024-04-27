@@ -1,6 +1,5 @@
 import React from "react";
 import Navbar from "react-bootstrap/Navbar";
-import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import logo from "../assets/logo.png";
 import styles from "../styles/NavBar.module.css";
@@ -9,7 +8,6 @@ import { useCurrentUser, useSetCurrentUser } from "../contexts/CurrentUserContex
 import axios from "axios";
 import useClickOutsideToggle from "../hooks/useClickOutsideToggle";
 import { removeTokenTimestamp } from "../utils/utils";
-import { Row } from "react-bootstrap";
 
 /**
  * NavBar component that provides navigation links and user authentication options.

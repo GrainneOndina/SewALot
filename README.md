@@ -10,7 +10,7 @@ Welcome to Sewlot this site is for people who want to share their sewing with ot
 
 In terms of design, the page is stripped down so as not to distract from the content. The colors are different on everything to give a playful and inspiring impression. Lines are dashed to resemble sewing machine stitches.
 
-The site is easily navigated from the navbar. there users find home, posts they liked, sinegen profile and sign out
+The site is easily navigated from the navbar. There users find home, posts they liked, there own profile and sign out.
 
 ## The exelance whit Rect
 The reusability of components is a key concept in React and allows you to create modular and flexible code. By designing components that are reusable, I have saved time and effort by utilizing them across different parts of my React project.
@@ -36,11 +36,11 @@ GitHub Project and Issues were used for Agile project planning. User Stories wit
 -  **Account edit profile image:** As a logged in User I can edit my account so that I can change profile image. 
 -  **Like Post:** As a logged in User I can Like another users post.
 -  **Like** As a logged in click Like to view posts I have liked.
+-  **Comment on a post:** As a logged in User I can leave comments on a post so that I can be involved in the conversation
+-  **Delete a Comment:** As a logged in User I can edit or delete a comment I wrote on a post so that I can change my minde.
 
 ### User stories not done yet:
 -  **View some posts:**  As a logged in User I can click on feed to view only posts of users I am following.
--  **Comment on a post:** As a logged in User I can leave comments on a post so that I can be involved in the conversation
--  **Delete a Comment:** As a logged in User I can edit or delete a comment I wrote on a post so that I can change my minde
 -  **Like Comment:** As a logged in User I can Like another users post.
 -  **Feed** As a logged in click feed to view posts only from Users I am following.
 -  **Search:** A lodge in user should be able to search for a word or words in all content on the page
@@ -74,9 +74,13 @@ The sign up page contains a form with username, password and a confirmation pass
 Each post contains user, user avatar, date it was created or updated. The content is text and the user can also add an image and/or an external link to the desired page. At the bottom of the post there is a like icon.
 ## ![Display book](src/assets/images/posts.jpg)
 
+###  Comments
+At the singel post page theer is posible to add a comment. The user can edit and delete a comment they created. Clicking edit, the page wil focus on the comment feald whit a yello frame to handel the edit.
+## ![Display book](src/assets/images/comments.jpg)
+
 ###  Like
 Like the heart, users can click to like a post. Next to the heart is shown how many likes the post has received. Below the heart in the navbar, posts that the user liked are displayed.
-## ![Like](src/assets/like.jpg)
+## ![Like](src/assets/images/like.jpg)
 
 ###  Edit and delete post
 A user can update a record he himself created. by first clicking on the entry and then clicking on the small dotted menu, the options edit and share will appear.
@@ -96,7 +100,7 @@ A user can update their profile. By first clicking on the avatar in the navbar a
 
 
 ###  Features to implement later
-Comments on posts and comments
+Comments on comments.
 
 ## Data Model
 
@@ -143,6 +147,7 @@ Chrome Developer tools were used for more extensive testing.
 
 ### Following mobiles has been tested:
 
+Google Pixel 8
 iPhone 5 / SE
 iPhone 7
 iPhone Pro Max
@@ -213,7 +218,7 @@ Sony Xperia 5 III
 |- Trying to sign in whit a password invalid pasword |Error |Pass|
 |- Trying to accses forms by url whith out singing in |Error |Pass|
 
-### Note to testing:
+### Fixed issues:
 During the testing, two inexplicable errors with page reload came up.
 - When a user logs in to an already existing account in a new browser or after clearing cookies: The user is logged in but it is only navbar that renders corectly. Sign in form remains instead of items being loaded. when the user clicks refresh or any of the links in the navbar, the corect page is displayed. There are no error messages or anything else that shows that something is wrong. When a user signs up or logs in again on the page, everything corect is loaded with navbar and records.
 - When a user clicks on delete a post, the post is deleted and the user is redirected to the homepage. But the records are not reloaded so it looks like the record is still there, it is only when the user clicks refresh or a link to something else that the page reloads and the deleted record is finally loaded. There are no error messages or anything else to suggest an error and all troubleshooting results in the bored page reloading when the record is deleted.
@@ -273,4 +278,5 @@ After every change in the code, it's important to redo the test section. Go thro
 ### Content
 All content was written by the developer. Some of the code is inspierd or coppyed from the walktrue.
 
-
+### Acknowledgments
+A big thank you to my mentor Lauren-Nicole Popich. Your dedication, encouragement and expertise have really helped me through this project. I really appreciate your willingness to share your knowledge and that you so strongly convey the feeling that it will work!

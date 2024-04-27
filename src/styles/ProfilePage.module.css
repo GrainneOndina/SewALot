@@ -2,3 +2,10 @@
     text-align: right;
   }
   
+  .ProfileImage {
+    width: 150px;        /* Fixed width */
+    height: 150px;       /* Equal height to maintain aspect ratio */
+    object-fit: cover;   /* Ensures the image covers the area without distortion */
+    border-radius: 50%;  /* Circular mask */
+  }
+  
