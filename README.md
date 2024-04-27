@@ -98,6 +98,11 @@ A user can update their profile. By first clicking on the avatar in the navbar a
 ## ![Edit](src/assets/images/editprofile.jpg)
 ## ![Form](src/assets/images/editprofileform.jpg)
 
+###  Toast and Alert Messages
+Messages of sucsess and problems are displayed
+## ![Messages](src/assets/images/toast.jpg)
+## ![Messages](src/assets/images/alerts.jpg)
+
 
 ###  Features to implement later
 Comments on comments.
