@@ -32,17 +32,17 @@ GitHub Project and Issues were used for Agile project planning. User Stories wit
 -  **Post:** As a logged in User I can delete a post I created.
 -  **View all posts:**  As a logged in User I can view all posts.
 -  **View post and  comments:** As a logged in User I can view an individual post so that I can read the comments to it.
--   **Follow other user:** As a logged in User I can follow another user.
--  **Account edit profile image:** As a logged in User I can edit my account so that I can change profile image. 
--  **Like Post:** As a logged in User I can Like another users post.
--  **Like** As a logged in click Like to view posts I have liked.
 -  **Comment on a post:** As a logged in User I can leave comments on a post so that I can be involved in the conversation
 -  **Delete a Comment:** As a logged in User I can edit or delete a comment I wrote on a post so that I can change my minde.
+-  **Account edit profile image:** As a logged in User I can edit my account so that I can change profile image, username and password. 
+-  **Like Post:** As a logged in User I can Like another users post.
+-  **Like** As a logged in click Like to view posts I have liked.
+
 
 ### User stories not done yet:
+-  **View some posts:** Follow other user: As a logged in User I can follow another user.
 -  **View some posts:**  As a logged in User I can click on feed to view only posts of users I am following.
 -  **Like Comment:** As a logged in User I can Like another users post.
--  **Feed** As a logged in click feed to view posts only from Users I am following.
 -  **Search:** A lodge in user should be able to search for a word or words in all content on the page
 
 
@@ -201,7 +201,7 @@ Sony Xperia 5 III
 |- Clicking Post whitout text in add post| Alert, Can't add empty post |Pass|
 |- Clicking Post, with an invalid URL in add post| Tells user: Please enter a valid URL |Pass|
 |- Clicking Post whit a too big image in add post| Tells user: Image size exceeds the limit. Please select a smaller image |Pass|
-|- In post edit form. Clicking Save, with out an valid URL | Tells user: Please enter a valid URL or keep the one you have. Re populating the URL field whit old URL URL |Pass|
+|- In post edit form. Clicking Save, with out an valid URL | Tells user: Please enter a valid URL or keep the one you have. Re populating the URL field whit old URL |Pass|
 |- In post edit form. Choosing a new image that is too big| Tells user: Image size exceeds the limit. Please select a smaller image |Pass|
 |- Clicking a post, image or text |Post page is viewed |Pass |
 |- Users own Post | Dropdown-menu is viewed in right top corner |Pass|
@@ -217,7 +217,7 @@ Sony Xperia 5 III
 |**Comment:** | | |
 |- Clicking comment icon att post bottom | Redirect to Post Page and focus on Comment form to add a new comment  |Pass|
 |- Clicking Post, whitout text in comment feald | Tells user its not posible to add comment with out content |Pass|
-|- Adding a comment | the comment is renderd at the top of comments, just under the form. |Pass|
+|- Adding a comment | The comment is renderd at the top of comments, just under the form. |Pass|
 |- Clicking Edit on comment | Opens the comment for editing in comment form feald. Focusing on the feald that also gets an yellow frame for extra focus |Pass|
 |- Clicking delete button on comment | Deletes comment |Pass|
 |-|||

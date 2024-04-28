@@ -58,7 +58,6 @@ const SignUpForm = () => {
       }
     } catch (err) {
       setErrors(err.response?.data);
-      toast.error("Failed to sign up.");
     }
   };
   
